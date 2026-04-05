@@ -1,0 +1,2708 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ma 2c – Begreppskarta</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --cream:#f6f2eb;--cream2:#eee9e0;--cream3:#e5dfd5;
+  --white:#ffffff;
+  --glass:rgba(255,255,255,0.52);--glass2:rgba(255,255,255,0.38);
+  --glass-border:rgba(255,255,255,0.62);--glass-border2:rgba(255,255,255,0.45);
+  --shadow:rgba(120,100,75,0.07);--shadow2:rgba(120,100,75,0.04);
+  --ink:#111010;--ink2:#1e1b18;--ink3:#302b26;--ink4:#4a4540;--ink5:#7a7268;
+  --terra:#bf6e4a;--terra-soft:rgba(191,110,74,0.07);--terra-med:rgba(191,110,74,0.14);
+  --sage:#6a8a6f;--sage-soft:rgba(106,138,111,0.07);--sage-med:rgba(106,138,111,0.14);
+  --gold:#a88a5a;--gold-soft:rgba(168,138,90,0.06);
+  --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --sans:'Outfit',-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono','Cascadia Code','Fira Code',monospace;
+  --radius:18px;--radius-sm:12px;
+}
+
+html{font-size:clamp(14px,1.1vw,20px);scroll-behavior:smooth}
+body{
+  font-family:var(--sans);color:var(--ink2);
+  background:var(--cream);min-height:100vh;
+  line-height:1.7;overflow-x:hidden;
+  background-image:
+    radial-gradient(ellipse 55% 35% at 12% 8%,rgba(191,110,74,0.04),transparent),
+    radial-gradient(ellipse 45% 45% at 88% 85%,rgba(106,138,111,0.04),transparent);
+}
+/* Noise overlay */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.3;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+}
+::selection{background:var(--terra-med);color:var(--ink)}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--ink5);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--ink4)}
+
+/* ── App ── */
+/* ── Fullscreen layout ── */
+.app{
+  display:flex;flex-direction:column;
+  min-height:100vh;
+  padding:0;margin:0;
+}
+html,body{overflow-y:auto!important;margin:0;padding:0}
+
+/* ── Top bar ── */
+.topbar{
+  display:flex;align-items:center;
+  padding:0.8rem 2rem;
+  background:var(--cream);
+  border-bottom:1px solid var(--cream3);
+  flex-shrink:0;position:sticky;top:0;z-index:10;
+}
+.topnav{
+  display:flex;align-items:center;gap:0.6rem;flex:1;min-width:0;
+}
+.back-btn{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--cream2);
+  border:1px solid var(--cream3);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all 0.3s;
+  color:var(--ink3);flex-shrink:0;
+}
+.back-btn:hover{background:var(--cream3);color:var(--terra)}
+.back-btn:disabled{opacity:0.2;cursor:default}
+.back-btn svg{width:15px;height:15px}
+
+.breadcrumb{display:flex;align-items:center;gap:0.15rem;flex-wrap:wrap;min-width:0}
+.crumb{
+  font:500 0.92rem var(--sans);color:var(--ink3);
+  cursor:pointer;padding:0.15rem 0.35rem;border-radius:5px;transition:all 0.2s;
+}
+.crumb:hover{color:var(--terra);background:var(--terra-soft)}
+.crumb.active{color:var(--terra);cursor:default;background:transparent}
+.crumb-sep{color:var(--ink4);font-size:0.85rem;margin:0 0.1rem;user-select:none}
+
+/* ── Main card fills remaining space ── */
+.card-wrapper{flex:1;display:flex;flex-direction:column}
+.concept-card{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;
+  background:var(--white);
+  padding:2rem 2rem 3rem;
+  border:none;border-radius:0;box-shadow:none;
+  transition:opacity 0.35s,transform 0.35s;
+}
+.concept-card.has-long-content{justify-content:flex-start}
+.concept-card.out{opacity:0;transform:translateY(10px) scale(0.99)}
+.concept-card.entering{opacity:0;transform:translateY(-8px) scale(0.99)}
+.card-inner{width:100%;max-width:min(900px,85vw)}
+
+/* Category */
+.card-cat{
+  display:inline-block;font:700 0.92rem var(--sans);
+  text-transform:uppercase;letter-spacing:0.06em;
+  padding:0.28rem 0.8rem;border-radius:20px;margin-bottom:1rem;
+}
+.cat-root{background:var(--gold-soft);color:var(--gold)}
+.cat-ekvationer{background:rgba(90,130,180,0.08);color:#5a82b4}
+.cat-regression{background:rgba(140,100,160,0.08);color:#8c64a0}
+.cat-funktioner{background:var(--sage-soft);color:var(--sage)}
+.cat-logaritmer{background:var(--terra-soft);color:var(--terra)}
+
+/* Title */
+.card-title{
+  font:700 2.1rem/1.15 var(--serif);color:var(--ink);
+  margin-bottom:0.2rem;letter-spacing:-0.01em;
+}
+.card-subtitle{font:400 1rem var(--sans);color:var(--ink3);margin-bottom:1.2rem}
+
+/* Body */
+.card-body{font:400 1rem/1.8 var(--sans);color:var(--ink2)}
+.card-body p{margin-bottom:0.7rem}
+.card-body ul,.card-body ol{margin:0.4rem 0 0.7rem 1.3rem}
+.card-body li{margin-bottom:0.25rem}
+.card-body strong{color:var(--ink);font-weight:600}
+.card-body em{color:var(--ink3);font-style:italic}
+
+/* Formulas */
+.fm{
+  font:500 0.95rem var(--mono);color:var(--terra);
+  background:var(--terra-soft);padding:0.15rem 0.45rem;border-radius:5px;
+  white-space:nowrap;
+}
+.formula-block{
+  background:rgba(191,110,74,0.04);
+  border-left:3px solid rgba(191,110,74,0.25);
+  padding:0.9rem 1.2rem;border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  margin:0.8rem 0;font-size:1rem;color:var(--ink2);
+}
+.formula-block .fm{background:transparent;padding:0}
+
+/* KaTeX overrides */
+.katex{font-size:1.1em!important}
+.formula-block .katex{font-size:1.15em!important}
+
+/* Examples */
+.example{
+  background:var(--sage-soft);
+  border:1px solid rgba(106,138,111,0.12);
+  border-radius:var(--radius-sm);padding:0.9rem 1.2rem;
+  margin:0.8rem 0;font-size:0.95rem;color:var(--ink2);
+}
+.example-label{
+  font:700 0.92rem var(--sans);text-transform:uppercase;
+  letter-spacing:0.06em;color:var(--sage);margin-bottom:0.4rem;
+}
+
+/* Note */
+.note{font-size:0.95rem;color:var(--terra);font-weight:600;margin-top:0.5rem}
+
+/* Image */
+.card-image{margin:1rem 0 0.2rem;text-align:center}
+.card-image img{
+  max-width:55%;max-height:150px;border-radius:var(--radius-sm);
+  border:1px solid var(--cream3);cursor:pointer;
+  box-shadow:0 6px 18px var(--shadow);transition:transform 0.3s;
+}
+.card-image img:hover{transform:scale(1.03)}
+.card-image img.expanded{max-width:100%;max-height:500px}
+
+/* ── Connections (inside card) ── */
+.connections{margin-top:1.2rem}
+.conn-divider{height:1px;background:var(--cream3);margin-bottom:1rem;opacity:0.6}
+.conn-label-row{
+  font:600 0.92rem var(--sans);text-transform:uppercase;letter-spacing:0.08em;
+  color:var(--ink2);margin-bottom:0.75rem;
+}
+.conn-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.5rem}
+.conn-btn{
+  display:flex;align-items:center;justify-content:center;
+  background:var(--cream);
+  border:1px solid var(--cream3);border-radius:var(--radius-sm);
+  padding:0.7rem 1rem;cursor:pointer;
+  transition:all 0.35s cubic-bezier(0.22,1,0.36,1);
+  opacity:0;transform:translateY(10px);animation:rise 0.5s forwards;
+  box-shadow:0 2px 8px var(--shadow2);
+  white-space:nowrap;
+}
+.conn-btn:hover{
+  background:var(--cream2);
+  border-color:var(--ink5);
+  transform:translateY(-3px);
+  box-shadow:0 8px 24px var(--shadow),0 2px 8px var(--shadow2);
+}
+.conn-edge{font:500 0.92rem var(--sans);color:var(--ink2)}
+.conn-name{
+  font:600 1rem var(--sans);color:var(--ink);
+  display:flex;align-items:center;gap:0.3rem;
+}
+.conn-name svg{width:14px;height:14px;color:var(--ink3);flex-shrink:0}
+.conn-btn:hover .conn-name{color:var(--ink)}
+.conn-btn:hover .conn-name svg{color:var(--terra)}
+.conn-btn.visited .conn-name::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--sage);flex-shrink:0;
+}
+
+/* Depth badge */
+.conn-depth{
+  font:400 0.85rem var(--sans);color:var(--ink4);margin-left:0.1rem;
+}
+
+/* Leaf-node navigation */
+.leaf-nav{margin-top:1.2rem;display:none}
+.leaf-nav.show{display:block}
+.leaf-divider{height:1px;background:var(--cream3);margin-bottom:1rem;opacity:0.6}
+.leaf-label{
+  font:600 0.92rem var(--sans);text-transform:uppercase;letter-spacing:0.08em;
+  color:var(--ink2);margin-bottom:0.6rem;
+}
+.leaf-grid{display:flex;flex-wrap:wrap;gap:0.5rem}
+.leaf-btn{
+  font:500 0.95rem var(--sans);color:var(--ink2);
+  background:var(--cream2);border:1px solid var(--cream3);
+  border-radius:8px;padding:0.5rem 1rem;cursor:pointer;
+  transition:all 0.25s;
+}
+.leaf-btn:hover{background:var(--cream3);color:var(--ink)}
+
+@keyframes rise{to{opacity:1;transform:translateY(0)}}
+
+/* ── Overview drawer ── */
+.overview-btn{
+  position:fixed;bottom:1.5rem;right:1.5rem;z-index:50;
+  width:54px;height:54px;border-radius:16px;
+  background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--glass-border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--ink3);
+  box-shadow:0 4px 16px var(--shadow);transition:all 0.3s;
+}
+.overview-btn:hover{background:var(--white);color:var(--terra);transform:scale(1.06)}
+.overview-btn svg{width:22px;height:22px}
+
+.drawer-overlay{
+  position:fixed;inset:0;background:rgba(30,26,22,0.2);
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  z-index:100;opacity:0;pointer-events:none;transition:opacity 0.35s;
+}
+.drawer-overlay.open{opacity:1;pointer-events:auto}
+
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;width:min(420px,85vw);z-index:101;
+  background:rgba(246,242,235,0.88);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
+  border-left:1px solid var(--glass-border);
+  box-shadow:-20px 0 60px rgba(0,0,0,0.06);
+  transform:translateX(100%);transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);
+  overflow-y:auto;padding:2rem 1.5rem;
+}
+.drawer.open{transform:translateX(0)}
+
+.drawer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.drawer-title{font:600 1rem var(--serif);color:var(--ink)}
+.drawer-close{
+  width:32px;height:32px;border-radius:50%;background:var(--cream2);border:none;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink3);
+  transition:all 0.2s;
+}
+.drawer-close:hover{background:var(--cream3);color:var(--ink)}
+.drawer-close svg{width:14px;height:14px}
+
+.tree-node{
+  font:500 0.92rem var(--sans);color:var(--ink2);
+  padding:0.35rem 0.7rem;border-radius:8px;
+  border:1px solid transparent;cursor:pointer;
+  display:inline-flex;align-items:center;gap:0.3rem;
+  transition:all 0.2s;margin:0.1rem 0;
+}
+.tree-node:hover{background:var(--cream2);color:var(--ink);border-color:var(--cream3)}
+.tree-node.current{background:var(--terra-soft);color:var(--terra);border-color:var(--terra-med)}
+.tree-node.visited{color:var(--sage)}
+.tree-node.depth-0{
+  font:600 1rem var(--sans);color:var(--ink);
+  padding:0.5rem 0.8rem;margin-top:0.5rem;
+  border-radius:10px;
+}
+.tree-node.depth-0:first-child{margin-top:0}
+.tree-group{margin-bottom:0.3rem}
+.tree-indent{margin-left:1rem;padding-left:0.8rem;border-left:1.5px solid var(--cream3)}
+
+/* ── Footer hints ── */
+.hints{
+  position:fixed;bottom:1.5rem;left:1.5rem;
+  display:flex;gap:0.35rem;z-index:50;
+}
+.hint{
+  font:500 0.92rem var(--mono);color:var(--ink2);
+  background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid var(--glass-border2);
+  padding:0.22rem 0.55rem;border-radius:5px;
+}
+
+/* ── Inline concept links ── */
+.clink{
+  color:var(--terra);cursor:pointer;
+  border-bottom:1.5px dotted rgba(191,110,74,0.35);
+  transition:all 0.25s ease;
+  padding:0.05rem 0.15rem;margin:-0.05rem -0.15rem;
+  border-radius:3px;font-weight:inherit;
+}
+.clink:hover{
+  color:var(--ink);
+  border-bottom-color:var(--terra);
+  background:var(--terra-soft);
+}
+.clink .katex{color:inherit!important}
+
+/* ── Concept tooltip ── */
+.clink-tip{
+  position:fixed;z-index:200;pointer-events:none;
+  background:rgba(30,27,24,0.92);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  color:#fff;font:500 0.82rem/1.4 var(--sans);
+  padding:0.5rem 0.85rem;border-radius:10px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.22),0 0 0 1px rgba(255,255,255,0.06) inset;
+  opacity:0;transform:translateY(5px) scale(0.97);
+  transition:opacity 0.2s cubic-bezier(0.22,1,0.36,1),transform 0.2s cubic-bezier(0.22,1,0.36,1);
+  white-space:nowrap;max-width:300px;
+}
+.clink-tip.show{opacity:1;transform:translateY(0) scale(1)}
+.clink-tip .tip-icon{opacity:0.5;margin-right:0.3rem;font-size:0.75rem}
+.clink-tip .tip-title{font-weight:600}
+.clink-tip .tip-hint{
+  display:block;font-size:0.72rem;color:rgba(255,255,255,0.45);margin-top:0.15rem;
+}
+
+/* ── Interactive graph widget ── */
+.graph-widget{margin:0.8rem 0;border-radius:var(--radius-sm);overflow:hidden;background:var(--white);border:1px solid var(--cream3)}
+.graph-btns{display:flex;gap:0.4rem;padding:0.6rem 0.8rem;background:var(--cream);flex-wrap:wrap}
+.graph-btn{
+  font:500 0.85rem var(--sans);color:var(--ink3);
+  background:var(--white);border:1px solid var(--cream3);
+  border-radius:8px;padding:0.45rem 0.8rem;cursor:pointer;
+  transition:all 0.25s;flex:1;text-align:center;min-width:0;
+}
+.graph-btn:hover{border-color:var(--ink5);color:var(--ink)}
+.graph-btn.active{background:var(--terra);color:#fff;border-color:var(--terra)}
+
+/* ── Hide buttons (replaced by inline links) ── */
+.connections{display:none!important}
+.leaf-nav .leaf-divider{height:1px;background:var(--cream3);margin-bottom:0.8rem;opacity:0.4}
+.leaf-nav .leaf-label{font:500 0.85rem var(--sans);color:var(--ink5);margin-bottom:0.4rem}
+.leaf-nav .leaf-grid{display:flex;flex-wrap:wrap;gap:0.2rem 0.6rem}
+.leaf-nav .leaf-btn{
+  font:inherit;font-weight:500;color:var(--terra);cursor:pointer;
+  border:none;background:none;padding:0.1rem 0;
+  border-bottom:1.5px dotted rgba(191,110,74,0.35);
+  transition:all 0.25s;font-size:0.95rem;
+}
+.leaf-nav .leaf-btn:hover{color:var(--ink);border-bottom-color:var(--terra);background:var(--terra-soft)}
+
+/* ── Responsive ── */
+@media(max-width:640px){
+  .topbar{padding:0.6rem 1rem}
+  .concept-card{padding:1.2rem 1rem 2rem}
+  .card-inner{max-width:92vw}
+  .card-title{font-size:1.5rem}
+  .conn-grid{grid-template-columns:1fr 1fr}
+  .card-image img{max-height:160px}
+  .overview-btn{width:48px;height:48px;border-radius:14px;bottom:1rem;right:1rem}
+}
+/* Large screens / TV */
+@media(min-width:1800px){
+  .card-inner{max-width:min(1100px,80vw)}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="topbar">
+    <nav class="topnav">
+      <button class="back-btn" id="backBtn" onclick="goBack()" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </button>
+      <div class="breadcrumb" id="breadcrumb"></div>
+    </nav>
+  </div>
+  <div class="card-wrapper">
+    <div class="concept-card" id="card">
+      <div class="card-inner">
+        <div id="cardCat"></div>
+        <h1 class="card-title" id="cardTitle"></h1>
+        <p class="card-subtitle" id="cardSub"></p>
+        <div class="card-body" id="cardBody"></div>
+        <div class="card-image" id="cardImg"></div>
+        <div class="connections" id="connArea">
+          <div class="conn-divider"></div>
+          <div class="conn-label-row">Utforska vidare</div>
+          <div class="conn-grid" id="connGrid"></div>
+        </div>
+        <div class="leaf-nav" id="leafNav"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="overview-btn" onclick="openDrawer()" title="Visa alla begrepp">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+</button>
+
+<div class="drawer-overlay" id="overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <span class="drawer-title">Alla begrepp</span>
+    <button class="drawer-close" onclick="closeDrawer()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div id="treeRoot"></div>
+</div>
+
+
+<script>
+// ═══════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════
+const N={
+root:{title:"Ma 2c \u2013 Kapitel 2",subtitle:"Algebra & icke-linj\u00e4ra modeller",cat:"root",
+body:`<p>Det h\u00e4r kapitlet handlar om att <strong>l\u00f6sa problem med hj\u00e4lp av matematik</strong>. Klicka p\u00e5 de orange l\u00e4nkarna f\u00f6r att utforska!</p>
+<ul>
+<li><span class="clink" data-to="ekvationer">Ekvationer</span> \u2013 hur hittar man ett ok\u00e4nt tal? T.ex. \u201dvad \u00e4r x om \\(x^2 = 9\\)?\u201d</li>
+<li><span class="clink" data-to="funktioner">Funktioner</span> \u2013 hur beskriver man samband? T.ex. \u201dhur f\u00f6r\u00e4ndras priset n\u00e4r man k\u00f6per fler?\u201d</li>
+<li><span class="clink" data-to="regression">Regression</span> \u2013 hur hittar man den b\u00e4sta kurvan som passar verklig data?</li>
+<li><span class="clink" data-to="logaritmer">Logaritmer</span> \u2013 motsatsen till exponenter \u2013 ett s\u00e4tt att \u201dta ner\u201d exponenten och l\u00f6sa ekvationer d\u00e4r det ok\u00e4nda sitter i exponenten</li>
+</ul>`,
+connections:[{to:"ekvationer",label:"att l\u00f6sa"},{to:"funktioner",label:"att beskriva"},{to:"regression",label:"att anpassa"},{to:"logaritmer",label:"verktyg f\u00f6r"}]},
+
+ekvationer:{title:"Ekvationer",cat:"ekvationer",
+body:`<p>Att l\u00f6sa ekvationer = <strong>hitta v\u00e4rdet p\u00e5 x</strong> som g\u00f6r att b\u00e5da sidor blir lika.</p>
+<p>Det finns flera typer beroende p\u00e5 <em>var x befinner sig</em> i ekvationen:</p>
+<ul><li><span class="clink" data-to="andragradsekvationer">Andragradsekvationer</span> \u2013 h\u00f6gsta potens \\(x^2\\)</li>
+<li><span class="clink" data-to="rotekvationer">Rotekvationer</span> \u2013 x under rottecken</li>
+<li><span class="clink" data-to="exponentialekvation">Exponentialekvationer</span> \u2013 x i exponenten</li>
+<li><span class="clink" data-to="potensekvation">Potensekvationer</span> \u2013 x i basen</li></ul>`,
+connections:[{to:"andragradsekvationer",label:"h\u00f6gsta potens x\u00b2"},{to:"rotekvationer",label:"x under rottecken"},{to:"exponentialekvation",label:"x i exponenten"},{to:"potensekvation",label:"x i basen"}]},
+
+andragradsekvationer:{title:"Andragradsekvationer",cat:"ekvationer",
+body:`<p>En ekvation d\u00e4r <strong>h\u00f6gsta potensen av x \u00e4r 2</strong>. Det betyder att n\u00e5gonstans i ekvationen finns ett \\(x^2\\)-term.</p>
+<div class="formula-block">
+<strong>Allm\u00e4n form:</strong> \\(ax^2 + bx + c = 0\\)<br><br>
+Vad betyder bokst\u00e4verna?<br>
+<ul><li><strong>a</strong> = talet framf\u00f6r \\(x^2\\) (kan inte vara 0, f\u00f6r d\u00e5 f\u00f6rsvinner \\(x^2\\))</li>
+<li><strong>b</strong> = talet framf\u00f6r x</li>
+<li><strong>c</strong> = talet som st\u00e5r ensamt (utan n\u00e5got x)</li></ul></div>
+<div class="example"><div class="example-label">Exempel \u2013 k\u00e4nn igen a, b och c</div>
+\\(3x^2 - 5x + 2 = 0\\)<br><br>
+<strong>a = 3</strong> (talet framf\u00f6r \\(x^2\\))<br>
+<strong>b = \u22125</strong> (talet framf\u00f6r x, kom ih\u00e5g minustecknet!)<br>
+<strong>c = 2</strong> (talet utan x)</div>
+<div class="formula-block">
+<strong>Hur l\u00f6ser man?</strong><br><br>
+<strong>1.</strong> Skriv om till <span class="clink" data-to="pqform">PQ-form</span> (dividera med a s\u00e5 att det st\u00e5r \\(1 \\cdot x^2\\))<br>
+<strong>2.</strong> Anv\u00e4nd <span class="clink" data-to="pqformeln">PQ-formeln</span> eller <span class="clink" data-to="kvadratkomplettering">kvadratkomplettering</span></div>
+<p class="note">En andragradsekvation kan ha <span class="clink" data-to="nollstallen">0, 1 eller 2 l\u00f6sningar</span>.</p>`,
+connections:[{to:"pqform",label:"skrivs om till"},{to:"kvadratkomplettering",label:"l\u00f6ses med"},{to:"pqformeln",label:"l\u00f6ses med"}]},
+
+pqform:{title:"PQ-form",cat:"ekvationer",
+body:`<p>F\u00f6r att kunna anv\u00e4nda <span class="clink" data-to="pqformeln">PQ-formeln</span> m\u00e5ste ekvationen st\u00e5 p\u00e5 en speciell form d\u00e4r det st\u00e5r <strong>exakt 1</strong> framf\u00f6r \\(x^2\\):</p>
+<div class="formula-block">$$x^2 + px + q = 0$$
+<ul><li><strong>p</strong> = talet framf\u00f6r x</li>
+<li><strong>q</strong> = talet som st\u00e5r ensamt (konstanten)</li></ul>
+<strong>Hur g\u00f6r man?</strong> Om det st\u00e5r ett annat tal framf\u00f6r \\(x^2\\) (t.ex. 2 eller 3), dividera hela ekvationen med det talet.</div>
+<div class="example"><div class="example-label">Exempel</div>
+\\(2x^2 + 6x - 8 = 0\\)<br><br>
+Det st\u00e5r <strong>2</strong> framf\u00f6r \\(x^2\\). Dividera allt med 2:<br>
+\\(\\frac{2x^2}{2} + \\frac{6x}{2} - \\frac{8}{2} = 0\\)<br><br>
+\\(x^2 + 3x - 4 = 0\\) \u2713 Nu \u00e4r det PQ-form!<br><br>
+Vi l\u00e4ser av: <strong>p = 3</strong> och <strong>q = \u22124</strong></div>
+<p>N\u00e4r du har PQ-form kan du l\u00f6sa med <span class="clink" data-to="pqformeln">PQ-formeln</span> eller <span class="clink" data-to="kvadratkomplettering">kvadratkomplettering</span>.</p>`,
+connections:[{to:"pqformeln",label:"anv\u00e4nds i"},{to:"kvadratkomplettering",label:"anv\u00e4nds i"}]},
+
+kvadratkomplettering:{title:"Kvadratkomplettering",cat:"ekvationer",
+body:`<p>En metod f\u00f6r att l\u00f6sa andragradsekvationer genom att <strong>g\u00f6ra om v\u00e4nsterledet till en perfekt kvadrat</strong>, t.ex. \\((x+3)^2\\).</p>
+<div class="example"><div class="example-label">Exempel \u2013 steg f\u00f6r steg</div>
+L\u00f6s: \\(x^2 + 6x + 5 = 0\\)<br><br>
+<strong>Steg 1: Flytta konstanten till h\u00f6ger</strong><br>
+\\(x^2 + 6x = -5\\)<br><br>
+<strong>Steg 2: Halvera talet framf\u00f6r x</strong><br>
+Talet framf\u00f6r x \u00e4r 6. Halva = 3.<br><br>
+<strong>Steg 3: Kvadrera och l\u00e4gg till b\u00e5da sidor</strong><br>
+\\(3^2 = 9\\). L\u00e4gg till 9 p\u00e5 b\u00e5da sidor:<br>
+\\(x^2 + 6x + 9 = -5 + 9\\)<br><br>
+<strong>Steg 4: V\u00e4nsterledet \u00e4r nu en perfekt kvadrat!</strong><br>
+\\((x + 3)^2 = 4\\)<br>
+<em>Varf\u00f6r? F\u00f6r att \\((x+3)(x+3) = x^2 + 6x + 9\\)</em><br><br>
+<strong>Steg 5: Dra roten ur b\u00e5da sidor</strong><br>
+\\(x + 3 = \\pm 2\\)<br><br>
+\\(x = -3 + 2 = -1\\) &nbsp;eller&nbsp; \\(x = -3 - 2 = -5\\)<br>
+<strong>Svar: x = \u22121 eller x = \u22125</strong></div>
+<p>Oftast \u00e4r <span class="clink" data-to="pqformeln">PQ-formeln</span> snabbare, men kvadratkomplettering hj\u00e4lper dig <strong>f\u00f6rst\u00e5</strong> varf\u00f6r PQ-formeln fungerar.</p>`,
+connections:[]},
+
+pqformeln:{title:"PQ-formeln",cat:"ekvationer",
+body:`<p>En formel som <strong>direkt ger l\u00f6sningarna</strong> till en ekvation p\u00e5 <span class="clink" data-to="pqform">PQ-form</span>. Ist\u00e4llet f\u00f6r att gissa eller testa \u2013 s\u00e4tt bara in p och q!</p>
+<div class="formula-block">
+<strong>Formeln:</strong>
+$$x = -\\frac{p}{2} \\pm \\sqrt{\\left(\\frac{p}{2}\\right)^2 - q}$$
+<strong>Vad \u00e4r vad?</strong><br>
+<ul><li><strong>p</strong> = talet framf\u00f6r x i ekvationen</li>
+<li><strong>q</strong> = talet som st\u00e5r ensamt</li>
+<li><strong>\\(\\pm\\)</strong> = \u201dplus eller minus\u201d \u2192 ger tv\u00e5 svar (ett med + och ett med \u2212)</li></ul>
+<strong>Krav:</strong> Ekvationen m\u00e5ste st\u00e5 p\u00e5 <span class="clink" data-to="pqform">PQ-form</span> f\u00f6rst (\\(1 \\cdot x^2\\))!</div>
+<div class="example"><div class="example-label">Exempel \u2013 steg f\u00f6r steg</div>
+L\u00f6s: \\(x^2 - 2x - 3 = 0\\)<br><br>
+<strong>Steg 1: L\u00e4s av p och q</strong><br>
+Redan PQ-form (1 framf\u00f6r \\(x^2\\)). Allts\u00e5:<br>
+<strong>p = \u22122</strong> (talet framf\u00f6r x) och <strong>q = \u22123</strong> (konstanten)<br><br>
+<strong>Steg 2: S\u00e4tt in i formeln</strong><br>
+\\(x = -\\frac{(-2)}{2} \\pm \\sqrt{\\left(\\frac{-2}{2}\\right)^2 - (-3)}\\)<br><br>
+<strong>Steg 3: F\u00f6renkla steg f\u00f6r steg</strong><br>
+\\(x = 1 \\pm \\sqrt{1 + 3}\\)<br>
+\\(x = 1 \\pm \\sqrt{4}\\)<br>
+\\(x = 1 \\pm 2\\)<br><br>
+<strong>Steg 4: R\u00e4kna ut b\u00e5da svaren</strong><br>
+\\(x = 1 + 2 = 3\\) &nbsp;eller&nbsp; \\(x = 1 - 2 = -1\\)<br>
+<strong>Svar: x = 3 eller x = \u22121</strong></div>
+<div class="formula-block">
+<strong>Hur m\u00e5nga l\u00f6sningar?</strong> Titta p\u00e5 talet under rottecknet:<br><br>
+Positivt \u2192 <strong>2 l\u00f6sningar</strong> (roten ger ett tal \u2192 plus och minus)<br>
+Noll \u2192 <strong>1 l\u00f6sning</strong> (\\(\\pm 0\\) \u2192 bara ett svar)<br>
+<span class="clink" data-to="nollstallen">Negativt</span> \u2192 <strong>inga l\u00f6sningar</strong> (kan inte dra roten ur negativt tal)</div>
+<div class="graph-widget" id="pqGraph">
+<canvas id="pqCanvas" style="width:100%;display:block"></canvas>
+</div>`,
+connections:[{to:"nollstallen",label:"hittar nollst\u00e4llen"}]},
+
+rotekvationer:{title:"Rotekvationer",cat:"ekvationer",
+body:`<p>En ekvation d\u00e4r <strong>x sitter under ett rottecken</strong>, t.ex. \\(\\sqrt{x+3} = 5\\).</p>
+<p>Problemet: vi kan inte l\u00f6sa ut x direkt n\u00e4r det \u00e4r \u201dinst\u00e4ngt\u201d under roten. L\u00f6sningen: <strong>kvadrera b\u00e5da sidor</strong> f\u00f6r att bli av med rottecknet!</p>
+<div class="formula-block">
+<strong>Metod \u2013 <span class="clink" data-to="rotmetod">rotmetoden</span>:</strong><br><br>
+<strong>1.</strong> Isolera roten (f\u00e5 den ensam p\u00e5 en sida)<br>
+<strong>2.</strong> Kvadrera b\u00e5da sidor (tar bort rottecknet)<br>
+<strong>3.</strong> L\u00f6s den nya ekvationen<br>
+<strong>4.</strong> <span class="clink" data-to="kontroll">KONTROLLERA</span> i originalekvationen!</div>
+<div class="example"><div class="example-label">Snabbexempel</div>
+\\(\\sqrt{x+3} = 5\\)<br><br>
+Kvadrera: \\(x + 3 = 25\\)<br>
+\\(x = 22\\)<br><br>
+Kontroll: \\(\\sqrt{22+3} = \\sqrt{25} = 5\\) \u2713</div>
+<p class="note">VIKTIGT: Kvadrering kan skapa <span class="clink" data-to="falskrot">falska svar</span> \u2013 l\u00f6sningar som INTE st\u00e4mmer! D\u00e4rf\u00f6r m\u00e5ste du <strong>alltid</strong> <span class="clink" data-to="kontroll">kontrollera</span> genom att s\u00e4tta in svaret i den ursprungliga ekvationen.</p>`,
+connections:[{to:"rotmetod",label:"l\u00f6ses med"},{to:"falskrot",label:"kan ge"},{to:"kontroll",label:"kr\u00e4ver alltid"}]},
+
+rotmetod:{title:"Metod f\u00f6r rotekvationer",cat:"ekvationer",
+body:`<div class="formula-block"><ol>
+<li><strong>Isolera roten</strong> (f\u00e5 den ensam p\u00e5 en sida)</li>
+<li><strong>Kvadrera b\u00e5da sidor</strong> (tar bort rottecknet)</li>
+<li><strong>L\u00f6s ekvationen</strong> som uppst\u00e5r (ofta med <span class="clink" data-to="pqformeln">pq-formeln</span>)</li>
+<li><strong><span class="clink" data-to="kontroll">KONTROLLERA</span></strong> i originalekvationen!</li></ol></div>
+<div class="example"><div class="example-label">Exempel</div>
+\\(\\sqrt{2x+1} = x - 1\\)<br>
+Kvadrera: \\(2x+1 = (x-1)^2 = x^2 - 2x + 1\\)<br>
+\\(0 = x^2 - 4x = x(x-4)\\)<br>
+\\(x = 0\\) eller \\(x = 4\\)<br><br>
+<strong>Kontroll:</strong><br>
+x=0: \\(\\sqrt{1} = 1 \\neq -1\\) \u2192 FALSK!<br>
+x=4: \\(\\sqrt{9} = 3 = 3\\) \u2192 OK!<br>
+<strong>Svar: x = 4</strong></div>`,
+connections:[{to:"kontroll",label:"sista steget"}]},
+
+falskrot:{title:"Falsk rot",cat:"ekvationer",image:"images/desmos-graph 6.png",
+body:`<p>Ett svar som <strong>INTE st\u00e4mmer</strong> n\u00e4r man stoppar in det i <span class="clink" data-to="kontroll">originalekvationen</span>.</p>
+<p><strong>Varf\u00f6r?</strong> <span class="clink" data-to="rotmetod">Kvadrering</span> d\u00f6ljer minustecken: b\u00e5de \\(3^2 = 9\\) och \\((-3)^2 = 9\\). S\u00e5 kvadrering kan \u201dskapa\u201d l\u00f6sningar som inte fanns.</p>
+<div class="example"><div class="example-label">Exempel</div>
+L\u00f6s: \\(\\sqrt{x} = x - 6\\)<br>
+Kvadrera: \\(x = x^2 - 12x + 36\\)<br>
+\\(x^2 - 13x + 36 = 0\\) \u2192 \\(x = 9\\) eller \\(x = 4\\)<br><br>
+x=9: \\(\\sqrt{9} = 3\\), \\(9-6 = 3\\) \u2192 OK!<br>
+x=4: \\(\\sqrt{4} = 2\\), \\(4-6 = -2\\) \u2192 FALSK!<br>
+<strong>Svar: Bara x = 9.</strong></div>`,
+connections:[{to:"kontroll",label:"uppt\u00e4cks med"}]},
+
+kontroll:{title:"Kontroll",cat:"ekvationer",
+body:`<p>S\u00e4tt <strong>ALLTID</strong> in svaret i den <strong>ursprungliga ekvationen</strong> (inte den kvadrerade!).</p>
+<div class="formula-block"><ol>
+<li>Ta ditt x-v\u00e4rde</li><li>Ber\u00e4kna v\u00e4nsterledet</li><li>Ber\u00e4kna h\u00f6gerledet</li><li>Lika = r\u00e4tt, Olika = falsk rot</li></ol></div>
+<div class="example"><div class="example-label">Exempel</div>
+Ekvation: \\(\\sqrt{3x+4} = x\\)<br>
+Vi fick \\(x = 4\\) och \\(x = -1\\)<br><br>
+x=4: \\(\\sqrt{16} = 4\\), h\u00f6gerled = 4 \u2192 St\u00e4mmer!<br>
+x=\u22121: \\(\\sqrt{1} = 1\\), h\u00f6gerled = \u22121 \u2192 Falsk rot!<br>
+<strong>Svar: Bara x = 4.</strong></div>
+<p class="note">Hoppa ALDRIG \u00f6ver detta!</p>
+<p>Extra viktigt vid <span class="clink" data-to="rotekvationer">rotekvationer</span> d\u00e4r <span class="clink" data-to="falskrot">falska r\u00f6tter</span> \u00e4r vanliga.</p>`,
+connections:[]},
+
+exponentialekvation:{title:"Exponentialekvation",cat:"ekvationer",
+body:`<p>En ekvation d\u00e4r <strong>x sitter i exponenten</strong> (upph\u00f6jt-platsen). Vi kan inte l\u00f6sa den med vanliga metoder \u2013 vi beh\u00f6ver <span class="clink" data-to="logaritmer">logaritmer</span>!</p>
+<div class="formula-block">
+<strong>K\u00e4nn igen typen:</strong><br><br>
+\\(5^x = 200\\) \u2190 x sitter uppe som exponent<br>
+\\(3^{2x+1} = 50\\) \u2190 ocks\u00e5 exponentialekvation<br><br>
+<strong>Problemet:</strong> Vi kan inte \u201dbryta loss\u201d x med vanlig algebra.<br>
+<strong>L\u00f6sningen:</strong> Ta \\(\\lg\\) av b\u00e5da sidor!</div>
+<div class="formula-block">
+<strong>Metod \u2013 steg f\u00f6r steg:</strong><br><br>
+<strong>1.</strong> Ta <span class="clink" data-to="logaritmer">\\(\\lg\\)</span> av b\u00e5da sidor<br>
+<strong>2.</strong> Anv\u00e4nd <span class="clink" data-to="potensregeln">potensregeln</span>: exponenten \u201dkliver ner\u201d och blir en faktor<br>
+\\(\\lg(a^x) = x \\cdot \\lg(a)\\)<br>
+<strong>3.</strong> L\u00f6s ut x (dividera)</div>
+<div class="example"><div class="example-label">Exempel \u2013 steg f\u00f6r steg</div>
+L\u00f6s: \\(5^x = 200\\)<br><br>
+<strong>Steg 1: Ta lg av b\u00e5da sidor</strong><br>
+\\(\\lg(5^x) = \\lg(200)\\)<br><br>
+<strong>Steg 2: Potensregeln \u2013 x kliver ner</strong><br>
+\\(x \\cdot \\lg(5) = \\lg(200)\\)<br><br>
+<strong>Steg 3: L\u00f6s ut x (dividera med lg(5))</strong><br>
+\\(x = \\frac{\\lg(200)}{\\lg(5)} = \\frac{2{,}301}{0{,}699} \\approx\\) <strong>3,29</strong><br><br>
+<em>Kontroll: \\(5^{3{,}29} \\approx 200\\) \u2713</em></div>`,
+connections:[{to:"logaritmer",label:"l\u00f6ses med logaritmer"},{to:"tillampningar",label:"anv\u00e4nds i"}]},
+
+potensekvation:{title:"Potensekvation",cat:"ekvationer",
+body:`<p>En ekvation d\u00e4r <strong>x sitter i basen</strong> och upph\u00f6js till ett fast tal. J\u00e4mf\u00f6r med <span class="clink" data-to="exponentialekvation">exponentialekvationer</span> d\u00e4r x sitter i exponenten.</p>
+<div class="formula-block">
+<strong>K\u00e4nn igen typen:</strong><br><br>
+\\(x^3 = 64\\) \u2190 x i basen, 3 \u00e4r fast<br>
+\\(x^5 = 200\\) \u2190 x i basen, 5 \u00e4r fast<br><br>
+<strong>Metod:</strong> Upph\u00f6j b\u00e5da sidor till \\(1/n\\) (d\u00e4r n \u00e4r exponenten).<br>
+Det \u00e4r samma sak som att dra n:te roten!<br><br>
+<span class="note">H\u00e4r anv\u00e4nder man INTE <span class="clink" data-to="logaritmer">logaritmer</span> \u2013 x sitter ju inte i exponenten!</span></div>
+<div class="example"><div class="example-label">Exempel 1 \u2013 udda exponent</div>
+L\u00f6s: \\(x^3 = 64\\)<br><br>
+Upph\u00f6j b\u00e5da sidor till \\(1/3\\):<br>
+\\(x = 64^{1/3} = \\sqrt[3]{64} =\\) <strong>4</strong><br><br>
+<em>Kontroll: \\(4^3 = 64\\) \u2713</em><br>
+Udda exponent \u2192 <strong>ett svar</strong></div>
+<div class="example"><div class="example-label">Exempel 2 \u2013 j\u00e4mn exponent (OBS!)</div>
+L\u00f6s: \\(x^2 = 25\\)<br><br>
+Dra roten ur b\u00e5da sidor:<br>
+\\(x = \\pm\\sqrt{25} = \\pm 5\\)<br><br>
+<strong>Tv\u00e5 svar: x = 5 och x = \u22125</strong><br><br>
+<em>Varf\u00f6r tv\u00e5? B\u00e5de \\(5^2 = 25\\) och \\((-5)^2 = 25\\).</em><br>
+J\u00e4mn exponent (2, 4, 6...) \u2192 <strong>gl\u00f6m inte \\(\\pm\\)!</strong></div>`,
+connections:[{to:"tillampningar",label:"anv\u00e4nds i"}]},
+
+regression:{title:"Regression",cat:"regression",
+body:`<p>Hitta den <strong>matematiska formel</strong> som b\u00e4st passar en samling m\u00e4tpunkter.</p>
+<p>Anv\u00e4nds med grafr\u00e4knare eller datorprogram.</p>
+<p>Genom <span class="clink" data-to="regressionsanalys">regressionsanalys</span> testar man olika <span class="clink" data-to="modelltyper">modelltyper</span> och utv\u00e4rderar med <span class="clink" data-to="modellval">\\(r^2\\)</span> vilken som passar b\u00e4st.</p>`,
+connections:[{to:"regressionsanalys",label:"hur man g\u00f6r"},{to:"modellval",label:"utv\u00e4rderas med"},{to:"modelltyper",label:"v\u00e4ljer bland"}]},
+
+regressionsanalys:{title:"Regressionsanalys",cat:"regression",
+body:`<p>Regressionsanalys = hitta den formel som <strong>b\u00e4st passar dina m\u00e4tpunkter</strong>. Du g\u00f6r det p\u00e5 grafr\u00e4knaren!</p>
+<div class="formula-block">
+<strong>Steg f\u00f6r steg:</strong><br><br>
+<strong>1. Samla m\u00e4tv\u00e4rden</strong><br>
+Skriv in dina (x, y)-par i en tabell p\u00e5 r\u00e4knaren.<br><br>
+<strong>2. Titta p\u00e5 formen</strong><br>
+Plotta punkterna och se hur de ligger:<br>
+\u2022 Rakt \u2192 linj\u00e4r<br>
+\u2022 Kulle eller dal \u2192 andragrad<br>
+\u2022 Snabb \u00f6kning/minskning \u2192 exponentiell<br><br>
+<strong>3. K\u00f6r regression p\u00e5 r\u00e4knaren</strong><br>
+STAT \u2192 CALC \u2192 v\u00e4lj <span class="clink" data-to="modelltyper">modelltyp</span><br>
+R\u00e4knaren ger dig en formel + ett <span class="clink" data-to="modellval">\\(r^2\\)</span>-v\u00e4rde.<br><br>
+<strong>4. J\u00e4mf\u00f6r</strong><br>
+Prova flera modelltyper. Den med <strong>h\u00f6gst \\(r^2\\)</strong> (n\u00e4rmast 1) passar b\u00e4st!</div>
+<div class="example"><div class="example-label">Exempel</div>
+Du m\u00e4ter temperaturen kl 8\u201316 och f\u00e5r dessa v\u00e4rden:<br><br>
+Kl 8: 12\u00b0 | Kl 10: 18\u00b0 | Kl 12: 22\u00b0 | Kl 14: 20\u00b0 | Kl 16: 15\u00b0<br><br>
+Punkterna bildar en <strong>kulle</strong> \u2192 testa andragradsregression.<br>
+R\u00e4knaren ger: \\(y = -0{,}8x^2 + 9{,}6x - 6{,}4\\) med \\(r^2 = 0{,}97\\)<br><br>
+<strong>\\(r^2 = 0{,}97\\) \u2248 1 \u2192 mycket bra anpassning!</strong></div>
+<div style="margin:1rem 0">
+<strong>Video \u2013 Linj\u00e4r regression p\u00e5 TI-84:</strong>
+<video controls style="width:100%;border-radius:8px;margin-top:0.5rem">
+<source src="regression-ti84.mp4" type="video/mp4">
+<track kind="subtitles" src="regression-ti84.srt" srclang="sv" label="Svenska" default>
+</video>
+</div>`,
+connections:[{to:"modellval",label:"bed\u00f6ms med"},{to:"modelltyper",label:"testa olika"}]},
+
+modellval:{title:"Modellval & r\u00b2",cat:"regression",
+body:`<p>\\(r^2\\) \u00e4r ett tal mellan 0 och 1 som visar <strong>hur bra modellen passar datan</strong>. Ju n\u00e4rmare 1, desto b\u00e4ttre tr\u00e4ff! (Det fina namnet \u00e4r <em>determinationskoefficient</em>, men du beh\u00f6ver bara komma ih\u00e5g \\(r^2\\).)</p>
+<div class="formula-block">\\(r^2 = 1{,}00\\) \u2192 Perfekt<br>\\(r^2 = 0{,}95\\) \u2192 Mycket bra<br>\\(r^2 = 0{,}80\\) \u2192 Ganska bra<br>\\(r^2 = 0{,}50\\) \u2192 D\u00e5lig</div>
+<p class="note">OBS: H\u00f6gt \\(r^2\\) betyder bara att modellen PASSAR datan. Det betyder inte att modellen \u00e4r r\u00e4tt f\u00f6r att f\u00f6ruts\u00e4ga saker utanf\u00f6r dataintervallet.</p>
+<p>J\u00e4mf\u00f6r \\(r^2\\) mellan olika <span class="clink" data-to="modelltyper">modelltyper</span> f\u00f6r att hitta b\u00e4sta anpassningen.</p>`,
+connections:[{to:"modelltyper",label:"j\u00e4mf\u00f6r modeller"}]},
+
+modelltyper:{title:"Modelltyper",cat:"regression",
+body:`<div class="formula-block">
+<strong>1. Linj\u00e4r:</strong> \\(y = kx + m\\)<br>Rak linje, j\u00e4mn \u00e4ndring. Ex: l\u00f6n +1000 kr/\u00e5r<br><br>
+<strong>2. <span class="clink" data-to="andragradsfunktioner">Andragrad</span>:</strong> \\(y = ax^2 + bx + c\\)<br>Parabel, kulle/dal. Ex: bollkastning<br><br>
+<strong>3. <span class="clink" data-to="exponentialfunktioner">Exponentiell</span>:</strong> \\(y = C \\cdot a^x\\)<br>Procentuell \u00e4ndring per steg. Ex: r\u00e4nta, befolkning<br><br>
+<strong>4. <span class="clink" data-to="potensfunktion">Potens</span>:</strong> \\(y = a \\cdot x^b\\)<br>Naturlag, fysik. Ex: bromstr\u00e4cka</div>
+<div class="graph-widget" id="modellGraph">
+<canvas id="modellCanvas" style="width:100%;display:block"></canvas>
+</div>`,
+connections:[{to:"andragradsfunktioner",label:"andragrad \u2192"},{to:"exponentialfunktioner",label:"exponentiell \u2192"},{to:"potensfunktion",label:"potens \u2192"}]},
+
+funktioner:{title:"Funktioner",cat:"funktioner",
+body:`<p>En funktion beskriver <strong>hur y beror av x</strong>. Varje x-v\u00e4rde ger exakt ett y-v\u00e4rde.</p>
+<p>Grafen visar sambandet mellan x och y.</p>
+<p>Tre viktiga typer: <span class="clink" data-to="andragradsfunktioner">andragradsfunktioner</span> (parabeler), <span class="clink" data-to="exponentialfunktioner">exponentialfunktioner</span> (procentuell tillv\u00e4xt) och <span class="clink" data-to="potensfunktion">potensfunktioner</span> (naturlagar).</p>`,
+connections:[{to:"andragradsfunktioner",label:"y = ax\u00b2+bx+c"},{to:"exponentialfunktioner",label:"y = C\u00b7a\u02e3"},{to:"potensfunktion",label:"y = a\u00b7x\u207f"}]},
+
+
+andragradsfunktioner:{title:"Andragradsfunktioner",cat:"funktioner",
+body:`<p>Funktioner d\u00e4r \\(x^2\\) \u00e4r h\u00f6gsta potens.</p>
+<div class="formula-block">$$y = ax^2 + bx + c$$
+<ul><li><strong><span class="clink" data-to="koefficienten_a">a</span></strong> = framf\u00f6r \\(x^2\\) (riktning/bredd)</li><li><strong>b</strong> = framf\u00f6r x</li><li><strong>c</strong> = konstant = y-sk\u00e4rning</li></ul></div>
+<p>Grafen kallas <strong>PARABEL</strong>.</p>
+<p>Parabeln har en <span class="clink" data-to="symmetrilinje">symmetrilinje</span> och en <span class="clink" data-to="extrempunkt">extrempunkt</span> d\u00e4r den v\u00e4nder. D\u00e4r grafen korsar x-axeln finns <span class="clink" data-to="nollstallen">nollst\u00e4llen</span>, som ger <span class="clink" data-to="faktorform">faktorform</span>. Se \u00e4ven <span class="clink" data-to="tillampningar">till\u00e4mpningar</span> p\u00e5 verkliga problem.</p>`,
+connections:[{to:"koefficienten_a",label:"styrs av"},{to:"symmetrilinje",label:"har en"},{to:"extrempunkt",label:"har en"},{to:"nollstallen",label:"kan ha 0\u20132"},{to:"faktorform",label:"kan skrivas i"},{to:"tillampningar",label:"anv\u00e4nds i"}]},
+
+koefficienten_a:{title:"Koefficienten a",subtitle:"i y = ax\u00b2 + bx + c",cat:"funktioner",
+body:`<p><strong>a</strong> = talet framf\u00f6r \\(x^2\\). Best\u00e4mmer <strong>tv\u00e5 saker</strong>:</p>
+<ol><li><strong>Riktning</strong> (<span class="clink" data-to="a_positiv">upp</span> eller <span class="clink" data-to="a_negativ">ner</span>)</li><li><strong><span class="clink" data-to="bredd">Bredd</span></strong> (smal eller bred)</li></ol>`,
+connections:[{to:"a_positiv",label:"om positivt"},{to:"a_negativ",label:"om negativt"},{to:"bredd",label:"best\u00e4mmer"}]},
+
+a_positiv:{title:"a > 0: Glad mun",cat:"funktioner",
+body:`<p>N\u00e4r <strong><span class="clink" data-to="koefficienten_a">a</span> \u00e4r positivt</strong> blir parabeln en <strong>glad mun</strong> \ud83d\ude42. Har en <strong>MINIMIPUNKT</strong>.</p>
+<p><strong>Varf\u00f6r?</strong> N\u00e4r x \u00e4r stort blir \\(a \\cdot x^2\\) stort positivt \u2192 grafen g\u00e5r upp\u00e5t.</p>
+<div class="example"><div class="example-label">Exempel \u2013 hitta minimipunkten</div>
+\\(y = 2x^2 - 4x + 1\\), d\u00e4r a = 2 > 0 \u2192 glad mun \ud83d\ude42 \u2192 <strong>minimipunkt</strong><br><br>
+<strong>Steg 1: Skriv om till <span class="clink" data-to="pqform">PQ-form</span></strong><br>
+Dividera hela ekvationen med a = 2:<br>
+\\(x^2 - 2x + 0{,}5 = 0\\)<br>
+Nu st\u00e5r det \\(1 \\cdot x^2\\). Vi l\u00e4ser av: <strong>p = \u22122</strong><br><br>
+<strong>Steg 2: Hitta x med <span class="clink" data-to="symmetrilinje">symmetrilinjen</span></strong><br>
+\\(x = -\\frac{p}{2} = -\\frac{(-2)}{2} = 1\\)<br>
+Botten ligger vid <strong>x = 1</strong><br><br>
+<strong>Steg 3: S\u00e4tt in x = 1 i ursprungliga funktionen</strong><br>
+\\(y = 2 \\cdot 1^2 - 4 \\cdot 1 + 1 = 2 - 4 + 1 = -1\\)<br><br>
+<strong>Svar: Minimipunkt = (1, \u22121), minimiv\u00e4rde = \u22121</strong></div>
+<div class="graph-widget" id="aPosGraph">
+<canvas id="aPosCanvas" style="width:100%;display:block"></canvas>
+</div>`,
+connections:[]},
+
+a_negativ:{title:"a < 0: Ledsen mun",cat:"funktioner",
+body:`<p>N\u00e4r <strong><span class="clink" data-to="koefficienten_a">a</span> \u00e4r negativt</strong> blir parabeln en <strong>ledsen mun</strong> \ud83d\ude41. Har en <strong>MAXIMIPUNKT</strong>.</p>
+<p><strong>Varf\u00f6r?</strong> N\u00e4r x \u00e4r stort blir \\(a \\cdot x^2\\) stort negativt \u2192 grafen g\u00e5r ner\u00e5t \u00e5t b\u00e5da h\u00e5ll, som en kulle.</p>
+<div class="example"><div class="example-label">Exempel \u2013 hitta maximipunkten</div>
+\\(y = -x^2 + 4x - 1\\), d\u00e4r a = \u22121 < 0 \u2192 ledsen mun \ud83d\ude41 \u2192 <strong>maximipunkt</strong><br><br>
+<strong>Steg 1: Skriv om till <span class="clink" data-to="pqform">PQ-form</span></strong><br>
+Dividera hela ekvationen med a = \u22121 (byt tecken p\u00e5 allt):<br>
+\\(x^2 - 4x + 1 = 0\\)<br>
+Nu st\u00e5r det \\(1 \\cdot x^2\\). Vi l\u00e4ser av: <strong>p = \u22124</strong><br><br>
+<strong>Steg 2: Hitta x med <span class="clink" data-to="symmetrilinje">symmetrilinjen</span></strong><br>
+\\(x = -\\frac{p}{2} = -\\frac{(-4)}{2} = 2\\)<br>
+Toppen ligger vid <strong>x = 2</strong><br><br>
+<strong>Steg 3: S\u00e4tt in x = 2 i ursprungliga funktionen</strong><br>
+\\(y = -(2)^2 + 4 \\cdot 2 - 1 = -4 + 8 - 1 = 3\\)<br><br>
+<strong>Svar: Maximipunkt = (2, 3), maximiv\u00e4rde = 3</strong></div>
+<div class="graph-widget" id="aNegGraph">
+<canvas id="aNegCanvas" style="width:100%;display:block"></canvas>
+</div>`,
+connections:[]},
+
+bredd:{title:"Bredd",cat:"funktioner",
+body:`<p>T\u00e4nk p\u00e5 <span class="clink" data-to="koefficienten_a">koefficienten a</span> som en \u201d\u00f6ppningskontroll\u201d f\u00f6r parabeln. Ju st\u00f6rre talet \u00e4r (utan att r\u00e4kna minus), desto <strong>smalare</strong> blir kurvan \u2013 som att klamma ihop den. Ju mindre talet \u00e4r, desto <strong>bredare</strong> och plattare blir den.</p>
+<div class="formula-block"><strong>Regel:</strong><br><br>
+\u2022 <strong>|a| > 1</strong> \u2192 parabeln \u00e4r <em>smalare</em> \u00e4n \\(y = x^2\\)<br>
+\u2022 <strong>|a| = 1</strong> \u2192 \u201dnormal\u201d bredd (\\(y = x^2\\))<br>
+\u2022 <strong>|a| < 1</strong> \u2192 parabeln \u00e4r <em>bredare</em> \u00e4n \\(y = x^2\\)<br><br>
+|a| betyder <em>absolutbeloppet</em> av a, allts\u00e5 talet utan minustecken.</div>
+<div class="example"><div class="example-label">Exempel \u2013 j\u00e4mf\u00f6r tre parabler</div>
+S\u00e4tt in \\(x = 1\\) i tre funktioner:<br><br>
+\u2022 \\(y = 5x^2 \\Rightarrow y = 5\\) \u2014 h\u00f6gt y-v\u00e4rde redan vid \\(x = 1\\) \u2192 <strong>smal</strong><br>
+\u2022 \\(y = x^2 \\Rightarrow y = 1\\) \u2014 normal<br>
+\u2022 \\(y = 0{,}2x^2 \\Rightarrow y = 0{,}2\\) \u2014 l\u00e5gt y-v\u00e4rde \u2192 <strong>bred och platt</strong><br><br>
+St\u00f6rre a \u201ddrar upp\u201d parabeln snabbare, d\u00e4rf\u00f6r blir den smalare.</div>
+<p>Testa sj\u00e4lv i grafen nedan:</p>
+<div class="graph-widget" id="breddGraph">
+<div class="graph-btns">
+<button class="graph-btn active" onclick="drawBredd(5,0)">y = 5x\u00b2 \u2014 smal</button>
+<button class="graph-btn" onclick="drawBredd(1,1)">y = x\u00b2 \u2014 normal</button>
+<button class="graph-btn" onclick="drawBredd(0.2,2)">y = 0,2x\u00b2 \u2014 bred</button>
+</div>
+<svg id="breddSvg" viewBox="0 0 300 220" style="width:100%;display:block"></svg>
+</div>`,
+connections:[]},
+
+symmetrilinje:{title:"Symmetrilinje",cat:"funktioner",
+body:`<p>En lodr\u00e4t linje som delar parabeln i <strong>tv\u00e5 lika halvor</strong> \u2013 som en spegel. Allt till v\u00e4nster om linjen ser likadant ut som till h\u00f6ger.</p>
+<div class="formula-block">
+<strong>Formeln:</strong>
+$$x = -\\frac{p}{2}$$
+<strong>Vad \u00e4r p?</strong> Talet framf\u00f6r x n\u00e4r ekvationen st\u00e5r p\u00e5 <span class="clink" data-to="pqform">PQ-form</span> (\\(x^2 + px + q = 0\\)).</div>
+<div class="example"><div class="example-label">Exempel \u2013 steg f\u00f6r steg</div>
+Hitta symmetrilinjen f\u00f6r \\(y = x^2 + 3x - 4\\)<br><br>
+<strong>Steg 1: L\u00e4s av p</strong><br>
+Redan PQ-form (1 framf\u00f6r \\(x^2\\)).<br>
+Talet framf\u00f6r x \u00e4r <strong>3</strong>, allts\u00e5 p = 3.<br><br>
+<strong>Steg 2: Ber\u00e4kna</strong><br>
+\\(x = -\\frac{3}{2} = -1{,}5\\)<br><br>
+<strong>Svar: Symmetrilinjen \u00e4r x = \u22121,5</strong><br>
+<em>Det betyder att parabeln \u00e4r spegelv\u00e4nd kring den lodrata linjen x = \u22121,5.</em></div>
+<div class="formula-block">
+<strong>Varf\u00f6r \u00e4r den viktig?</strong><br><br>
+\u2022 <span class="clink" data-to="extrempunkt">Extrempunkten</span> ligger <strong>alltid p\u00e5 symmetrilinjen</strong><br>
+\u2022 Om du vet ett <span class="clink" data-to="nollstallen">nollst\u00e4lle</span>, kan du hitta det andra (lika l\u00e5ngt p\u00e5 andra sidan)</div>
+<div class="graph-widget" id="symGraph">
+<canvas id="symCanvas" style="width:100%;display:block"></canvas>
+</div>`,
+connections:[{to:"extrempunkt",label:"extrempunkt ligger h\u00e4r"}]},
+
+extrempunkt:{title:"Extrempunkt & extremv\u00e4rde",cat:"funktioner",
+body:`<p>Punkten d\u00e4r parabeln <strong>v\u00e4nder</strong> \u2013 dess l\u00e4gsta eller h\u00f6gsta punkt.</p>
+<div class="formula-block">
+<strong>Extrempunkt</strong> = hela punkten, b\u00e5de x och y \u2192 skrivs (x, y)<br>
+<em>Var parabeln v\u00e4nder.</em></div>
+<div class="formula-block">
+<strong>Extremv\u00e4rde</strong> = bara y-v\u00e4rdet (hur h\u00f6gt/l\u00e5gt)<br>
+<em>Svaret p\u00e5 \u201dhur h\u00f6gt?\u201d eller \u201dhur l\u00e5gt?\u201d</em></div>
+<div class="formula-block">
+<strong>Vilken typ?</strong><br><br>
+<span class="clink" data-to="koefficienten_a">\\(a\\)</span> > 0 (glad mun \ud83d\ude42) \u2192 <span class="clink" data-to="a_positiv">minimipunkt</span> \u2013 parabeln har en botten<br>
+<span class="clink" data-to="koefficienten_a">\\(a\\)</span> < 0 (ledsen mun \ud83d\ude41) \u2192 <span class="clink" data-to="a_negativ">maximipunkt</span> \u2013 parabeln har en topp</div>
+<div class="formula-block">
+<strong>S\u00e5 h\u00e4r r\u00e4knar du:</strong><br><br>
+<strong>Steg 1:</strong> Skriv om till <span class="clink" data-to="pqform">PQ-form</span> (dividera med <span class="clink" data-to="koefficienten_a">a</span> s\u00e5 att det st\u00e5r \\(1 \\cdot x^2\\))<br>
+<strong>Steg 2:</strong> Hitta x med <span class="clink" data-to="symmetrilinje">symmetrilinjen</span>: \\(x = -\\frac{p}{2}\\)<br>
+<em>p = talet framf\u00f6r x i PQ-formen</em><br>
+<strong>Steg 3:</strong> S\u00e4tt in x i <strong>ursprungliga</strong> funktionen \u2192 f\u00e5r y</div>
+<div class="example"><div class="example-label">Exempel</div>
+\\(y = 2x^2 - 8x + 3\\)<br><br>
+<strong>Steg 1:</strong> Dividera med 2: \\(x^2 - 4x + 1{,}5 = 0\\)<br>Nu \u00e4r p = \u22124<br><br>
+<strong>Steg 2:</strong> \\(x = -\\frac{(-4)}{2} = 2\\)<br><br>
+<strong>Steg 3:</strong> \\(y = 2 \\cdot 2^2 - 8 \\cdot 2 + 3 = 8 - 16 + 3 = -5\\)<br><br>
+<strong>Extrempunkt = (2, \u22125)</strong><br>
+<strong>Extremv\u00e4rde = \u22125</strong> (minimum, eftersom a = 2 > 0)</div>
+<div class="graph-widget" id="extGraph">
+<canvas id="extCanvas" style="width:100%;display:block"></canvas>
+</div>`,
+connections:[]},
+
+nollstallen:{title:"Nollst\u00e4llen",cat:"funktioner",
+body:`<p>De x-v\u00e4rden d\u00e4r <strong>y = 0</strong>, allts\u00e5 d\u00e4r grafen <strong>korsar x-axeln</strong>.</p>
+<div class="formula-block">
+<strong>S\u00e5 h\u00e4r hittar du nollst\u00e4llen:</strong><br><br>
+<strong>1.</strong> S\u00e4tt y = 0 i funktionen<br>
+<strong>2.</strong> L\u00f6s ekvationen med <span class="clink" data-to="pqformeln">PQ-formeln</span><br><br>
+<strong>Hur m\u00e5nga nollst\u00e4llen?</strong> Titta p\u00e5 v\u00e4rdet under rottecknet i PQ-formeln:<br>
+\\(\\left(\\frac{p}{2}\\right)^2 - q\\)<br><br>
+Positivt \u2192 <strong><span class="clink" data-to="noll_tva">2 nollst\u00e4llen</span></strong> (grafen korsar x-axeln tv\u00e5 g\u00e5nger)<br>
+Noll \u2192 <strong><span class="clink" data-to="noll_ett">1 nollst\u00e4lle</span></strong> (grafen nuddar x-axeln)<br>
+Negativt \u2192 <strong><span class="clink" data-to="noll_noll">inga nollst\u00e4llen</span></strong> (grafen n\u00e5r aldrig x-axeln)</div>
+<div class="example"><div class="example-label">Exempel \u2013 steg f\u00f6r steg</div>
+Hitta nollst\u00e4llena f\u00f6r \\(y = x^2 - 5x + 6\\)<br><br>
+<strong>Steg 1: S\u00e4tt y = 0</strong><br>
+\\(x^2 - 5x + 6 = 0\\)<br>
+Redan <span class="clink" data-to="pqform">PQ-form</span>! (1 framf\u00f6r \\(x^2\\))<br>
+L\u00e4s av: p = \u22125, q = 6<br><br>
+<strong>Steg 2: S\u00e4tt in i <span class="clink" data-to="pqformeln">PQ-formeln</span></strong><br>
+\\(x = -\\frac{(-5)}{2} \\pm \\sqrt{\\left(\\frac{-5}{2}\\right)^2 - 6}\\)<br>
+\\(x = 2{,}5 \\pm \\sqrt{6{,}25 - 6}\\)<br>
+\\(x = 2{,}5 \\pm \\sqrt{0{,}25}\\)<br>
+\\(x = 2{,}5 \\pm 0{,}5\\)<br><br>
+\\(x = 2{,}5 + 0{,}5 = 3\\) &nbsp;eller&nbsp; \\(x = 2{,}5 - 0{,}5 = 2\\)<br>
+<strong>Svar: Nollst\u00e4llen vid x = 2 och x = 3</strong></div>
+<div class="graph-widget" id="nollGraph">
+<canvas id="nollCanvas" style="width:100%;display:block"></canvas>
+</div>
+<p>Nollst\u00e4llena kan anv\u00e4ndas f\u00f6r att skriva funktionen i <span class="clink" data-to="faktorform">faktorform</span>.</p>`,
+connections:[{to:"faktorform",label:"ger faktorform"},{to:"pqformeln",label:"hittas med"}]},
+
+noll_tva:{title:"2 nollst\u00e4llen",cat:"funktioner",
+body:`<p>N\u00e4r v\u00e4rdet under rottecknet i <span class="clink" data-to="pqformeln">PQ-formeln</span> \u00e4r <strong>positivt</strong> f\u00e5r vi <strong>tv\u00e5 olika nollst\u00e4llen</strong> \u2013 grafen korsar x-axeln p\u00e5 tv\u00e5 st\u00e4llen.</p>
+<div class="example"><div class="example-label">R\u00e4kneexempel</div>
+Hitta nollst\u00e4llena f\u00f6r \\(y = x^2 - 5x + 6\\)<br><br>
+<strong>1. S\u00e4tt y = 0:</strong> \\(x^2 - 5x + 6 = 0\\)<br>
+Redan <span class="clink" data-to="pqform">PQ-form</span>: p = \u22125, q = 6<br><br>
+<strong>2. <span class="clink" data-to="pqformeln">PQ-formeln</span>:</strong><br>
+\\(x = -\\frac{(-5)}{2} \\pm \\sqrt{\\left(\\frac{-5}{2}\\right)^2 - 6}\\)<br>
+\\(x = 2{,}5 \\pm \\sqrt{6{,}25 - 6}\\)<br>
+\\(x = 2{,}5 \\pm \\sqrt{0{,}25}\\)<br>
+\\(x = 2{,}5 \\pm 0{,}5\\)<br><br>
+\\(x_1 = 3\\) &nbsp;och&nbsp; \\(x_2 = 2\\)<br><br>
+<strong>Svar: Nollst\u00e4llen vid x = 2 och x = 3</strong></div>
+<div class="graph-widget" id="nollTvaGraph">
+<canvas id="nollTvaCanvas" style="width:100%;display:block"></canvas>
+</div>`,
+connections:[{to:"nollstallen",label:"tillbaka"},{to:"pqformeln",label:"l\u00f6ses med"}]},
+
+noll_ett:{title:"1 nollst\u00e4lle",cat:"funktioner",
+body:`<p>N\u00e4r v\u00e4rdet under rottecknet i <span class="clink" data-to="pqformeln">PQ-formeln</span> \u00e4r <strong>noll</strong> f\u00e5r vi <strong>exakt ett nollst\u00e4lle</strong> \u2013 grafen <em>nuddar</em> x-axeln utan att korsa den.</p>
+<div class="example"><div class="example-label">R\u00e4kneexempel</div>
+Hitta nollst\u00e4llena f\u00f6r \\(y = x^2 - 6x + 9\\)<br><br>
+<strong>1. S\u00e4tt y = 0:</strong> \\(x^2 - 6x + 9 = 0\\)<br>
+Redan <span class="clink" data-to="pqform">PQ-form</span>: p = \u22126, q = 9<br><br>
+<strong>2. <span class="clink" data-to="pqformeln">PQ-formeln</span>:</strong><br>
+\\(x = -\\frac{(-6)}{2} \\pm \\sqrt{\\left(\\frac{-6}{2}\\right)^2 - 9}\\)<br>
+\\(x = 3 \\pm \\sqrt{9 - 9}\\)<br>
+\\(x = 3 \\pm \\sqrt{0}\\)<br>
+\\(x = 3 \\pm 0\\)<br><br>
+<strong>Svar: Ett nollst\u00e4lle vid x = 3</strong><br><br>
+<em>Funktionen kan skrivas \\(y = (x-3)^2\\) \u2013 en perfekt kvadrat!</em></div>
+<div class="graph-widget" id="nollEttGraph">
+<canvas id="nollEttCanvas" style="width:100%;display:block"></canvas>
+</div>`,
+connections:[{to:"nollstallen",label:"tillbaka"},{to:"pqformeln",label:"l\u00f6ses med"}]},
+
+noll_noll:{title:"Inga nollst\u00e4llen",cat:"funktioner",
+body:`<p>N\u00e4r v\u00e4rdet under rottecknet i <span class="clink" data-to="pqformeln">PQ-formeln</span> \u00e4r <strong>negativt</strong> f\u00e5r vi <strong>inga nollst\u00e4llen</strong> \u2013 grafen n\u00e5r aldrig x-axeln.</p>
+<div class="example"><div class="example-label">R\u00e4kneexempel</div>
+Hitta nollst\u00e4llena f\u00f6r \\(y = x^2 - 4x + 5\\)<br><br>
+<strong>1. S\u00e4tt y = 0:</strong> \\(x^2 - 4x + 5 = 0\\)<br>
+Redan <span class="clink" data-to="pqform">PQ-form</span>: p = \u22124, q = 5<br><br>
+<strong>2. <span class="clink" data-to="pqformeln">PQ-formeln</span>:</strong><br>
+\\(x = -\\frac{(-4)}{2} \\pm \\sqrt{\\left(\\frac{-4}{2}\\right)^2 - 5}\\)<br>
+\\(x = 2 \\pm \\sqrt{4 - 5}\\)<br>
+\\(x = 2 \\pm \\sqrt{-1}\\)<br><br>
+<strong>STOPP!</strong> Negativt tal under rottecknet \u2192 ingen l\u00f6sning!<br><br>
+<strong>Svar: Inga nollst\u00e4llen</strong><br><br>
+<em>Grafen ligger helt ovanf\u00f6r x-axeln (eftersom a = 1 > 0).</em></div>
+<div class="graph-widget" id="nollNollGraph">
+<canvas id="nollNollCanvas" style="width:100%;display:block"></canvas>
+</div>`,
+connections:[{to:"nollstallen",label:"tillbaka"},{to:"pqformeln",label:"l\u00f6ses med"}]},
+
+faktorform:{title:"Faktorform",cat:"funktioner",
+body:`<p>Annat s\u00e4tt att skriva funktionen d\u00e4r <strong><span class="clink" data-to="nollstallen">nollst\u00e4llena</span> syns direkt</strong>.</p>
+<div class="formula-block">$$y = a(x - x_1)(x - x_2)$$
+<ul><li>\\(x_1\\) och \\(x_2\\) = nollst\u00e4llena (d\u00e4r y = 0)</li>
+<li>\\((x - x_1)\\) = en parentes som blir 0 n\u00e4r \\(x = x_1\\)</li>
+<li><strong>a</strong> = samma a som i \\(ax^2 + bx + c\\)</li></ul></div>
+<div class="example"><div class="example-label">Exempel</div>
+\\(y = x^2 - 5x + 6\\) har nollst\u00e4llen 2 och 3.<br>
+Faktorform: \\(y = (x-2)(x-3)\\)<br><br>
+<strong>Varf\u00f6r fungerar det?</strong><br>
+S\u00e4tt in x = 2: \\(y = (2-2)(2-3) = 0 \\cdot (-1) = 0\\) \u2713<br>
+S\u00e4tt in x = 3: \\(y = (3-2)(3-3) = 1 \\cdot 0 = 0\\) \u2713<br><br>
+<em>N\u00e4r x \u00e4r lika med ett nollst\u00e4lle blir en parentes noll \u2192 hela produkten blir noll \u2192 y = 0!</em></div>
+<div class="graph-widget" id="faktorGraph">
+<canvas id="faktorCanvas" style="width:100%;display:block"></canvas>
+</div>`,
+connections:[]},
+
+tillampningar:{title:"Till\u00e4mpningar",cat:"funktioner",
+body:`<p>Matematik fr\u00e5n Ma2c kan anv\u00e4ndas f\u00f6r att beskriva <strong>verkliga situationer</strong>. H\u00e4r visas till\u00e4mpningar f\u00f6r <span class="clink" data-to="andragradsfunktioner">andragradsfunktioner</span>, <span class="clink" data-to="exponentialfunktioner">exponentialfunktioner</span> och <span class="clink" data-to="potensfunktion">potensfunktioner</span>.</p>
+
+<h3 style="color:#bf6e4a;margin:18px 0 8px">1. Andragradsfunktion \u2013 bollkast</h3>
+<div class="formula-block">
+<strong>Tre vanliga fr\u00e5gor:</strong><br><br>
+\u201dHur h\u00f6gt n\u00e5r bollen?\u201d \u2192 Hitta <span class="clink" data-to="extrempunkt">extremv\u00e4rdet</span> (y-v\u00e4rdet i toppen)<br><br>
+\u201dN\u00e4r landar bollen?\u201d \u2192 Hitta <span class="clink" data-to="nollstallen">nollst\u00e4llet</span> (d\u00e4r y = 0)<br><br>
+\u201dHur h\u00f6gt \u00e4r bollen efter 2 sekunder?\u201d \u2192 S\u00e4tt in t = 2 i funktionen</div>
+<div class="example"><div class="example-label">Exempel \u2013 bollkast</div>
+En boll kastas upp\u00e5t. H\u00f6jden (i meter) efter t sekunder \u00e4r:<br>
+\\(h(t) = -5t^2 + 20t + 1{,}5\\)<br><br>
+<strong>Fr\u00e5ga 1: Hur h\u00f6gt n\u00e5r bollen?</strong><br>
+a = \u22125 < 0 \u2192 ledsen mun \ud83d\ude41 \u2192 maximipunkt<br>
+Skriv om till PQ-form: dividera med \u22125<br>
+\\(t^2 - 4t - 0{,}3 = 0\\) \u2192 p = \u22124<br>
+\\(t = -\\frac{(-4)}{2} = 2\\) sekunder<br>
+\\(h(2) = -5 \\cdot 4 + 20 \\cdot 2 + 1{,}5 = -20 + 40 + 1{,}5 =\\) <strong>21,5 m</strong><br><br>
+<strong>Fr\u00e5ga 2: N\u00e4r landar bollen?</strong><br>
+S\u00e4tt h = 0 och l\u00f6s med <span class="clink" data-to="pqformeln">PQ-formeln</span>:<br>
+\\(t^2 - 4t - 0{,}3 = 0\\)<br>
+\\(t = 2 \\pm \\sqrt{4 + 0{,}3} = 2 \\pm 2{,}07\\)<br>
+\\(t \\approx 4{,}07\\) s (den positiva l\u00f6sningen)<br><br>
+<strong>Fr\u00e5ga 3: Hur h\u00f6gt efter 1 sekund?</strong><br>
+\\(h(1) = -5 + 20 + 1{,}5 =\\) <strong>16,5 m</strong></div>
+<div class="graph-widget" id="tillGraph">
+<canvas id="tillCanvas" style="width:100%;display:block"></canvas>
+</div>
+
+<h3 style="color:#bf6e4a;margin:24px 0 8px">2. Exponentialfunktion \u2013 bakterietillv\u00e4xt</h3>
+<div class="formula-block">
+<strong>Vanliga fr\u00e5gor:</strong><br><br>
+\u201dHur m\u00e5nga bakterier finns efter 8 timmar?\u201d \u2192 S\u00e4tt in t i funktionen<br><br>
+\u201dN\u00e4r \u00e4r det 10 000 bakterier?\u201d \u2192 L\u00f6s <span class="clink" data-to="exponentialekvation">exponentialekvation</span> med <span class="clink" data-to="logaritmer">logaritmer</span><br><br>
+\u201dHur snabbt \u00f6kar det?\u201d \u2192 Best\u00e4m <span class="clink" data-to="forandringsfaktor">f\u00f6r\u00e4ndringsfaktorn</span> a</div>
+<div class="example"><div class="example-label">Exempel \u2013 bakterier</div>
+En bakteriekoloni startar med 500 bakterier och f\u00f6rdubblas var 3:e timme.<br><br>
+<strong><span class="clink" data-to="startvarde">C</span> = 500</strong> (startantal)<br>
+F\u00f6rdubbling var 3:e timme \u2192 <strong>a = 2</strong> per 3-timmarsperiod<br>
+\\(y = 500 \\cdot 2^{t/3}\\) d\u00e4r t = antal timmar<br><br>
+<strong>Fr\u00e5ga 1: Hur m\u00e5nga efter 9 timmar?</strong><br>
+\\(y = 500 \\cdot 2^{9/3} = 500 \\cdot 2^3 = 500 \\cdot 8 =\\) <strong>4 000</strong><br><br>
+<strong>Fr\u00e5ga 2: N\u00e4r n\u00e5r kolonin 10 000?</strong><br>
+\\(500 \\cdot 2^{t/3} = 10000\\)<br>
+\\(2^{t/3} = 20\\)<br>
+Ta <span class="clink" data-to="logaritmer">lg</span> av b\u00e5da sidor:<br>
+\\(\\frac{t}{3} \\cdot \\lg(2) = \\lg(20)\\)<br>
+\\(t = \\frac{3 \\cdot \\lg(20)}{\\lg(2)} = \\frac{3 \\cdot 1{,}301}{0{,}301} \\approx\\) <strong>12,97 timmar</strong></div>
+<div class="graph-widget" id="tillExpGraph">
+<canvas id="tillExpCanvas" style="width:100%;display:block"></canvas>
+</div>
+
+<h3 style="color:#bf6e4a;margin:24px 0 8px">3. Potensfunktion \u2013 bromstr\u00e4cka</h3>
+<div class="formula-block">
+<strong>Vanliga fr\u00e5gor:</strong><br><br>
+\u201dHur l\u00e5ng \u00e4r bromstr\u00e4ckan vid 90 km/h?\u201d \u2192 S\u00e4tt in v i funktionen<br><br>
+\u201dVid vilken hastighet \u00e4r bromstr\u00e4ckan 50 m?\u201d \u2192 L\u00f6s <span class="clink" data-to="potensekvation">potensekvation</span><br><br>
+\u201dHur p\u00e5verkar dubbel hastighet bromstr\u00e4ckan?\u201d \u2192 Analysera exponentens roll</div>
+<div class="example"><div class="example-label">Exempel \u2013 bromstr\u00e4cka</div>
+Bromstr\u00e4ckan (i meter) beror p\u00e5 hastigheten (i km/h) enligt:<br>
+\\(s = 0{,}006 \\cdot v^2\\)<br><br>
+Detta \u00e4r en <span class="clink" data-to="potensfunktion">potensfunktion</span> med a = 0,006 och n = 2.<br><br>
+<strong>Fr\u00e5ga 1: Bromstr\u00e4cka vid 90 km/h?</strong><br>
+\\(s = 0{,}006 \\cdot 90^2 = 0{,}006 \\cdot 8100 =\\) <strong>48,6 m</strong><br><br>
+<strong>Fr\u00e5ga 2: Vid vilken hastighet \u00e4r bromstr\u00e4ckan 50 m?</strong><br>
+\\(0{,}006 \\cdot v^2 = 50\\)<br>
+\\(v^2 = \\frac{50}{0{,}006} = 8333\\)<br>
+\\(v = \\sqrt{8333} \\approx\\) <strong>91,3 km/h</strong><br><br>
+<strong>Fr\u00e5ga 3: Vad h\u00e4nder vid dubbel hastighet?</strong><br>
+Om v f\u00f6rdubblas: \\(s = 0{,}006 \\cdot (2v)^2 = 0{,}006 \\cdot 4v^2 = 4s\\)<br>
+<strong>Dubbel hastighet \u2192 fyrdubbel bromstr\u00e4cka!</strong></div>
+<div class="graph-widget" id="tillPotGraph">
+<canvas id="tillPotCanvas" style="width:100%;display:block"></canvas>
+</div>`,
+connections:[{to:"extrempunkt",label:"anv\u00e4nder extremv\u00e4rde"},{to:"nollstallen",label:"anv\u00e4nder nollst\u00e4llen"},{to:"exponentialekvation",label:"l\u00f6ser med lg"},{to:"potensekvation",label:"l\u00f6ser med rot"},{to:"logaritmer",label:"anv\u00e4nder logaritmer"}]},
+
+exponentialfunktioner:{title:"Exponentialfunktioner",subtitle:"y = C \u00b7 a\u02e3",cat:"funktioner",
+body:`<p>Anv\u00e4nds n\u00e4r n\u00e5got \u00f6kar eller minskar med <strong>samma procentandel</strong> i varje steg. T.ex. r\u00e4nta, befolkningstillv\u00e4xt eller v\u00e4rdeminskning. Se <span class="clink" data-to="tillampningar">till\u00e4mpningar</span> p\u00e5 verkliga problem.</p>
+<div class="formula-block">
+<strong>Formeln:</strong>
+$$y = C \\cdot a^x$$
+<strong>Vad \u00e4r vad?</strong>
+<ul><li><strong><span class="clink" data-to="startvarde">C</span></strong> = <strong>startv\u00e4rdet</strong> \u2013 det y \u00e4r n\u00e4r x = 0 (t.ex. priset n\u00e4r du k\u00f6per bilen)</li>
+<li><strong><span class="clink" data-to="forandringsfaktor">a</span></strong> = <strong>f\u00f6r\u00e4ndringsfaktorn</strong> \u2013 det tal y multipliceras med f\u00f6r varje steg</li>
+<li><strong>x</strong> = <strong>antal steg</strong> (t.ex. antal \u00e5r)</li></ul></div>
+<div class="formula-block">
+<strong>Vad blir a?</strong><br><br>
+\u00d6kar med p%: \\(a = 1 + \\frac{p}{100}\\) &nbsp; (t.ex. +5% \u2192 a = 1,05)<br>
+Minskar med p%: \\(a = 1 - \\frac{p}{100}\\) &nbsp; (t.ex. \u221215% \u2192 a = 0,85)<br><br>
+\\(a > 1\\) \u2192 tillv\u00e4xt (kurvan g\u00e5r upp\u00e5t)<br>
+\\(a = 1\\) \u2192 of\u00f6r\u00e4ndrat (rak linje)<br>
+\\(0 < a < 1\\) \u2192 avtagande (kurvan g\u00e5r ner\u00e5t)</div>
+<div class="example"><div class="example-label">Exempel \u2013 bilens v\u00e4rde</div>
+En bil kostar 200 000 kr och tappar 15% av sitt v\u00e4rde varje \u00e5r.<br><br>
+<strong>C = 200 000</strong> (startv\u00e4rde)<br>
+<strong>a = 1 \u2212 0,15 = 0,85</strong> (minskning 15%)<br>
+<strong>x</strong> = antal \u00e5r<br><br>
+\\(y = 200000 \\cdot 0{,}85^x\\)<br><br>
+Efter 3 \u00e5r: \\(y = 200000 \\cdot 0{,}85^3 = 200000 \\cdot 0{,}614 \\approx\\) <strong>122 800 kr</strong></div>
+<div class="graph-widget" id="expGraph">
+<canvas id="expCanvas" style="width:100%;display:block"></canvas>
+</div>`,
+connections:[{to:"forandringsfaktor",label:"a anger"},{to:"startvarde",label:"C anger"},{to:"tillampningar",label:"anv\u00e4nds i"}]},
+
+forandringsfaktor:{title:"F\u00f6r\u00e4ndringsfaktor (a)",cat:"funktioner",
+body:`<p>I \\(y = C \\cdot a^x\\) \u00e4r <strong>a</strong> det tal y multipliceras med f\u00f6r varje steg.</p>
+<div class="formula-block">\u00d6kning p%: \\(a = 1 + p/100\\)<br>Minskning p%: \\(a = 1 - p/100\\)<br><br>
+\\(a > 1\\) = tillv\u00e4xt | \\(a = 1\\) = of\u00f6r\u00e4ndrat | \\(0 < a < 1\\) = avtagande</div>
+<div class="example"><div class="example-label">Exempel</div>
++8%/\u00e5r: a = 1,08 | \u221215%/\u00e5r: a = 0,85<br>
+Bil \u221215%/\u00e5r, 200 000 kr: \\(y = 200000 \\cdot 0{,}85^x\\)</div>`,
+connections:[]},
+
+startvarde:{title:"Startv\u00e4rde (C)",cat:"funktioner",
+body:`<p><strong>C</strong> i formeln \\(y = C \\cdot a^x\\) \u00e4r v\u00e4rdet <strong>innan n\u00e5got har h\u00e4nt</strong> \u2013 allts\u00e5 vid start (x = 0).</p>
+<div class="formula-block">
+<strong>Varf\u00f6r?</strong> Alla tal upph\u00f6jt till 0 \u00e4r 1. S\u00e5 n\u00e4r x = 0:<br><br>
+\\(y = C \\cdot a^0 = C \\cdot 1 = C\\)<br><br>
+<em>\\(a^0\\) f\u00f6rsvinner, och kvar blir bara C!</em></div>
+<div class="example"><div class="example-label">Exempel</div>
+En bil kostar <strong>200 000 kr</strong> och tappar 15% per \u00e5r:<br>
+\\(y = 200000 \\cdot 0{,}85^x\\)<br><br>
+H\u00e4r \u00e4r C = 200 000. Det \u00e4r bilens v\u00e4rde vid \u00e5r 0 (n\u00e4r du k\u00f6per den).<br><br>
+<strong>Grafiskt:</strong> C \u00e4r den punkt d\u00e4r kurvan <strong>korsar y-axeln</strong> (vid x = 0).</div>
+<div class="graph-widget" id="startGraph">
+<canvas id="startCanvas" style="width:100%;display:block"></canvas>
+</div>`,
+connections:[]},
+
+potensfunktion:{title:"Potensfunktion",subtitle:"y = a \u00b7 x\u207f",cat:"funktioner",
+body:`<p>I en potensfunktion sitter x i <strong>basen</strong> och upph\u00f6js till ett <strong>fast tal n</strong>. J\u00e4mf\u00f6r med <span class="clink" data-to="exponentialfunktioner">exponentialfunktioner</span> d\u00e4r x sitter i exponenten. Se <span class="clink" data-to="tillampningar">till\u00e4mpningar</span> p\u00e5 verkliga problem.</p>
+<div class="formula-block">
+<strong>Formeln:</strong> \\(y = a \\cdot x^n\\)<br><br>
+<ul><li><strong>a</strong> = en konstant</li>
+<li><strong>x</strong> = variabeln (i basen!)</li>
+<li><strong>n</strong> = exponenten (ett fast tal, t.ex. 2 eller 3)</li></ul>
+<strong>F\u00f6rv\u00e4xla inte!</strong><br>
+Potens: \\(y = 3 \\cdot x^2\\) \u2192 x i basen, 2 \u00e4r fast<br>
+Exponential: \\(y = 3 \\cdot 2^x\\) \u2192 x i exponenten, 2 \u00e4r fast</div>
+<div class="formula-block">
+<strong>Potens vs exponential \u2013 vem v\u00e4xer snabbast?</strong><br><br>
+Vid x = 10:<br>
+Potens: \\(3 \\cdot 10^2 = 300\\)<br>
+Exponential: \\(3 \\cdot 2^{10} = 3072\\)<br><br>
+<em><span class="clink" data-to="exponentialfunktioner">Exponentiella funktioner</span> v\u00e4xer ALLTID snabbare i l\u00e4ngden!</em></div>
+<div class="example"><div class="example-label">Exempel \u2013 bromstr\u00e4cka</div>
+Bromstr\u00e4ckan (i meter) beror p\u00e5 hastigheten (km/h):<br>
+\\(s = 0{,}006 \\cdot v^2\\)<br><br>
+<strong>v = 80 km/h:</strong> \\(s = 0{,}006 \\cdot 80^2 = 0{,}006 \\cdot 6400 =\\) <strong>38,4 m</strong><br>
+<strong>v = 120 km/h:</strong> \\(s = 0{,}006 \\cdot 120^2 = 0{,}006 \\cdot 14400 =\\) <strong>86,4 m</strong><br><br>
+<em>Dubbla hastigheten \u2192 fyra g\u00e5nger l\u00e4ngre bromstr\u00e4cka! (eftersom \\(v^2\\))</em></div>
+<div class="graph-widget" id="potGraph">
+<canvas id="potCanvas" style="width:100%;display:block"></canvas>
+</div>`,
+connections:[{to:"tillampningar",label:"anv\u00e4nds i"}]},
+
+logaritmer:{title:"Logaritmer",cat:"logaritmer",
+body:`<p>Logaritmer \u00e4r <strong>motsatsen till upph\u00f6jning</strong>. Precis som subtraktion \u00e4r motsatsen till addition.</p>
+<div class="formula-block">
+<strong>Grundfr\u00e5gan:</strong><br><br>
+\\(\\lg\\) svarar p\u00e5: <strong>\u201d10 upph\u00f6jt till VAD ger detta tal?\u201d</strong><br><br>
+T.ex: \\(10^{?} = 1000\\) \u2192 svaret \u00e4r 3, allts\u00e5 \\(\\lg(1000) = 3\\)</div>
+<div class="formula-block">
+<strong>Fler exempel \u2013 k\u00e4nn igen m\u00f6nstret:</strong><br><br>
+\\(\\lg(1000) = 3\\) &nbsp; eftersom \\(10^3 = 1000\\)<br>
+\\(\\lg(100) = 2\\) &nbsp; eftersom \\(10^2 = 100\\)<br>
+\\(\\lg(10) = 1\\) &nbsp; eftersom \\(10^1 = 10\\)<br>
+\\(\\lg(1) = 0\\) &nbsp; eftersom \\(10^0 = 1\\)<br><br>
+<em>M\u00f6nster: \\(\\lg\\) r\u00e4knar \u201dhur m\u00e5nga nollor?\u201d (f\u00f6r j\u00e4mna tiopotenser)</em></div>
+<div class="formula-block">
+<strong>Varf\u00f6r beh\u00f6ver vi logaritmer?</strong><br><br>
+N\u00e4r x sitter i <strong>exponenten</strong> (t.ex. \\(5^x = 200\\)) kan vi inte l\u00f6sa med vanliga metoder. D\u00e5 anv\u00e4nder vi \\(\\lg\\) f\u00f6r att \u201dplocka ner\u201d x. Se <span class="clink" data-to="exponentialekvation">exponentialekvationer</span>.</div>
+<p>Utforska <span class="clink" data-to="definition_lg">definitionen</span> av lg, l\u00e4r dig vad en <span class="clink" data-to="tiologaritm">tiologaritm</span> \u00e4r, och beh\u00e4rska de tre <span class="clink" data-to="logaritmlagar">logaritmlagarna</span>.</p>`,
+connections:[{to:"definition_lg",label:"vad \u00e4r lg?"},{to:"tiologaritm",label:"kallas"},{to:"logaritmlagar",label:"har tre"}]},
+
+definition_lg:{title:"Definition av lg",cat:"logaritmer",
+body:`<p>\\(\\lg\\) \u00e4r en f\u00f6rkortning f\u00f6r <strong>logaritm med bas 10</strong>. Den fr\u00e5gar: \u201d10 upph\u00f6jt till vad ger detta tal?\u201d</p>
+<div class="formula-block">
+<strong>Definitionen i ord:</strong><br><br>
+\\(\\lg(x) = y\\) betyder samma sak som \\(10^y = x\\)<br><br>
+<strong>L\u00e4s s\u00e5 h\u00e4r:</strong> \u201dLogaritmen av x \u00e4r y\u201d = \u201d10 upph\u00f6jt till y ger x\u201d</div>
+<div class="example"><div class="example-label">Exempel \u2013 \u00f6versatt till vanligt spr\u00e5k</div>
+\\(\\lg(1000) = 3\\) \u2192 \u201d10 upph\u00f6jt till <strong>3</strong> ger 1000\u201d<br>
+\\(\\lg(100) = 2\\) \u2192 \u201d10 upph\u00f6jt till <strong>2</strong> ger 100\u201d<br>
+\\(\\lg(10) = 1\\) \u2192 \u201d10 upph\u00f6jt till <strong>1</strong> ger 10\u201d<br>
+\\(\\lg(1) = 0\\) \u2192 \u201d10 upph\u00f6jt till <strong>0</strong> ger 1\u201d<br><br>
+Och tal mellan tiopotenser:<br>
+\\(\\lg(7) \\approx 0{,}845\\) \u2192 \u201d10 upph\u00f6jt till 0,845 ger ungef\u00e4r 7\u201d</div>
+<div class="formula-block">
+<strong>Viktigt att komma ih\u00e5g:</strong><br><br>
+\u2022 \\(\\lg\\) finns bara f\u00f6r <strong>positiva tal</strong> (\\(x > 0\\))<br>
+\u2022 P\u00e5 kalkylatorn: knappen <strong>LOG</strong><br>
+\u2022 Man kan inte ta \\(\\lg\\) av 0 eller negativa tal</div>
+<div class="graph-widget" id="lgDefGraph">
+<canvas id="lgDefCanvas" style="width:100%;display:block"></canvas>
+</div>`,
+connections:[]},
+
+tiologaritm:{title:"Tiologaritm (lg)",cat:"logaritmer",
+body:`<p><strong>lg</strong> st\u00e5r f\u00f6r \u201dlogaritm med bas 10\u201d. Det \u00e4r den logaritm vi anv\u00e4nder i kursen. P\u00e5 kalkylatorn: knappen <strong>LOG</strong>.</p>
+<div class="formula-block">
+<strong>Det viktigaste sambandet:</strong><br><br>
+\\(\\lg\\) och \\(10^x\\) \u00e4r <strong>motsatser</strong> \u2013 de tar ut varandra!<br><br>
+Precis som:<br>
+\u2022 \\(+\\) och \\(-\\) tar ut varandra: \\(5 + 3 - 3 = 5\\)<br>
+\u2022 \\(\\cdot\\) och \\(/\\) tar ut varandra: \\(5 \\cdot 3 / 3 = 5\\)<br><br>
+S\u00e5 g\u00f6r \\(\\lg\\) och \\(10^x\\):<br>
+\u2022 \\(\\lg(10^x) = x\\) \u2014 lg \u201d\u00e5ngrar\u201d upph\u00f6jningen<br>
+\u2022 \\(10^{\\lg x} = x\\) \u2014 upph\u00f6jning \u201d\u00e5ngrar\u201d lg</div>
+<div class="example"><div class="example-label">Exempel \u2013 se hur de tar ut varandra</div>
+\\(\\lg(10^5) = 5\\) \u2713 (lg tar bort 10-upph\u00f6jningen, kvar: 5)<br>
+\\(10^{\\lg 100} = 100\\) \u2713 (upph\u00f6jning tar bort lg, kvar: 100)<br><br>
+\\(\\lg(10^{2{,}7}) = 2{,}7\\) \u2713 (fungerar \u00e4ven med decimaler!)</div>
+<div class="formula-block">
+<strong>Varf\u00f6r \u00e4r detta viktigt?</strong><br><br>
+N\u00e4r x sitter i exponenten (t.ex. \\(5^x = 200\\)) kan vi ta \\(\\lg\\) av b\u00e5da sidor f\u00f6r att \u201dplocka ner\u201d x. Det \u00e4r s\u00e5 vi l\u00f6ser <span class="clink" data-to="exponentialekvation">exponentialekvationer</span>!</div>`,
+connections:[{to:"exponentialekvation",label:"l\u00f6ser"}]},
+
+logaritmlagar:{title:"Logaritmlagar",cat:"logaritmer",
+body:`<p>Tre r\u00e4kneregler som g\u00f6r det m\u00f6jligt att <strong>f\u00f6renkla och l\u00f6sa</strong> uttryck med \\(\\lg\\).</p>
+<div class="formula-block">
+<strong>Lag 1 \u2013 Produktregeln</strong><br><br>
+$$\\lg(A \\cdot B) = \\lg A + \\lg B$$
+<em>G\u00e5nger inuti lg blir plus utanf\u00f6r.</em><br><br>
+Exempel: \\(\\lg(20 \\cdot 50) = \\lg(20) + \\lg(50) = 1{,}301 + 1{,}699 = 3\\)</div>
+<div class="formula-block">
+<strong>Lag 2 \u2013 Kvotregeln</strong><br><br>
+$$\\lg\\left(\\frac{A}{B}\\right) = \\lg A - \\lg B$$
+<em>Delat inuti lg blir minus utanf\u00f6r.</em><br><br>
+Exempel: \\(\\lg\\left(\\frac{1000}{10}\\right) = \\lg(1000) - \\lg(10) = 3 - 1 = 2\\)</div>
+<div class="formula-block">
+<strong>Lag 3 \u2013 Potensregeln (viktigast!)</strong><br><br>
+$$\\lg(A^n) = n \\cdot \\lg A$$
+<em>Exponenten plockas ner och blir en faktor framf\u00f6r.</em><br><br>
+Exempel: \\(\\lg(5^3) = 3 \\cdot \\lg(5) = 3 \\cdot 0{,}699 = 2{,}097\\)<br><br>
+<strong>Detta \u00e4r den viktigaste lagen!</strong> Den anv\u00e4nds f\u00f6r att l\u00f6sa <span class="clink" data-to="exponentialekvation">exponentialekvationer</span> \u2013 exponenten \u201dkliver ner\u201d s\u00e5 att x hamnar p\u00e5 en vanlig plats.</div>
+<div class="formula-block">
+<strong>Minnestips:</strong><br><br>
+\u2022 G\u00e5nger inuti \u2192 plus utanf\u00f6r<br>
+\u2022 Delat inuti \u2192 minus utanf\u00f6r<br>
+\u2022 Exponent inuti \u2192 faktor framf\u00f6r</div>`,
+connections:[{to:"produktregeln",label:"lag 1"},{to:"kvotregeln",label:"lag 2"},{to:"potensregeln",label:"lag 3 (viktigast!)"}]},
+
+produktregeln:{title:"Lag 1: Produktregeln",cat:"logaritmer",
+body:`<p>Om du har <strong>tv\u00e5 tal som multipliceras inuti en logaritm</strong>, kan du dela upp dem i tv\u00e5 separata logaritmer med <strong>plus</strong> emellan.</p>
+<div class="formula-block">$$\\lg(A \\cdot B) = \\lg A + \\lg B$$
+<strong>Minnestips:</strong> G\u00e5nger inuti \\(\\lg\\) \u2192 plus utanf\u00f6r</div>
+<p>Varf\u00f6r fungerar det? Logaritmer \u00e4r t\u00e4tt kopplade till <span class="clink" data-to="definition_lg">potenser</span>. N\u00e4r man multiplicerar potenser med samma bas <em>adderar</em> man exponenterna \u2013 och lg \u00e4r just exponenten!</p>
+<div class="example"><div class="example-label">Exempel 1 \u2013 dela upp</div>
+\\(\\lg(20 \\cdot 50) = \\lg(20) + \\lg(50) = 1{,}301 + 1{,}699 = 3\\)<br><br>
+Kontroll: \\(20 \\cdot 50 = 1000\\) och \\(\\lg(1000) = 3\\) \u2713</div>
+<div class="example"><div class="example-label">Exempel 2 \u2013 sl\u00e5 ihop</div>
+\\(\\lg(4) + \\lg(25) = \\lg(4 \\cdot 25) = \\lg(100) = 2\\)<br><br>
+Regeln fungerar \u00e5t b\u00e5da h\u00e5llen \u2013 man kan b\u00e5de dela upp och sl\u00e5 ihop.</div>`,
+connections:[{to:"kvotregeln",label:"n\u00e4sta lag"},{to:"logaritmlagar",label:"\u00f6versikt"}]},
+
+kvotregeln:{title:"Lag 2: Kvotregeln",cat:"logaritmer",
+body:`<p>Om du har <strong>en division inuti en logaritm</strong>, kan du dela upp den i tv\u00e5 separata logaritmer med <strong>minus</strong> emellan. Det \u00e4r samma id\u00e9 som <span class="clink" data-to="produktregeln">produktregeln</span>, fast med minus ist\u00e4llet f\u00f6r plus.</p>
+<div class="formula-block">$$\\lg\\left(\\frac{A}{B}\\right) = \\lg A - \\lg B$$
+<strong>Minnestips:</strong> Delat inuti \\(\\lg\\) \u2192 minus utanf\u00f6r</div>
+<div class="example"><div class="example-label">Exempel 1 \u2013 dela upp</div>
+\\(\\lg\\left(\\frac{1000}{10}\\right) = \\lg(1000) - \\lg(10) = 3 - 1 = 2\\)<br><br>
+Kontroll: \\(\\frac{1000}{10} = 100\\) och \\(\\lg(100) = 2\\) \u2713</div>
+<div class="example"><div class="example-label">Exempel 2 \u2013 f\u00f6renkla</div>
+F\u00f6renkla: \\(\\lg(8) - \\lg(2)\\)<br><br>
+\\(= \\lg\\left(\\frac{8}{2}\\right) = \\lg(4) \\approx 0{,}602\\)<br><br>
+Ist\u00e4llet f\u00f6r att r\u00e4kna tv\u00e5 logaritmer kan vi sl\u00e5 ihop till en!</div>`,
+connections:[{to:"produktregeln",label:"f\u00f6reg\u00e5ende lag"},{to:"potensregeln",label:"n\u00e4sta lag"}]},
+
+potensregeln:{title:"Lag 3: Potensregeln",cat:"logaritmer",
+body:`<p>Det h\u00e4r \u00e4r den <strong>viktigaste logaritmlagen</strong>. Om du har en <strong>exponent inuti en logaritm</strong>, kan exponenten \u201dkliva ner\u201d och bli en vanlig faktor framf\u00f6r.</p>
+<div class="formula-block">$$\\lg(A^n) = n \\cdot \\lg A$$
+<strong>Minnestips:</strong> Exponent inuti \\(\\lg\\) \u2192 faktor framf\u00f6r</div>
+<p>Varf\u00f6r \u00e4r den viktigast? F\u00f6r att den l\u00e5ter oss <strong>f\u00e5 ner x fr\u00e5n exponenten</strong> \u2013 det \u00e4r precis vad vi beh\u00f6ver f\u00f6r att l\u00f6sa <span class="clink" data-to="exponentialekvation">exponentialekvationer</span>!</p>
+<div class="example"><div class="example-label">Exempel 1 \u2013 f\u00f6renkla</div>
+\\(\\lg(5^3) = 3 \\cdot \\lg(5) = 3 \\cdot 0{,}699 = 2{,}097\\)<br><br>
+Kontroll: \\(5^3 = 125\\) och \\(\\lg(125) = 2{,}097\\) \u2713</div>
+<div class="example"><div class="example-label">Exempel 2 \u2013 l\u00f6s en exponentialekvation</div>
+L\u00f6s \\(3^x = 50\\)<br><br>
+<strong>Steg 1:</strong> Ta \\(\\lg\\) p\u00e5 b\u00e5da sidor: \\(\\lg(3^x) = \\lg(50)\\)<br><br>
+<strong>Steg 2:</strong> Anv\u00e4nd potensregeln \u2013 x kliver ner: \\(x \\cdot \\lg(3) = \\lg(50)\\)<br><br>
+<strong>Steg 3:</strong> L\u00f6s ut x: \\(x = \\frac{\\lg(50)}{\\lg(3)} = \\frac{1{,}699}{0{,}477} \\approx\\) <strong>3,56</strong><br><br>
+Utan potensregeln hade vi inte kunnat f\u00e5 ner x fr\u00e5n exponenten!</div>`,
+connections:[{to:"exponentialekvation",label:"l\u00f6ser"},{to:"kvotregeln",label:"f\u00f6reg\u00e5ende lag"},{to:"logaritmlagar",label:"\u00f6versikt"}]}
+};
+
+const catLabels={root:"Start",ekvationer:"Ekvationer",regression:"Regression",funktioner:"Funktioner",logaritmer:"Logaritmer"};
+
+const tree={root:{ekvationer:{andragradsekvationer:{pqform:{},kvadratkomplettering:{},pqformeln:{}},rotekvationer:{rotmetod:{},falskrot:{},kontroll:{}},exponentialekvation:{},potensekvation:{}},funktioner:{andragradsfunktioner:{koefficienten_a:{a_positiv:{},a_negativ:{},bredd:{}},symmetrilinje:{},extrempunkt:{},nollstallen:{},faktorform:{},tillampningar:{}},exponentialfunktioner:{forandringsfaktor:{},startvarde:{}},potensfunktion:{}},regression:{regressionsanalys:{},modellval:{},modelltyper:{}},logaritmer:{definition_lg:{},tiologaritm:{},logaritmlagar:{produktregeln:{},kvotregeln:{},potensregeln:{}}}}};
+
+// ═══════════════════
+//  STATE
+// ═══════════════════
+let cur='root',hist=['root'],vis=new Set(['root']);
+const total=Object.keys(N).length;
+const CIRC=81.68; // 2*PI*13
+
+// ═══════════════════
+//  NAV
+// ═══════════════════
+function go(id){
+  if(!N[id])return;
+  const c=document.getElementById('card');
+  c.classList.add('out');
+  setTimeout(()=>{
+    vis.add(id);cur=id;hist.push(id);
+    render();
+    c.classList.remove('out');c.classList.add('entering');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>c.classList.remove('entering')));
+    window.scrollTo({top:0,behavior:'smooth'});
+  },250);
+}
+
+function goBack(){
+  if(hist.length<=1)return;
+  const c=document.getElementById('card');
+  c.classList.add('out');
+  setTimeout(()=>{hist.pop();cur=hist[hist.length-1];render();
+    c.classList.remove('out');c.classList.add('entering');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>c.classList.remove('entering')));
+  },250);
+}
+
+function jumpBC(i){hist=hist.slice(0,i+1);cur=hist[hist.length-1];render()}
+
+function jumpTo(id){
+  if(!N[id])return;vis.add(id);cur=id;
+  const p=findPath('root',id,tree);hist=p||[id];
+  render();closeDrawer();
+}
+function findPath(f,t,s,p){
+  p=p||[f];if(f===t)return p;
+  const ch=s[f];if(!ch)return null;
+  for(const k of Object.keys(ch)){const r=findPath(k,t,ch,[...p,k]);if(r)return r}
+  return null;
+}
+
+// ═══════════════════
+//  RENDER
+// ═══════════════════
+// Count descendants of a node in the tree
+function countDesc(id,t){
+  const ch=t[id];if(!ch)return 0;
+  let c=0;for(const k of Object.keys(ch)){c+=1+countDesc(k,ch)}return c;
+}
+function countFor(id){return countDesc(id,findSubtree(id,tree)||{})}
+function findSubtree(id,t){
+  if(t[id]!==undefined)return t;
+  for(const k of Object.keys(t)){const ch=t[k];if(ch){const r=findSubtree(id,ch);if(r)return r}}
+  return null;
+}
+
+// Find siblings of current node
+function getSiblings(id){
+  const st=findSubtree(id,tree);
+  if(!st)return[];
+  // find parent key
+  for(const k of Object.keys(st)){
+    const ch=st[k];if(ch&&ch[id]!==undefined){
+      return Object.keys(ch).filter(s=>s!==id);
+    }
+  }
+  return[];
+}
+// Find parent of current node
+function getParent(id){
+  return findParent(id,tree);
+}
+function findParent(id,t,parent){
+  for(const k of Object.keys(t)){
+    if(k===id)return parent||null;
+    const ch=t[k];if(ch){const r=findParent(id,ch,k);if(r)return r}
+  }
+  return null;
+}
+
+function fixScroll(){
+  const c=document.getElementById('card');
+  if(!c)return;
+  const cBottom=c.getBoundingClientRect().bottom+window.scrollY;
+  document.body.style.minHeight=(cBottom+300)+'px';
+}
+
+function render(){
+  const n=N[cur];
+
+  // breadcrumb
+  document.getElementById('breadcrumb').innerHTML=hist.map((id,i)=>{
+    const nd=N[id],last=i===hist.length-1;
+    const sep=i<hist.length-1?'<span class="crumb-sep">\u25B8</span>':'';
+    const lbl=id==='root'?'Start':(nd?nd.title:id);
+    return `<span class="crumb${last?' active':''}"${last?'':`onclick="jumpBC(${i})"`}>${lbl}</span>${sep}`;
+  }).join('');
+
+  document.getElementById('backBtn').disabled=hist.length<=1;
+
+  // category
+  document.getElementById('cardCat').innerHTML=`<span class="card-cat cat-${n.cat}">${catLabels[n.cat]||''}</span>`;
+
+  // title & subtitle
+  document.getElementById('cardTitle').textContent=n.title;
+  const sub=document.getElementById('cardSub');
+  sub.textContent=n.subtitle||'';sub.style.display=n.subtitle?'block':'none';
+
+  // body
+  const bodyEl=document.getElementById('cardBody');
+  bodyEl.innerHTML=n.body;
+  bodyEl.style.display=n.body?'block':'none';
+
+  // image (clickable to expand)
+  const img=document.getElementById('cardImg');
+  if(n.image){
+    img.innerHTML=`<img src="${n.image}" alt="${n.title}" onclick="this.classList.toggle('expanded')" onload="fixScroll()" onerror="this.parentElement.style.display='none'">`;
+    img.style.display='block';
+  } else{img.innerHTML='';img.style.display='none'}
+
+  // connections with depth indicator
+  const cs=n.connections||[];
+  const area=document.getElementById('connArea');
+  const grid=document.getElementById('connGrid');
+  const hasBody=!!n.body;
+  // hide divider+label when no body text (e.g. root)
+  area.querySelector('.conn-divider').style.display=hasBody?'':'none';
+  area.querySelector('.conn-label-row').style.display=hasBody?'':'none';
+  if(!cs.length){area.style.display='none'}
+  else{
+    area.style.display='block';
+    grid.innerHTML=cs.map((c,i)=>{
+      const t=N[c.to];if(!t)return'';
+      const v=vis.has(c.to)?'visited':'';
+      const desc=countFor(c.to);
+      const badge=desc>0?` <span class="conn-depth">(${desc})</span>`:'';
+      return `<button class="conn-btn ${v}" onclick="go('${c.to}')" style="animation-delay:${0.05+i*0.07}s">
+        <span class="conn-name">${t.title}${badge}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </button>`;
+    }).join('');
+  }
+
+  // leaf-node navigation: show siblings and parent when no connections
+  const leafEl=document.getElementById('leafNav');
+  if(cs.length||cur==='root'){
+    leafEl.classList.remove('show');leafEl.innerHTML='';
+  } else {
+    const sibs=getSiblings(cur).filter(s=>s!==cur);
+    const parentId=getParent(cur);
+    let html='<div class="leaf-divider"></div>';
+    if(sibs.length){
+      html+=`<div class="leaf-label">Utforska ocks\u00e5</div><div class="leaf-grid">`;
+      html+=sibs.map(s=>{
+        const sn=N[s];if(!sn)return'';
+        return `<button class="leaf-btn" onclick="go('${s}')">${sn.title}</button>`;
+      }).join('');
+      html+='</div>';
+    }
+    if(parentId&&N[parentId]){
+      html+=`<div style="margin-top:0.7rem"><div class="leaf-label">Tillbaka till</div><div class="leaf-grid">
+        <button class="leaf-btn" onclick="go('${parentId}')">\u2190 ${N[parentId].title}</button>
+      </div></div>`;
+    }
+    leafEl.innerHTML=html;leafEl.classList.add('show');
+  }
+
+
+  // toggle vertical centering: center short content, top-align long content
+  requestAnimationFrame(()=>{
+    fixScroll();
+    const card=document.getElementById('card');
+    const inner=card.querySelector('.card-inner');
+    const topbar=document.querySelector('.topbar');
+    const availH=window.innerHeight-(topbar?topbar.offsetHeight:0);
+    if(inner.scrollHeight>availH*0.6){
+      card.classList.add('has-long-content');
+    } else {
+      card.classList.remove('has-long-content');
+    }
+  });
+  renderMath();
+  if(cur==='bredd')setTimeout(initBreddGraph,60);
+  if(cur==='a_positiv')setTimeout(initAPosGraph,60);
+  if(cur==='a_negativ')setTimeout(initANegGraph,60);
+  if(cur==='symmetrilinje')setTimeout(initSymGraph,60);
+  if(cur==='potensfunktion')setTimeout(initPotGraph,60);
+  if(cur==='tillampningar'){setTimeout(initTillGraph,60);setTimeout(initTillExpGraph,60);setTimeout(initTillPotGraph,60)}
+  if(cur==='exponentialfunktioner')setTimeout(initExpGraph,60);
+  if(cur==='startvarde')setTimeout(initStartGraph,60);
+  if(cur==='extrempunkt')setTimeout(initExtGraph,60);
+  if(cur==='nollstallen')setTimeout(initNollGraph,60);
+  if(cur==='noll_tva')setTimeout(initNollTvaGraph,60);
+  if(cur==='noll_ett')setTimeout(initNollEttGraph,60);
+  if(cur==='noll_noll')setTimeout(initNollNollGraph,60);
+  if(cur==='definition_lg')setTimeout(initLgDefGraph,60);
+  if(cur==='modelltyper')setTimeout(initModellGraph,60);
+  if(cur==='faktorform')setTimeout(initFaktorGraph,60);
+  if(cur==='pqformeln')setTimeout(initPqGraph,60);
+}
+
+// ═══════════════════
+//  3D TILT (disabled — interferes with scroll on content-heavy cards)
+// ═══════════════════
+
+// ═══════════════════
+//  DRAWER
+// ═══════════════════
+function openDrawer(){
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('drawer').classList.add('open');
+  renderTree();
+}
+function closeDrawer(){
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('drawer').classList.remove('open');
+}
+function renderTree(){
+  document.getElementById('treeRoot').innerHTML=buildTree(tree,0);
+}
+function buildTree(s,depth){
+  depth=depth||0;
+  let h='';
+  for(const id of Object.keys(s)){
+    const n=N[id];if(!n)continue;
+    let cls='tree-node';
+    if(depth===0)cls+=' depth-0';
+    if(id===cur)cls+=' current';else if(vis.has(id))cls+=' visited';
+    h+=`<div class="tree-group"><button class="${cls}" onclick="jumpTo('${id}')">${n.title}</button>`;
+    const ch=s[id];
+    if(ch&&Object.keys(ch).length)h+=`<div class="tree-indent">${buildTree(ch,depth+1)}</div>`;
+    h+=`</div>`;
+  }
+  return h;
+}
+
+// ═══════════════════
+//  KEYBOARD
+// ═══════════════════
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){const d=document.getElementById('drawer');if(d.classList.contains('open'))closeDrawer();else goBack();return}
+  if((e.key==='o'||e.key==='O')&&document.activeElement.tagName!=='INPUT'){openDrawer();return}
+  const num=parseInt(e.key);
+  if(num>=1&&num<=9){const cs=N[cur].connections||[];if(num<=cs.length)go(cs[num-1].to)}
+});
+
+// ═══════════════════
+//  KATEX AUTO-RENDER
+// ═══════════════════
+// KaTeX auto-render after each render
+function renderMath(){
+  if(typeof renderMathInElement==='function'){
+    renderMathInElement(document.getElementById('card'),{
+      delimiters:[
+        {left:'$$',right:'$$',display:true},
+        {left:'\\(',right:'\\)',display:false}
+      ],
+      throwOnError:false
+    });
+  }
+}
+
+// ═══════════════════
+//  INTERACTIVE GRAPHS
+// ═══════════════════
+function initBreddGraph(){
+  var svg=document.getElementById('breddSvg');
+  if(!svg)return;
+  var cx=150,cy=195,sx=42,sy=18,g='';
+  // Grid
+  for(var x=-3;x<=3;x++){var px=cx+x*sx;g+='<line x1="'+px+'" y1="8" x2="'+px+'" y2="'+(cy+5)+'" stroke="var(--cream3)" stroke-width="0.5"/>';}
+  for(var y=0;y<=10;y+=2){var py=cy-y*sy;g+='<line x1="'+(cx-3*sx-5)+'" y1="'+py+'" x2="'+(cx+3*sx+5)+'" y2="'+py+'" stroke="var(--cream3)" stroke-width="0.5"/>';}
+  // Axes
+  g+='<line x1="'+(cx-3*sx-5)+'" y1="'+cy+'" x2="'+(cx+3*sx+8)+'" y2="'+cy+'" stroke="var(--ink4)" stroke-width="1.3"/>';
+  g+='<line x1="'+cx+'" y1="8" x2="'+cx+'" y2="'+(cy+5)+'" stroke="var(--ink4)" stroke-width="1.3"/>';
+  // Arrows
+  g+='<polygon points="'+(cx+3*sx+8)+','+cy+' '+(cx+3*sx+3)+','+(cy-3)+' '+(cx+3*sx+3)+','+(cy+3)+'" fill="var(--ink4)"/>';
+  g+='<polygon points="'+cx+',8 '+(cx-3)+',13 '+(cx+3)+',13" fill="var(--ink4)"/>';
+  // X labels
+  for(var x=-3;x<=3;x++){if(x===0)continue;g+='<text x="'+(cx+x*sx)+'" y="'+(cy+16)+'" text-anchor="middle" fill="var(--ink5)" style="font:400 0.6rem var(--sans)">'+x+'</text>';}
+  // Y labels
+  for(var y=2;y<=10;y+=2){g+='<text x="'+(cx-8)+'" y="'+(cy-y*sy+4)+'" text-anchor="end" fill="var(--ink5)" style="font:400 0.6rem var(--sans)">'+y+'</text>';}
+  // Axis names
+  g+='<text x="'+(cx+3*sx+12)+'" y="'+(cy+5)+'" fill="var(--ink4)" style="font:italic 500 0.75rem var(--serif)">x</text>';
+  g+='<text x="'+(cx+7)+'" y="14" fill="var(--ink4)" style="font:italic 500 0.75rem var(--serif)">y</text>';
+  // Parabola path
+  g+='<path class="parab" fill="none" stroke="var(--terra)" stroke-width="2.5" stroke-linecap="round" opacity="0"/>';
+  // Function label
+  g+='<text class="parab-label" x="'+(cx+3*sx)+'" y="22" text-anchor="end" fill="var(--terra)" style="font:600 0.85rem var(--sans)"></text>';
+  svg.innerHTML=g;
+  drawBredd(5,0);
+}
+
+function drawBredd(a,idx){
+  var svg=document.getElementById('breddSvg');
+  if(!svg)return;
+  var cx=150,cy=195,sx=42,sy=18;
+  var btns=document.querySelectorAll('#breddGraph .graph-btn');
+  btns.forEach(function(b,i){b.classList.toggle('active',i===idx)});
+  var path=svg.querySelector('.parab');
+  var lbl=svg.querySelector('.parab-label');
+  if(path){path.style.opacity='0';path.style.transition='opacity 0.15s'}
+  setTimeout(function(){
+    var pts=[];
+    for(var x=-3;x<=3;x+=0.03){
+      var y=a*x*x;var svgX=cx+x*sx;var svgY=cy-y*sy;
+      if(svgY<5)continue;
+      pts.push((pts.length?'L':'M')+svgX.toFixed(1)+','+svgY.toFixed(1));
+    }
+    if(path){path.setAttribute('d',pts.join(''));path.style.transition='opacity 0.35s';path.style.opacity='1'}
+    var labels=['y = 5x\u00b2','y = x\u00b2','y = 0,2x\u00b2'];
+    if(lbl)lbl.textContent=labels[idx]||'';
+  },160);
+}
+
+function initAPosGraph(){
+  var c=document.getElementById('aPosCanvas');
+  if(!c)return;
+  var dpr=window.devicePixelRatio||1;
+  var w=c.offsetWidth||400;
+  var h=Math.round(w*0.7);
+  c.width=w*dpr;c.height=h*dpr;
+  c.style.height=h+'px';
+  var ctx=c.getContext('2d');
+  ctx.scale(dpr,dpr);
+  // Coordinate mapping
+  var xMin=-2.2,xMax=4.2,yMin=-2.5,yMax=8.5;
+  var pad={l:36,r:20,t:18,b:28};
+  var gw=w-pad.l-pad.r,gh=h-pad.t-pad.b;
+  function mx(x){return pad.l+(x-xMin)/(xMax-xMin)*gw}
+  function my(y){return pad.t+(yMax-y)/(yMax-yMin)*gh}
+  var gridC='#e5dfd5',axisC='#7a7268',terraC='#bf6e4a',sageC='#6a8a6f',inkC='#302b26';
+  // Grid
+  ctx.strokeStyle=gridC;ctx.lineWidth=0.5;
+  for(var x=-2;x<=4;x++){ctx.beginPath();ctx.moveTo(mx(x),pad.t);ctx.lineTo(mx(x),h-pad.b);ctx.stroke()}
+  for(var y=-2;y<=8;y+=2){ctx.beginPath();ctx.moveTo(pad.l,my(y));ctx.lineTo(w-pad.r,my(y));ctx.stroke()}
+  // Axes
+  ctx.strokeStyle=axisC;ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.moveTo(pad.l,my(0));ctx.lineTo(w-pad.r,my(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0),h-pad.b);ctx.stroke();
+  // Arrows
+  ctx.fillStyle=axisC;
+  ctx.beginPath();ctx.moveTo(w-pad.r,my(0));ctx.lineTo(w-pad.r-7,my(0)-4);ctx.lineTo(w-pad.r-7,my(0)+4);ctx.fill();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0)-4,pad.t+7);ctx.lineTo(mx(0)+4,pad.t+7);ctx.fill();
+  // X labels
+  ctx.fillStyle=axisC;ctx.font='500 11px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+  for(var x=-2;x<=4;x++){if(x===0)continue;ctx.fillText(x,mx(x),my(0)+5)}
+  // Y labels
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(var y=-2;y<=8;y+=2){if(y===0)continue;ctx.fillText(y,mx(0)-7,my(y))}
+  // Axis names
+  ctx.fillStyle=inkC;ctx.font='700 16px Outfit,sans-serif';
+  ctx.textAlign='left';ctx.textBaseline='middle';
+  ctx.fillText('x',w-pad.r+4,my(0));
+  ctx.textBaseline='top';ctx.fillText('y',mx(0)+7,pad.t);
+  // Symmetry line x=1 (dashed)
+  ctx.save();ctx.strokeStyle=sageC;ctx.lineWidth=1;ctx.globalAlpha=0.4;
+  ctx.setLineDash([5,4]);
+  ctx.beginPath();ctx.moveTo(mx(1),pad.t);ctx.lineTo(mx(1),h-pad.b);ctx.stroke();
+  ctx.setLineDash([]);ctx.restore();
+  ctx.save();ctx.fillStyle=sageC;ctx.globalAlpha=0.65;ctx.font='500 10px Outfit,sans-serif';
+  ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('x = 1',mx(1)+4,pad.t+2);ctx.restore();
+  // Parabola y=2x^2-4x+1
+  ctx.strokeStyle=terraC;ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();var first=true;
+  for(var t=-1.7;t<=3.7;t+=0.02){
+    var yv=2*t*t-4*t+1;var px=mx(t),py=my(yv);
+    if(py<pad.t-5||py>h-pad.b+5){first=true;continue}
+    if(first){ctx.moveTo(px,py);first=false}else ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+  // Marked points
+  var pts=[{x:-1,y:7,lbl:'(\u22121, 7)',dy:17},{x:1,y:-1,lbl:'(1, \u22121)',dy:-10,sub:'minimum',sdy:-24},{x:3,y:7,lbl:'(3, 7)',dy:17}];
+  pts.forEach(function(p){
+    var px=mx(p.x),py=my(p.y);
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(px,py,6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=terraC;ctx.beginPath();ctx.arc(px,py,4.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=inkC;ctx.font='600 12px Outfit,sans-serif';ctx.textAlign='center';
+    ctx.textBaseline=p.dy<0?'bottom':'top';
+    ctx.fillText(p.lbl,px,py+p.dy);
+    if(p.sub){ctx.fillStyle=terraC;ctx.font='700 11px Outfit,sans-serif';ctx.fillText(p.sub,px,py+p.sdy)}
+  });
+  // U-form label
+  ctx.save();ctx.fillStyle=terraC;ctx.globalAlpha=0.5;ctx.font='700 15px Outfit,sans-serif';
+  ctx.textAlign='right';ctx.textBaseline='middle';ctx.fillText('U-form',w-pad.r-8,my(4));ctx.restore();
+}
+
+function initPotGraph(){
+  var c=document.getElementById('potCanvas');
+  if(!c)return;
+  var dpr=window.devicePixelRatio||1;
+  var w=c.offsetWidth||400;
+  var h=Math.round(w*0.6);
+  c.width=w*dpr;c.height=h*dpr;
+  c.style.height=h+'px';
+  var ctx=c.getContext('2d');
+  ctx.scale(dpr,dpr);
+  // s = 0.006*v^2, v from 0 to 140
+  var xMin=-5,xMax=145,yMin=-8,yMax=120;
+  var pad={l:42,r:16,t:16,b:28};
+  var gw=w-pad.l-pad.r,gh=h-pad.t-pad.b;
+  function mx(x){return pad.l+(x-xMin)/(xMax-xMin)*gw}
+  function my(y){return pad.t+(yMax-y)/(yMax-yMin)*gh}
+  var gridC='#e5dfd5',axisC='#7a7268',terraC='#bf6e4a',sageC='#6a8a6f',inkC='#302b26';
+  // Grid
+  ctx.strokeStyle=gridC;ctx.lineWidth=0.5;
+  for(var x=0;x<=140;x+=20){ctx.beginPath();ctx.moveTo(mx(x),pad.t);ctx.lineTo(mx(x),h-pad.b);ctx.stroke()}
+  for(var y=0;y<=100;y+=20){ctx.beginPath();ctx.moveTo(pad.l,my(y));ctx.lineTo(w-pad.r,my(y));ctx.stroke()}
+  // Axes
+  ctx.strokeStyle=axisC;ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.moveTo(pad.l,my(0));ctx.lineTo(w-pad.r,my(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0),h-pad.b);ctx.stroke();
+  ctx.fillStyle=axisC;
+  ctx.beginPath();ctx.moveTo(w-pad.r,my(0));ctx.lineTo(w-pad.r-7,my(0)-4);ctx.lineTo(w-pad.r-7,my(0)+4);ctx.fill();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0)-4,pad.t+7);ctx.lineTo(mx(0)+4,pad.t+7);ctx.fill();
+  // Labels
+  ctx.fillStyle=axisC;ctx.font='700 13px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+  for(var x=20;x<=120;x+=20){ctx.fillText(x,mx(x),my(0)+6)}
+  ctx.fillStyle=inkC;ctx.textAlign='right';ctx.fillText('v (km/h)',w-pad.r-4,my(0)+6);
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(var y=20;y<=100;y+=20){ctx.fillText(y,mx(0)-7,my(y))}
+  ctx.fillStyle=inkC;ctx.font='700 15px Outfit,sans-serif';
+  ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('s (m)',mx(0)+8,pad.t);
+  // Curve s=0.006*v^2
+  ctx.strokeStyle=terraC;ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();var first=true;
+  for(var v=0;v<=140;v+=0.5){
+    var s=0.006*v*v;var px=mx(v),py=my(s);
+    if(py<pad.t-5||py>h-pad.b+5){first=true;continue}
+    if(first){ctx.moveTo(px,py);first=false}else ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+  // Marked points
+  var pts=[
+    {v:80,s:38.4,lbl:'38,4 m',sub:'80 km/h',dy:-12,sdy:-26,align:'right',ox:-14},
+    {v:120,s:86.4,lbl:'86,4 m',sub:'120 km/h',dy:-12,sdy:-26,align:'right',ox:-14}
+  ];
+  pts.forEach(function(p){
+    var px=mx(p.v),py=my(p.s);
+    // Dashed lines to axes
+    ctx.save();ctx.strokeStyle=terraC;ctx.lineWidth=1;ctx.globalAlpha=0.3;
+    ctx.setLineDash([4,3]);
+    ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(px,my(0));ctx.stroke();
+    ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(mx(0),py);ctx.stroke();
+    ctx.setLineDash([]);ctx.restore();
+    // Dot
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(px,py,6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=terraC;ctx.beginPath();ctx.arc(px,py,4.5,0,Math.PI*2);ctx.fill();
+    // Labels
+    var tx=px+(p.ox||0);
+    ctx.fillStyle=inkC;ctx.font='700 14px Outfit,sans-serif';ctx.textAlign=p.align||'center';
+    ctx.textBaseline='bottom';ctx.fillText(p.lbl,tx,py+p.dy);
+    ctx.fillStyle=terraC;ctx.font='600 12px Outfit,sans-serif';
+    ctx.textBaseline='bottom';ctx.fillText(p.sub,tx,py+p.sdy);
+  });
+  // Function label
+  ctx.fillStyle=terraC;ctx.font='700 16px Outfit,sans-serif';
+  ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText('s = 0,006 \u00b7 v\u00b2',mx(60),my(90));
+}
+
+function initTillGraph(){
+  var c=document.getElementById('tillCanvas');
+  if(!c)return;
+  var dpr=window.devicePixelRatio||1;
+  var w=c.offsetWidth||400;
+  var h=Math.round(w*0.65);
+  c.width=w*dpr;c.height=h*dpr;
+  c.style.height=h+'px';
+  var ctx=c.getContext('2d');
+  ctx.scale(dpr,dpr);
+  // h(t) = -5t^2 + 20t + 1.5, max at t=2 h=21.5, lands ~4.07
+  var xMin=-0.5,xMax=5,yMin=-2,yMax=25;
+  var pad={l:36,r:16,t:16,b:28};
+  var gw=w-pad.l-pad.r,gh=h-pad.t-pad.b;
+  function mx(x){return pad.l+(x-xMin)/(xMax-xMin)*gw}
+  function my(y){return pad.t+(yMax-y)/(yMax-yMin)*gh}
+  var gridC='#e5dfd5',axisC='#7a7268',terraC='#bf6e4a',sageC='#6a8a6f',inkC='#302b26';
+  // Grid
+  ctx.strokeStyle=gridC;ctx.lineWidth=0.5;
+  for(var x=0;x<=5;x++){ctx.beginPath();ctx.moveTo(mx(x),pad.t);ctx.lineTo(mx(x),h-pad.b);ctx.stroke()}
+  for(var y=0;y<=24;y+=5){ctx.beginPath();ctx.moveTo(pad.l,my(y));ctx.lineTo(w-pad.r,my(y));ctx.stroke()}
+  // Axes
+  ctx.strokeStyle=axisC;ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.moveTo(pad.l,my(0));ctx.lineTo(w-pad.r,my(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0),h-pad.b);ctx.stroke();
+  ctx.fillStyle=axisC;
+  ctx.beginPath();ctx.moveTo(w-pad.r,my(0));ctx.lineTo(w-pad.r-7,my(0)-4);ctx.lineTo(w-pad.r-7,my(0)+4);ctx.fill();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0)-4,pad.t+7);ctx.lineTo(mx(0)+4,pad.t+7);ctx.fill();
+  // Labels
+  ctx.fillStyle=axisC;ctx.font='700 14px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+  for(var x=1;x<=4;x++){ctx.fillText(x,mx(x),my(0)+6)}
+  ctx.fillStyle=inkC;ctx.font='700 17px Outfit,sans-serif';ctx.textAlign='left';ctx.fillText('t (s)',w-pad.r-30,my(0)+6);
+  ctx.fillStyle=axisC;ctx.font='700 14px Outfit,sans-serif';
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(var y=5;y<=20;y+=5){ctx.fillText(y,mx(0)-8,my(y))}
+  ctx.fillStyle=inkC;ctx.font='700 17px Outfit,sans-serif';
+  ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('h (m)',mx(0)+8,pad.t);
+  // Symmetry line t=2
+  ctx.save();ctx.strokeStyle=sageC;ctx.lineWidth=1;ctx.globalAlpha=0.4;
+  ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(mx(2),pad.t);ctx.lineTo(mx(2),h-pad.b);ctx.stroke();
+  ctx.setLineDash([]);ctx.restore();
+  // Parabola h=-5t^2+20t+1.5
+  ctx.strokeStyle=terraC;ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();var first=true;
+  for(var t=-0.1;t<=4.2;t+=0.02){
+    var yv=-5*t*t+20*t+1.5;var px=mx(t),py=my(yv);
+    if(py<pad.t-5||py>h-pad.b+5){first=true;continue}
+    if(first){ctx.moveTo(px,py);first=false}else ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+  // Key points
+  var pts=[
+    {x:0,y:1.5,lbl:'1,5 m',sub:'start',dy:-10,sdy:-24,align:'left',ox:20},
+    {x:1,y:16.5,lbl:'16,5 m',sub:'efter 1s',dy:-10,sdy:-24,align:'right',ox:-12},
+    {x:2,y:21.5,lbl:'21,5 m',sub:'maxh\u00f6jd!',dy:-10,sdy:-24},
+    {x:4.07,y:0,lbl:'landar',sub:'t \u2248 4,1 s',dy:-12,sdy:-26,align:'left',ox:12}
+  ];
+  pts.forEach(function(p){
+    var px=mx(p.x),py=my(p.y);
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(px,py,6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=terraC;ctx.beginPath();ctx.arc(px,py,4.5,0,Math.PI*2);ctx.fill();
+    var tx=px+(p.ox||0);
+    ctx.fillStyle=inkC;ctx.font='700 15px Outfit,sans-serif';ctx.textAlign=p.align||'center';
+    ctx.textBaseline=p.dy<0?'bottom':'top';
+    ctx.fillText(p.lbl,tx,py+p.dy);
+    if(p.sub){ctx.fillStyle=terraC;ctx.font='700 13px Outfit,sans-serif';ctx.textAlign=p.align||'center';ctx.textBaseline=p.sdy<0?'bottom':'top';ctx.fillText(p.sub,tx,py+p.sdy)}
+  });
+  // Dashed line from max to axes
+  ctx.save();ctx.strokeStyle=terraC;ctx.lineWidth=1;ctx.globalAlpha=0.3;
+  ctx.setLineDash([4,3]);
+  ctx.beginPath();ctx.moveTo(mx(2),my(21.5));ctx.lineTo(mx(0),my(21.5));ctx.stroke();
+  ctx.setLineDash([]);ctx.restore();
+  ctx.fillStyle=terraC;ctx.font='700 13px Outfit,sans-serif';ctx.textAlign='right';ctx.textBaseline='middle';
+  ctx.fillText('21,5',mx(0)-8,my(21.5));
+  // Function label
+  ctx.fillStyle=terraC;ctx.font='700 15px Outfit,sans-serif';
+  ctx.textAlign='right';ctx.textBaseline='top';ctx.fillText('h = \u22125t\u00b2 + 20t + 1,5',w-pad.r-5,pad.t+4);
+}
+
+function initTillExpGraph(){
+  var c=document.getElementById('tillExpCanvas');
+  if(!c)return;
+  var dpr=window.devicePixelRatio||1;
+  var w=c.offsetWidth||400;
+  var h=Math.round(w*0.65);
+  c.width=w*dpr;c.height=h*dpr;
+  c.style.height=h+'px';
+  var ctx=c.getContext('2d');
+  ctx.scale(dpr,dpr);
+  // y = 500 * 2^(t/3), show t=0..15
+  var xMin=-0.5,xMax=16.5,yMin=-500,yMax=18000;
+  var pad={l:56,r:50,t:16,b:36};
+  var gw=w-pad.l-pad.r,gh=h-pad.t-pad.b;
+  function mx(x){return pad.l+(x-xMin)/(xMax-xMin)*gw}
+  function my(y){return pad.t+(yMax-y)/(yMax-yMin)*gh}
+  var gridC='#e5dfd5',axisC='#302b26',terraC='#bf6e4a',sageC='#6a8a6f',inkC='#302b26';
+  // Grid
+  ctx.strokeStyle=gridC;ctx.lineWidth=0.5;
+  for(var x=0;x<=15;x+=3){ctx.beginPath();ctx.moveTo(mx(x),pad.t);ctx.lineTo(mx(x),h-pad.b);ctx.stroke()}
+  for(var y=0;y<=16000;y+=4000){ctx.beginPath();ctx.moveTo(pad.l,my(y));ctx.lineTo(w-pad.r,my(y));ctx.stroke()}
+  // Axes
+  ctx.strokeStyle=axisC;ctx.lineWidth=1.8;
+  ctx.beginPath();ctx.moveTo(pad.l,my(0));ctx.lineTo(w-pad.r,my(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0),h-pad.b);ctx.stroke();
+  ctx.fillStyle=axisC;
+  ctx.beginPath();ctx.moveTo(w-pad.r,my(0));ctx.lineTo(w-pad.r-8,my(0)-5);ctx.lineTo(w-pad.r-8,my(0)+5);ctx.fill();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0)-5,pad.t+8);ctx.lineTo(mx(0)+5,pad.t+8);ctx.fill();
+  // Labels — bigger, full opacity
+  ctx.fillStyle=axisC;ctx.font='700 16px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+  for(var x=3;x<=15;x+=3){ctx.fillText(x,mx(x),my(0)+8)}
+  ctx.textAlign='right';ctx.fillText('t (tim)',w-pad.r-4,my(0)+8);
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(var y=4000;y<=16000;y+=4000){ctx.fillText((y/1000)+'k',mx(0)-8,my(y))}
+  ctx.fillStyle=inkC;ctx.font='700 17px Outfit,sans-serif';
+  ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('antal',mx(0)+10,pad.t);
+  // Curve y = 500 * 2^(t/3)
+  ctx.strokeStyle=terraC;ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();var first=true;
+  for(var t=0;t<=15;t+=0.05){
+    var yv=500*Math.pow(2,t/3);var px=mx(t),py=my(yv);
+    if(py<pad.t-5||py>h-pad.b+5){first=true;continue}
+    if(first){ctx.moveTo(px,py);first=false}else ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+  // Key points — moved labels further right to avoid curve overlap
+  var pts=[
+    {x:0,y:500,lbl:'500',sub:'start',dy:-10,sdy:-26,align:'right',ox:-12},
+    {x:9,y:4000,lbl:'4 000',sub:'9 tim',dy:-10,sdy:-26,align:'right',ox:-12},
+    {x:12.97,y:10000,lbl:'10 000',sub:'t \u2248 13 tim',dy:-10,sdy:-26,align:'right',ox:-12}
+  ];
+  pts.forEach(function(p){
+    var px=mx(p.x),py=my(p.y);
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(px,py,6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=terraC;ctx.beginPath();ctx.arc(px,py,4.5,0,Math.PI*2);ctx.fill();
+    var tx=px+(p.ox||0);
+    ctx.fillStyle=inkC;ctx.font='700 16px Outfit,sans-serif';ctx.textAlign=p.align||'center';
+    ctx.textBaseline=p.dy<0?'bottom':'top';
+    ctx.fillText(p.lbl,tx,py+p.dy);
+    if(p.sub){ctx.fillStyle=terraC;ctx.font='700 14px Outfit,sans-serif';ctx.textAlign=p.align||'center';ctx.textBaseline=p.sdy<0?'bottom':'top';ctx.fillText(p.sub,tx,py+p.sdy)}
+  });
+  // Dashed line at y=10000
+  ctx.save();ctx.strokeStyle=sageC;ctx.lineWidth=1;
+  ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(pad.l,my(10000));ctx.lineTo(mx(12.97),my(10000));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(mx(12.97),my(10000));ctx.lineTo(mx(12.97),my(0));ctx.stroke();
+  ctx.setLineDash([]);ctx.restore();
+  // Function label
+  ctx.fillStyle=terraC;ctx.font='700 16px Outfit,sans-serif';
+  ctx.textAlign='right';ctx.textBaseline='top';ctx.fillText('y = 500 \u00b7 2^(t/3)',w-pad.r-5,pad.t+4);
+}
+
+function initTillPotGraph(){
+  var c=document.getElementById('tillPotCanvas');
+  if(!c)return;
+  var dpr=window.devicePixelRatio||1;
+  var w=c.offsetWidth||400;
+  var h=Math.round(w*0.65);
+  c.width=w*dpr;c.height=h*dpr;
+  c.style.height=h+'px';
+  var ctx=c.getContext('2d');
+  ctx.scale(dpr,dpr);
+  // s = 0.006 * v^2, show v=0..140
+  var xMin=-5,xMax=155,yMin=-8,yMax=125;
+  var pad={l:48,r:50,t:16,b:36};
+  var gw=w-pad.l-pad.r,gh=h-pad.t-pad.b;
+  function mx(x){return pad.l+(x-xMin)/(xMax-xMin)*gw}
+  function my(y){return pad.t+(yMax-y)/(yMax-yMin)*gh}
+  var gridC='#e5dfd5',axisC='#302b26',terraC='#bf6e4a',sageC='#6a8a6f',inkC='#302b26';
+  // Grid
+  ctx.strokeStyle=gridC;ctx.lineWidth=0.5;
+  for(var x=0;x<=140;x+=20){ctx.beginPath();ctx.moveTo(mx(x),pad.t);ctx.lineTo(mx(x),h-pad.b);ctx.stroke()}
+  for(var y=0;y<=120;y+=20){ctx.beginPath();ctx.moveTo(pad.l,my(y));ctx.lineTo(w-pad.r,my(y));ctx.stroke()}
+  // Axes
+  ctx.strokeStyle=axisC;ctx.lineWidth=1.8;
+  ctx.beginPath();ctx.moveTo(pad.l,my(0));ctx.lineTo(w-pad.r,my(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0),h-pad.b);ctx.stroke();
+  ctx.fillStyle=axisC;
+  ctx.beginPath();ctx.moveTo(w-pad.r,my(0));ctx.lineTo(w-pad.r-8,my(0)-5);ctx.lineTo(w-pad.r-8,my(0)+5);ctx.fill();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0)-5,pad.t+8);ctx.lineTo(mx(0)+5,pad.t+8);ctx.fill();
+  // Labels — bigger, full opacity
+  ctx.fillStyle=axisC;ctx.font='700 16px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+  for(var x=20;x<=120;x+=20){ctx.fillText(x,mx(x),my(0)+8)}
+  ctx.textAlign='right';ctx.fillText('v (km/h)',w-pad.r-4,my(0)+8);
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(var y=20;y<=120;y+=20){ctx.fillText(y,mx(0)-8,my(y))}
+  ctx.fillStyle=axisC;ctx.font='700 16px Outfit,sans-serif';
+  ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('s (m)',mx(0)+10,pad.t);
+  // Curve s = 0.006 * v^2
+  ctx.strokeStyle=terraC;ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();var first=true;
+  for(var v=0;v<=140;v+=0.5){
+    var sv=0.006*v*v;var px=mx(v),py=my(sv);
+    if(py<pad.t-5||py>h-pad.b+5){first=true;continue}
+    if(first){ctx.moveTo(px,py);first=false}else ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+  // Key points
+  var pts=[
+    {x:50,y:15,lbl:'15 m',sub:'50 km/h',dy:-6,sdy:-22,align:'right',ox:-14},
+    {x:90,y:48.6,lbl:'48,6 m',sub:'90 km/h',dy:-12,sdy:-28,align:'right',ox:-14},
+    {x:130,y:101.4,lbl:'101 m',sub:'130 km/h',dy:-12,sdy:-28,align:'right',ox:-14}
+  ];
+  pts.forEach(function(p){
+    var px=mx(p.x),py=my(p.y);
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(px,py,6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=terraC;ctx.beginPath();ctx.arc(px,py,4.5,0,Math.PI*2);ctx.fill();
+    var tx=px+(p.ox||0);
+    ctx.fillStyle=inkC;ctx.font='700 16px Outfit,sans-serif';ctx.textAlign=p.align||'center';
+    ctx.textBaseline=p.dy<0?'bottom':'top';
+    ctx.fillText(p.lbl,tx,py+p.dy);
+    if(p.sub){ctx.fillStyle=terraC;ctx.font='700 14px Outfit,sans-serif';ctx.textAlign=p.align||'center';ctx.textBaseline=p.sdy<0?'bottom':'top';ctx.fillText(p.sub,tx,py+p.sdy)}
+  });
+  // Dashed lines for 90 km/h point
+  ctx.save();ctx.strokeStyle=sageC;ctx.lineWidth=1;
+  ctx.setLineDash([5,4]);
+  ctx.beginPath();ctx.moveTo(pad.l,my(48.6));ctx.lineTo(mx(90),my(48.6));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(mx(90),my(48.6));ctx.lineTo(mx(90),my(0));ctx.stroke();
+  ctx.setLineDash([]);ctx.restore();
+  // Function label — centered at top
+  ctx.fillStyle=terraC;ctx.font='700 16px Outfit,sans-serif';
+  ctx.textAlign='center';ctx.textBaseline='top';ctx.fillText('s = 0,006 \u00b7 v\u00b2',w/2,pad.t+4);
+}
+
+// ─── Nollställe-grafer ───
+function drawNollParabola(canvasId,fn,xMin,xMax,yMin,yMax,pts,label){
+  var c=document.getElementById(canvasId);
+  if(!c)return;
+  var dpr=window.devicePixelRatio||1;
+  var w=c.offsetWidth||400;
+  var h=Math.round(w*0.65);
+  c.width=w*dpr;c.height=h*dpr;
+  c.style.height=h+'px';
+  var ctx=c.getContext('2d');
+  ctx.scale(dpr,dpr);
+  var pad={l:44,r:20,t:20,b:32};
+  var gw=w-pad.l-pad.r,gh=h-pad.t-pad.b;
+  function mx(x){return pad.l+(x-xMin)/(xMax-xMin)*gw}
+  function my(y){return pad.t+(yMax-y)/(yMax-yMin)*gh}
+  var gridC='#e5dfd5',axisC='#302b26',terraC='#bf6e4a',sageC='#6a8a6f',inkC='#302b26';
+  // Grid
+  ctx.strokeStyle=gridC;ctx.lineWidth=0.5;
+  for(var x=Math.ceil(xMin);x<=Math.floor(xMax);x++){ctx.beginPath();ctx.moveTo(mx(x),pad.t);ctx.lineTo(mx(x),h-pad.b);ctx.stroke()}
+  for(var y=Math.ceil(yMin);y<=Math.floor(yMax);y+=2){ctx.beginPath();ctx.moveTo(pad.l,my(y));ctx.lineTo(w-pad.r,my(y));ctx.stroke()}
+  // Axes
+  ctx.strokeStyle=axisC;ctx.lineWidth=1.8;
+  ctx.beginPath();ctx.moveTo(pad.l,my(0));ctx.lineTo(w-pad.r,my(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0),h-pad.b);ctx.stroke();
+  ctx.fillStyle=axisC;
+  ctx.beginPath();ctx.moveTo(w-pad.r,my(0));ctx.lineTo(w-pad.r-8,my(0)-5);ctx.lineTo(w-pad.r-8,my(0)+5);ctx.fill();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0)-5,pad.t+8);ctx.lineTo(mx(0)+5,pad.t+8);ctx.fill();
+  // Tick labels
+  ctx.fillStyle=axisC;ctx.font='700 15px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+  for(var x=Math.ceil(xMin);x<=Math.floor(xMax);x++){if(x!==0)ctx.fillText(x,mx(x),my(0)+6)}
+  ctx.fillText('x',w-pad.r-4,my(0)+6);
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(var y=2;y<=Math.floor(yMax);y+=2){ctx.fillText(y,mx(0)-8,my(y))}
+  for(var y=-2;y>=Math.ceil(yMin);y-=2){ctx.fillText(y,mx(0)-8,my(y))}
+  ctx.font='700 15px Outfit,sans-serif';ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('y',mx(0)+10,pad.t);
+  // Curve
+  ctx.strokeStyle=terraC;ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();var first=true;
+  for(var t=xMin;t<=xMax;t+=0.02){
+    var yv=fn(t);var px=mx(t),py=my(yv);
+    if(py<pad.t-5||py>h-pad.b+5){first=true;continue}
+    if(first){ctx.moveTo(px,py);first=false}else ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+  // Points
+  pts.forEach(function(p){
+    var px=mx(p.x),py=my(p.y);
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(px,py,6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=terraC;ctx.beginPath();ctx.arc(px,py,4.5,0,Math.PI*2);ctx.fill();
+    var tx=px+(p.ox||0);
+    ctx.fillStyle=inkC;ctx.font='700 15px Outfit,sans-serif';ctx.textAlign=p.align||'center';
+    ctx.textBaseline=p.dy<0?'bottom':'top';
+    ctx.fillText(p.lbl,tx,py+p.dy);
+    if(p.sub){ctx.fillStyle=terraC;ctx.font='700 13px Outfit,sans-serif';ctx.textAlign=p.align||'center';ctx.textBaseline=p.sdy<0?'bottom':'top';ctx.fillText(p.sub,tx,py+p.sdy)}
+  });
+  // Function label
+  ctx.fillStyle=terraC;ctx.font='700 15px Outfit,sans-serif';
+  ctx.textAlign='center';ctx.textBaseline='top';ctx.fillText(label,w/2,pad.t+4);
+}
+
+function initNollTvaGraph(){
+  drawNollParabola('nollTvaCanvas',
+    function(x){return x*x-5*x+6},
+    -0.5,6,-2,8,
+    [{x:2,y:0,lbl:'x = 2',dy:12,align:'right',ox:-10},
+     {x:3,y:0,lbl:'x = 3',dy:12,align:'left',ox:10},
+     {x:2.5,y:-0.25,lbl:'min',sub:'(2,5 ; \u22120,25)',dy:26,sdy:42,align:'center'}],
+    'y = x\u00b2 \u2212 5x + 6');
+}
+function initNollEttGraph(){
+  drawNollParabola('nollEttCanvas',
+    function(x){return x*x-6*x+9},
+    -0.5,7,-1,10,
+    [{x:3,y:0,lbl:'x = 3',sub:'nuddar!',dy:12,sdy:28,align:'left',ox:14}],
+    'y = x\u00b2 \u2212 6x + 9');
+}
+function initNollNollGraph(){
+  drawNollParabola('nollNollCanvas',
+    function(x){return x*x-4*x+5},
+    -0.5,5,-1,8,
+    [{x:2,y:1,lbl:'min = 1',sub:'ovanf\u00f6r x-axeln!',dy:-12,sdy:-28,align:'left',ox:14}],
+    'y = x\u00b2 \u2212 4x + 5');
+}
+
+function initExpGraph(){
+  var c=document.getElementById('expCanvas');
+  if(!c)return;
+  var dpr=window.devicePixelRatio||1;
+  var w=c.offsetWidth||400;
+  var h=Math.round(w*0.6);
+  c.width=w*dpr;c.height=h*dpr;
+  c.style.height=h+'px';
+  var ctx=c.getContext('2d');
+  ctx.scale(dpr,dpr);
+  var xMin=-0.8,xMax=10,yMin=-20,yMax=230;
+  var pad={l:50,r:16,t:16,b:28};
+  var gw=w-pad.l-pad.r,gh=h-pad.t-pad.b;
+  function mx(x){return pad.l+(x-xMin)/(xMax-xMin)*gw}
+  function my(y){return pad.t+(yMax-y)/(yMax-yMin)*gh}
+  var gridC='#e5dfd5',axisC='#7a7268',terraC='#bf6e4a',sageC='#6a8a6f',inkC='#302b26';
+  // Grid
+  ctx.strokeStyle=gridC;ctx.lineWidth=0.5;
+  for(var x=0;x<=10;x+=2){ctx.beginPath();ctx.moveTo(mx(x),pad.t);ctx.lineTo(mx(x),h-pad.b);ctx.stroke()}
+  for(var y=0;y<=200;y+=50){ctx.beginPath();ctx.moveTo(pad.l,my(y));ctx.lineTo(w-pad.r,my(y));ctx.stroke()}
+  // Axes
+  ctx.strokeStyle=axisC;ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.moveTo(pad.l,my(0));ctx.lineTo(w-pad.r,my(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0),h-pad.b);ctx.stroke();
+  ctx.fillStyle=axisC;
+  ctx.beginPath();ctx.moveTo(w-pad.r,my(0));ctx.lineTo(w-pad.r-7,my(0)-4);ctx.lineTo(w-pad.r-7,my(0)+4);ctx.fill();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0)-4,pad.t+7);ctx.lineTo(mx(0)+4,pad.t+7);ctx.fill();
+  // X labels
+  ctx.fillStyle=axisC;ctx.font='600 12px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+  for(var x=2;x<=8;x+=2){ctx.fillText(x,mx(x),my(0)+6)}
+  ctx.fillText('\u00e5r',w-pad.r-4,my(0)+6);
+  // Y labels
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(var y=50;y<=200;y+=50){ctx.fillText(y+'k',mx(0)-7,my(y))}
+  ctx.fillStyle=inkC;ctx.font='700 16px Outfit,sans-serif';
+  ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('kr',mx(0)+8,pad.t);
+  // Curve
+  ctx.strokeStyle=terraC;ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();var first=true;
+  for(var t=-0.3;t<=9.5;t+=0.02){
+    var yv=200*Math.pow(0.85,t);var px=mx(t),py=my(yv);
+    if(py<pad.t-5||py>h-pad.b+5){first=true;continue}
+    if(first){ctx.moveTo(px,py);first=false}else ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+  // Key points with values
+  var pts=[
+    {x:0,y:200,lbl:'200 000',pos:'right'},
+    {x:3,y:200*Math.pow(0.85,3),lbl:'122 800',pos:'right'},
+    {x:8,y:200*Math.pow(0.85,8),lbl:'54 400',pos:'top'}
+  ];
+  pts.forEach(function(p){
+    var px=mx(p.x),py=my(p.y);
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=terraC;ctx.beginPath();ctx.arc(px,py,3.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=inkC;ctx.font='600 11px Outfit,sans-serif';
+    if(p.pos==='right'){ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(p.lbl+' kr',px+10,py)}
+    else{ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText(p.lbl+' kr',px,py-10)}
+  });
+  // C label
+  ctx.fillStyle=terraC;ctx.font='700 13px Outfit,sans-serif';ctx.textAlign='left';ctx.textBaseline='bottom';
+  ctx.fillText('C = startv\u00e4rde',mx(0)+30,my(200)-8);
+  // Function label
+  ctx.fillStyle=terraC;ctx.font='700 14px Outfit,sans-serif';
+  ctx.textAlign='right';ctx.textBaseline='middle';ctx.fillText('y = 200 000 \u00b7 0,85\u02e3',w-pad.r-5,my(80));
+}
+
+function initStartGraph(){
+  var c=document.getElementById('startCanvas');
+  if(!c)return;
+  var dpr=window.devicePixelRatio||1;
+  var w=c.offsetWidth||400;
+  var h=Math.round(w*0.6);
+  c.width=w*dpr;c.height=h*dpr;
+  c.style.height=h+'px';
+  var ctx=c.getContext('2d');
+  ctx.scale(dpr,dpr);
+  // y = 200000*0.85^x, scaled to thousands
+  var xMin=-0.8,xMax=8,yMin=-20,yMax=230;
+  var pad={l:50,r:16,t:16,b:28};
+  var gw=w-pad.l-pad.r,gh=h-pad.t-pad.b;
+  function mx(x){return pad.l+(x-xMin)/(xMax-xMin)*gw}
+  function my(y){return pad.t+(yMax-y)/(yMax-yMin)*gh}
+  var gridC='#e5dfd5',axisC='#7a7268',terraC='#bf6e4a',sageC='#6a8a6f',inkC='#302b26';
+  // Grid
+  ctx.strokeStyle=gridC;ctx.lineWidth=0.5;
+  for(var x=0;x<=8;x++){ctx.beginPath();ctx.moveTo(mx(x),pad.t);ctx.lineTo(mx(x),h-pad.b);ctx.stroke()}
+  for(var y=0;y<=200;y+=50){ctx.beginPath();ctx.moveTo(pad.l,my(y));ctx.lineTo(w-pad.r,my(y));ctx.stroke()}
+  // Axes
+  ctx.strokeStyle=axisC;ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.moveTo(pad.l,my(0));ctx.lineTo(w-pad.r,my(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0),h-pad.b);ctx.stroke();
+  ctx.fillStyle=axisC;
+  ctx.beginPath();ctx.moveTo(w-pad.r,my(0));ctx.lineTo(w-pad.r-7,my(0)-4);ctx.lineTo(w-pad.r-7,my(0)+4);ctx.fill();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0)-4,pad.t+7);ctx.lineTo(mx(0)+4,pad.t+7);ctx.fill();
+  // X labels
+  ctx.fillStyle=axisC;ctx.font='600 12px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+  for(var x=1;x<=7;x++){ctx.fillText(x,mx(x),my(0)+6)}
+  ctx.fillText('\u00e5r',w-pad.r-4,my(0)+6);
+  // Y labels (thousands)
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(var y=50;y<=200;y+=50){ctx.fillText(y+'k',mx(0)-7,my(y))}
+  ctx.fillStyle=inkC;ctx.font='700 16px Outfit,sans-serif';
+  ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('kr',mx(0)+8,pad.t);
+  // Curve y=200*0.85^x
+  ctx.strokeStyle=terraC;ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();var first=true;
+  for(var t=-0.3;t<=7.5;t+=0.02){
+    var yv=200*Math.pow(0.85,t);var px=mx(t),py=my(yv);
+    if(py<pad.t-5||py>h-pad.b+5){first=true;continue}
+    if(first){ctx.moveTo(px,py);first=false}else ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+  // C = 200 000 point on y-axis
+  var cpx=mx(0),cpy=my(200);
+  // Dashed line from point to y-axis label
+  ctx.save();ctx.strokeStyle=terraC;ctx.lineWidth=1.5;
+  ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(cpx,cpy);ctx.lineTo(pad.l,cpy);ctx.stroke();
+  ctx.setLineDash([]);ctx.restore();
+  // Big dot
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(cpx,cpy,8,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=terraC;ctx.beginPath();ctx.arc(cpx,cpy,6,0,Math.PI*2);ctx.fill();
+  // Label
+  ctx.fillStyle=inkC;ctx.font='700 14px Outfit,sans-serif';ctx.textAlign='left';ctx.textBaseline='bottom';
+  ctx.fillText('C = 200 000 kr',cpx+30,cpy-4);
+  ctx.fillStyle=terraC;ctx.font='700 12px Outfit,sans-serif';
+  ctx.fillText('startv\u00e4rde (x = 0)',cpx+30,cpy+12);
+  // A few more points
+  var pts=[{x:3,lbl:'3 \u00e5r'},{x:5,lbl:'5 \u00e5r'}];
+  pts.forEach(function(p){
+    var yv=200*Math.pow(0.85,p.x);
+    var px=mx(p.x),py=my(yv);
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=terraC;ctx.beginPath();ctx.arc(px,py,3.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=inkC;ctx.font='600 11px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='bottom';
+    ctx.fillText(Math.round(yv)+'k',px,py-8);
+    ctx.fillStyle=axisC;ctx.font='500 10px Outfit,sans-serif';ctx.textBaseline='top';
+    ctx.fillText(p.lbl,px,py+8);
+  });
+  // Function label
+  ctx.fillStyle=terraC;ctx.font='600 13px Outfit,sans-serif';
+  ctx.textAlign='right';ctx.textBaseline='top';ctx.fillText('y = 200 000 \u00b7 0,85\u02e3',w-pad.r-5,my(100));
+}
+
+function initSymGraph(){
+  var c=document.getElementById('symCanvas');
+  if(!c)return;
+  var dpr=window.devicePixelRatio||1;
+  var w=c.offsetWidth||400;
+  var h=Math.round(w*0.7);
+  c.width=w*dpr;c.height=h*dpr;
+  c.style.height=h+'px';
+  var ctx=c.getContext('2d');
+  ctx.scale(dpr,dpr);
+  // y = x^2+3x-4, nollst: x=-4,1, vertex (-1.5,-6.25)
+  var xMin=-5.5,xMax=3,yMin=-7.5,yMax=5;
+  var pad={l:36,r:16,t:16,b:28};
+  var gw=w-pad.l-pad.r,gh=h-pad.t-pad.b;
+  function mx(x){return pad.l+(x-xMin)/(xMax-xMin)*gw}
+  function my(y){return pad.t+(yMax-y)/(yMax-yMin)*gh}
+  var gridC='#e5dfd5',axisC='#7a7268',terraC='#bf6e4a',sageC='#6a8a6f',inkC='#302b26';
+  // Grid
+  ctx.strokeStyle=gridC;ctx.lineWidth=0.5;
+  for(var x=-5;x<=2;x++){ctx.beginPath();ctx.moveTo(mx(x),pad.t);ctx.lineTo(mx(x),h-pad.b);ctx.stroke()}
+  for(var y=-6;y<=4;y+=2){ctx.beginPath();ctx.moveTo(pad.l,my(y));ctx.lineTo(w-pad.r,my(y));ctx.stroke()}
+  // Axes
+  ctx.strokeStyle=axisC;ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.moveTo(pad.l,my(0));ctx.lineTo(w-pad.r,my(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0),h-pad.b);ctx.stroke();
+  ctx.fillStyle=axisC;
+  ctx.beginPath();ctx.moveTo(w-pad.r,my(0));ctx.lineTo(w-pad.r-7,my(0)-4);ctx.lineTo(w-pad.r-7,my(0)+4);ctx.fill();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0)-4,pad.t+7);ctx.lineTo(mx(0)+4,pad.t+7);ctx.fill();
+  // Labels
+  ctx.fillStyle=axisC;ctx.font='600 13px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+  for(var x=-5;x<=2;x++){if(x===0)continue;ctx.fillText(x,mx(x),my(0)+6)}
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(var y=-6;y<=4;y+=2){if(y===0)continue;ctx.fillText(y,mx(0)-8,my(y))}
+  ctx.fillStyle=inkC;ctx.font='700 16px Outfit,sans-serif';
+  ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText('x',w-pad.r+4,my(0));
+  ctx.textBaseline='top';ctx.fillText('y',mx(0)+8,pad.t);
+  // Symmetry line x=-1.5 (prominent!)
+  ctx.strokeStyle=sageC;ctx.lineWidth=2.5;
+  ctx.setLineDash([8,5]);ctx.beginPath();ctx.moveTo(mx(-1.5),pad.t);ctx.lineTo(mx(-1.5),h-pad.b);ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle=sageC;ctx.font='700 15px Outfit,sans-serif';
+  ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('x = \u22121,5',mx(-1.5)+8,pad.t+4);
+  // Parabola y=x^2+3x-4
+  ctx.strokeStyle=terraC;ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();var first=true;
+  for(var t=-5;t<=2.2;t+=0.02){
+    var yv=t*t+3*t-4;var px=mx(t),py=my(yv);
+    if(py<pad.t-5||py>h-pad.b+5){first=true;continue}
+    if(first){ctx.moveTo(px,py);first=false}else ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+  // Mirror points to show symmetry: (-4,0) and (1,0)
+  var noll=[{x:-4,lbl:'x = \u22124'},{x:1,lbl:'x = 1'}];
+  noll.forEach(function(p){
+    var px=mx(p.x),py=my(0);
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(px,py,6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=terraC;ctx.beginPath();ctx.arc(px,py,4.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=inkC;ctx.font='700 14px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+    ctx.fillText(p.lbl,px,py+10);
+  });
+  // Arrows showing equal distance from symmetry line
+  var sy=my(-2);
+  ctx.strokeStyle=sageC;ctx.lineWidth=1.5;
+  // Left arrow
+  ctx.beginPath();ctx.moveTo(mx(-1.5),sy);ctx.lineTo(mx(-4),sy);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(mx(-4),sy);ctx.lineTo(mx(-4)+8,sy-4);ctx.moveTo(mx(-4),sy);ctx.lineTo(mx(-4)+8,sy+4);ctx.stroke();
+  // Right arrow
+  ctx.beginPath();ctx.moveTo(mx(-1.5),sy);ctx.lineTo(mx(1),sy);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(mx(1),sy);ctx.lineTo(mx(1)-8,sy-4);ctx.moveTo(mx(1),sy);ctx.lineTo(mx(1)-8,sy+4);ctx.stroke();
+  // Equal labels
+  ctx.fillStyle=sageC;ctx.font='700 13px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='bottom';
+  ctx.fillText('2,5',mx(-2.75),sy-5);
+  ctx.fillText('2,5',mx(-0.25),sy-5);
+  // Vertex
+  var vx=mx(-1.5),vy=my(-6.25);
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(vx,vy,7,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=terraC;ctx.beginPath();ctx.arc(vx,vy,5,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=inkC;ctx.font='700 14px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='bottom';
+  ctx.fillText('(\u22121,5 ; \u22126,25)',vx,vy-12);
+  ctx.fillStyle=terraC;ctx.font='700 13px Outfit,sans-serif';
+  ctx.fillText('extrempunkt',vx,vy-28);
+  // Function label (inside the U, below vertex label)
+  ctx.fillStyle=terraC;ctx.font='700 14px Outfit,sans-serif';
+  ctx.textAlign='center';ctx.textBaseline='top';ctx.fillText('y = x\u00b2 + 3x \u2212 4',vx,vy+12);
+}
+
+function initANegGraph(){
+  var c=document.getElementById('aNegCanvas');
+  if(!c)return;
+  var dpr=window.devicePixelRatio||1;
+  var w=c.offsetWidth||400;
+  var h=Math.round(w*0.65);
+  c.width=w*dpr;c.height=h*dpr;
+  c.style.height=h+'px';
+  var ctx=c.getContext('2d');
+  ctx.scale(dpr,dpr);
+  var xMin=-1,xMax=5,yMin=-3,yMax=5;
+  var pad={l:36,r:16,t:16,b:28};
+  var gw=w-pad.l-pad.r,gh=h-pad.t-pad.b;
+  function mx(x){return pad.l+(x-xMin)/(xMax-xMin)*gw}
+  function my(y){return pad.t+(yMax-y)/(yMax-yMin)*gh}
+  var gridC='#e5dfd5',axisC='#7a7268',terraC='#bf6e4a',sageC='#6a8a6f',inkC='#302b26';
+  // Grid
+  ctx.strokeStyle=gridC;ctx.lineWidth=0.5;
+  for(var x=-1;x<=5;x++){ctx.beginPath();ctx.moveTo(mx(x),pad.t);ctx.lineTo(mx(x),h-pad.b);ctx.stroke()}
+  for(var y=-2;y<=4;y+=1){ctx.beginPath();ctx.moveTo(pad.l,my(y));ctx.lineTo(w-pad.r,my(y));ctx.stroke()}
+  // Axes
+  ctx.strokeStyle=axisC;ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.moveTo(pad.l,my(0));ctx.lineTo(w-pad.r,my(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0),h-pad.b);ctx.stroke();
+  ctx.fillStyle=axisC;
+  ctx.beginPath();ctx.moveTo(w-pad.r,my(0));ctx.lineTo(w-pad.r-7,my(0)-4);ctx.lineTo(w-pad.r-7,my(0)+4);ctx.fill();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0)-4,pad.t+7);ctx.lineTo(mx(0)+4,pad.t+7);ctx.fill();
+  // Labels
+  ctx.fillStyle=axisC;ctx.font='500 11px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+  for(var x=-1;x<=4;x++){if(x===0)continue;ctx.fillText(x,mx(x),my(0)+5)}
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(var y=-2;y<=4;y+=1){if(y===0)continue;ctx.fillText(y,mx(0)-7,my(y))}
+  ctx.fillStyle=inkC;ctx.font='700 16px Outfit,sans-serif';
+  ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText('x',w-pad.r+4,my(0));
+  ctx.textBaseline='top';ctx.fillText('y',mx(0)+7,pad.t);
+  // Symmetry line x=2
+  ctx.save();ctx.strokeStyle=sageC;ctx.lineWidth=1;ctx.globalAlpha=0.4;
+  ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(mx(2),pad.t);ctx.lineTo(mx(2),h-pad.b);ctx.stroke();
+  ctx.setLineDash([]);ctx.restore();
+  ctx.save();ctx.fillStyle=sageC;ctx.globalAlpha=0.65;ctx.font='500 10px Outfit,sans-serif';
+  ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('x = 2',mx(2)+4,pad.t+2);ctx.restore();
+  // Parabola y=-x^2+4x-1
+  ctx.strokeStyle=terraC;ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();var first=true;
+  for(var t=-0.7;t<=4.7;t+=0.02){
+    var yv=-t*t+4*t-1;var px=mx(t),py=my(yv);
+    if(py<pad.t-5||py>h-pad.b+5){first=true;continue}
+    if(first){ctx.moveTo(px,py);first=false}else ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+  // Marked points
+  var pts=[{x:0,y:-1,lbl:'(0, \u22121)',dy:16},{x:2,y:3,lbl:'(2, 3)',dy:-10,sub:'maximum',sdy:-24},{x:4,y:-1,lbl:'(4, \u22121)',dy:16}];
+  pts.forEach(function(p){
+    var px=mx(p.x),py=my(p.y);
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(px,py,6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=terraC;ctx.beginPath();ctx.arc(px,py,4.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=inkC;ctx.font='700 13px Outfit,sans-serif';ctx.textAlign='center';
+    ctx.textBaseline=p.dy<0?'bottom':'top';
+    ctx.fillText(p.lbl,px,py+p.dy);
+    if(p.sub){ctx.fillStyle=terraC;ctx.font='700 12px Outfit,sans-serif';ctx.fillText(p.sub,px,py+p.sdy)}
+  });
+  // n-form label
+  ctx.fillStyle=terraC;ctx.font='700 15px Outfit,sans-serif';
+  ctx.textAlign='right';ctx.textBaseline='middle';ctx.fillText('ledsen mun \ud83d\ude41',mx(2),my(4.5));
+}
+
+function initExtGraph(){
+  var c=document.getElementById('extCanvas');
+  if(!c)return;
+  var dpr=window.devicePixelRatio||1;
+  var w=c.offsetWidth||400;
+  var h=Math.round(w*0.7);
+  c.width=w*dpr;c.height=h*dpr;
+  c.style.height=h+'px';
+  var ctx=c.getContext('2d');
+  ctx.scale(dpr,dpr);
+  var xMin=-1,xMax=5,yMin=-6.5,yMax=5;
+  var pad={l:36,r:16,t:16,b:28};
+  var gw=w-pad.l-pad.r,gh=h-pad.t-pad.b;
+  function mx(x){return pad.l+(x-xMin)/(xMax-xMin)*gw}
+  function my(y){return pad.t+(yMax-y)/(yMax-yMin)*gh}
+  var gridC='#e5dfd5',axisC='#7a7268',terraC='#bf6e4a',sageC='#6a8a6f',inkC='#302b26';
+  // Grid
+  ctx.strokeStyle=gridC;ctx.lineWidth=0.5;
+  for(var x=-1;x<=5;x++){ctx.beginPath();ctx.moveTo(mx(x),pad.t);ctx.lineTo(mx(x),h-pad.b);ctx.stroke()}
+  for(var y=-6;y<=4;y+=2){ctx.beginPath();ctx.moveTo(pad.l,my(y));ctx.lineTo(w-pad.r,my(y));ctx.stroke()}
+  // Axes
+  ctx.strokeStyle=axisC;ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.moveTo(pad.l,my(0));ctx.lineTo(w-pad.r,my(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0),h-pad.b);ctx.stroke();
+  ctx.fillStyle=axisC;
+  ctx.beginPath();ctx.moveTo(w-pad.r,my(0));ctx.lineTo(w-pad.r-7,my(0)-4);ctx.lineTo(w-pad.r-7,my(0)+4);ctx.fill();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0)-4,pad.t+7);ctx.lineTo(mx(0)+4,pad.t+7);ctx.fill();
+  // Labels
+  ctx.fillStyle=axisC;ctx.font='500 11px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+  for(var x=-1;x<=4;x++){if(x===0)continue;ctx.fillText(x,mx(x),my(0)+5)}
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(var y=-6;y<=4;y+=2){if(y===0)continue;ctx.fillText(y,mx(0)-7,my(y))}
+  ctx.fillStyle=inkC;ctx.font='700 16px Outfit,sans-serif';
+  ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText('x',w-pad.r+4,my(0));
+  ctx.textBaseline='top';ctx.fillText('y',mx(0)+7,pad.t);
+  // Symmetry line x=2
+  ctx.save();ctx.strokeStyle=sageC;ctx.lineWidth=1;ctx.globalAlpha=0.4;
+  ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(mx(2),pad.t);ctx.lineTo(mx(2),h-pad.b);ctx.stroke();
+  ctx.setLineDash([]);ctx.restore();
+  ctx.save();ctx.fillStyle=sageC;ctx.globalAlpha=0.65;ctx.font='500 10px Outfit,sans-serif';
+  ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('x = 2',mx(2)+4,pad.t+2);ctx.restore();
+  // Parabola y=2x^2-8x+3
+  ctx.strokeStyle=terraC;ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();var first=true;
+  for(var t=-0.5;t<=4.5;t+=0.02){
+    var yv=2*t*t-8*t+3;var px=mx(t),py=my(yv);
+    if(py<pad.t-5||py>h-pad.b+5){first=true;continue}
+    if(first){ctx.moveTo(px,py);first=false}else ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+  // Extrempunkt (2, -5)
+  var epx=mx(2),epy=my(-5);
+  // Dashed lines to axes
+  ctx.save();ctx.strokeStyle=terraC;ctx.lineWidth=1;ctx.globalAlpha=0.3;
+  ctx.setLineDash([4,3]);
+  ctx.beginPath();ctx.moveTo(epx,epy);ctx.lineTo(epx,my(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(epx,epy);ctx.lineTo(mx(0),epy);ctx.stroke();
+  ctx.setLineDash([]);ctx.restore();
+  // y=-5 label on y-axis
+  ctx.fillStyle=terraC;ctx.font='600 12px Outfit,sans-serif';
+  ctx.textAlign='right';ctx.textBaseline='middle';ctx.fillText('\u22125',mx(0)-7,epy);
+  // Dot
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(epx,epy,7,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=terraC;ctx.beginPath();ctx.arc(epx,epy,5,0,Math.PI*2);ctx.fill();
+  // Label
+  ctx.fillStyle=inkC;ctx.font='700 14px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='bottom';
+  ctx.fillText('(2, \u22125)',epx,epy-12);
+  ctx.fillStyle=terraC;ctx.font='700 13px Outfit,sans-serif';
+  ctx.fillText('extrempunkt',epx,epy-28);
+  // Extremv\u00e4rde annotation
+  ctx.fillStyle=terraC;ctx.font='600 13px Outfit,sans-serif';
+  ctx.textAlign='left';ctx.textBaseline='top';
+  ctx.fillText('extremv\u00e4rde = \u22125',mx(0)+8,epy+6);
+}
+
+function initNollGraph(){
+  var c=document.getElementById('nollCanvas');
+  if(!c)return;
+  var dpr=window.devicePixelRatio||1;
+  var w=c.offsetWidth||400;
+  var h=Math.round(w*0.6);
+  c.width=w*dpr;c.height=h*dpr;
+  c.style.height=h+'px';
+  var ctx=c.getContext('2d');
+  ctx.scale(dpr,dpr);
+  var xMin=-0.5,xMax=5.5,yMin=-1.5,yMax=7;
+  var pad={l:32,r:16,t:16,b:28};
+  var gw=w-pad.l-pad.r,gh=h-pad.t-pad.b;
+  function mx(x){return pad.l+(x-xMin)/(xMax-xMin)*gw}
+  function my(y){return pad.t+(yMax-y)/(yMax-yMin)*gh}
+  var gridC='#e5dfd5',axisC='#7a7268',terraC='#bf6e4a',sageC='#6a8a6f',inkC='#302b26';
+  // Grid
+  ctx.strokeStyle=gridC;ctx.lineWidth=0.5;
+  for(var x=0;x<=5;x++){ctx.beginPath();ctx.moveTo(mx(x),pad.t);ctx.lineTo(mx(x),h-pad.b);ctx.stroke()}
+  for(var y=-1;y<=6;y++){ctx.beginPath();ctx.moveTo(pad.l,my(y));ctx.lineTo(w-pad.r,my(y));ctx.stroke()}
+  // Axes
+  ctx.strokeStyle=axisC;ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.moveTo(pad.l,my(0));ctx.lineTo(w-pad.r,my(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0),h-pad.b);ctx.stroke();
+  // Arrows
+  ctx.fillStyle=axisC;
+  ctx.beginPath();ctx.moveTo(w-pad.r,my(0));ctx.lineTo(w-pad.r-7,my(0)-4);ctx.lineTo(w-pad.r-7,my(0)+4);ctx.fill();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0)-4,pad.t+7);ctx.lineTo(mx(0)+4,pad.t+7);ctx.fill();
+  // Labels
+  ctx.fillStyle=axisC;ctx.font='500 11px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+  for(var x=1;x<=5;x++){ctx.fillText(x,mx(x),my(0)+5)}
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(var y=1;y<=6;y+=1){ctx.fillText(y,mx(0)-7,my(y))}
+  ctx.fillStyle=inkC;ctx.font='700 16px Outfit,sans-serif';
+  ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText('x',w-pad.r+4,my(0));
+  ctx.textBaseline='top';ctx.fillText('y',mx(0)+7,pad.t);
+  // x-axis highlight (y=0 line)
+  ctx.save();ctx.strokeStyle=sageC;ctx.lineWidth=1.5;ctx.globalAlpha=0.25;
+  ctx.beginPath();ctx.moveTo(pad.l,my(0));ctx.lineTo(w-pad.r,my(0));ctx.stroke();ctx.restore();
+  // Parabola y=x^2-5x+6
+  ctx.strokeStyle=terraC;ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();var first=true;
+  for(var t=-0.3;t<=5.3;t+=0.02){
+    var yv=t*t-5*t+6;var px=mx(t),py=my(yv);
+    if(py<pad.t-5||py>h-pad.b+5){first=true;continue}
+    if(first){ctx.moveTo(px,py);first=false}else ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+  // Nollst\u00e4llen markerade p\u00e5 x-axeln
+  var noll=[{x:2,lbl:'x = 2'},{x:3,lbl:'x = 3'}];
+  noll.forEach(function(p){
+    var px=mx(p.x),py=my(0);
+    // Vertical dashed line from curve to x-axis
+    var curveY=p.x*p.x-5*p.x+6;
+    ctx.save();ctx.strokeStyle=sageC;ctx.lineWidth=1;ctx.globalAlpha=0.4;
+    ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(px,my(curveY));ctx.lineTo(px,py);ctx.stroke();
+    ctx.setLineDash([]);ctx.restore();
+    // Dot on x-axis
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(px,py,7,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=terraC;ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);ctx.fill();
+    // Label below
+    ctx.fillStyle=inkC;ctx.font='600 12px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+    ctx.fillText(p.lbl,px,py+10);
+  });
+  // Function label (centered, prominent)
+  ctx.fillStyle=terraC;ctx.font='700 17px Outfit,sans-serif';
+  ctx.textAlign='center';ctx.textBaseline='top';ctx.fillText('y = x\u00b2 \u2212 5x + 6',w/2,pad.t+4);
+}
+
+// ─── lg-graf: y = lg(x) ───
+function initLgDefGraph(){
+  var c=document.getElementById('lgDefCanvas');
+  if(!c)return;
+  var dpr=window.devicePixelRatio||1;
+  var w=c.offsetWidth||400;
+  var h=Math.round(w*0.6);
+  c.width=w*dpr;c.height=h*dpr;
+  c.style.height=h+'px';
+  var ctx=c.getContext('2d');
+  ctx.scale(dpr,dpr);
+  var xMin=-2,xMax=120,yMin=-0.8,yMax=2.5;
+  var pad={l:36,r:20,t:16,b:28};
+  var gw=w-pad.l-pad.r,gh=h-pad.t-pad.b;
+  function mx(x){return pad.l+(x-xMin)/(xMax-xMin)*gw}
+  function my(y){return pad.t+(yMax-y)/(yMax-yMin)*gh}
+  var gridC='#e5dfd5',axisC='#302b26',terraC='#bf6e4a',sageC='#6a8a6f',inkC='#302b26';
+  // Grid
+  ctx.strokeStyle=gridC;ctx.lineWidth=0.5;
+  [1,10,20,50,100].forEach(function(x){ctx.beginPath();ctx.moveTo(mx(x),pad.t);ctx.lineTo(mx(x),h-pad.b);ctx.stroke()});
+  [0,1,2].forEach(function(y){ctx.beginPath();ctx.moveTo(pad.l,my(y));ctx.lineTo(w-pad.r,my(y));ctx.stroke()});
+  // Axes
+  ctx.strokeStyle=axisC;ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.moveTo(pad.l,my(0));ctx.lineTo(w-pad.r,my(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0),h-pad.b);ctx.stroke();
+  ctx.fillStyle=axisC;
+  ctx.beginPath();ctx.moveTo(w-pad.r,my(0));ctx.lineTo(w-pad.r-7,my(0)-4);ctx.lineTo(w-pad.r-7,my(0)+4);ctx.fill();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0)-4,pad.t+7);ctx.lineTo(mx(0)+4,pad.t+7);ctx.fill();
+  // Tick labels
+  ctx.fillStyle=axisC;ctx.font='700 13px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+  [1,10,100].forEach(function(x){ctx.fillText(x,mx(x),my(0)+6)});
+  ctx.fillText('x',w-pad.r-4,my(0)+6);
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  [1,2].forEach(function(y){ctx.fillText(y,mx(0)-8,my(y))});
+  ctx.font='700 16px Outfit,sans-serif';
+  ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('y',mx(0)+8,pad.t);
+  // Curve y = lg(x)
+  ctx.strokeStyle=terraC;ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();var first=true;
+  for(var t=0.08;t<=115;t+=(t<2?0.02:0.3)){
+    var yv=Math.log10(t);var px=mx(t),py=my(yv);
+    if(py<pad.t-5||py>h-pad.b+5){first=true;continue}
+    if(first){ctx.moveTo(px,py);first=false}else ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+  // Key points
+  var pts=[
+    {x:1,y:0,lbl:'lg(1) = 0',dy:14,align:'left',ox:10},
+    {x:10,y:1,lbl:'lg(10) = 1',dy:-14,align:'center',ox:0},
+    {x:100,y:2,lbl:'lg(100) = 2',dy:-14,align:'right',ox:-10}
+  ];
+  pts.forEach(function(p){
+    var px=mx(p.x),py=my(p.y);
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(px,py,6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=terraC;ctx.beginPath();ctx.arc(px,py,4.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=inkC;ctx.font='700 14px Outfit,sans-serif';ctx.textAlign=p.align;
+    ctx.textBaseline=p.dy<0?'bottom':'top';
+    ctx.fillText(p.lbl,px+(p.ox||0),py+p.dy);
+  });
+  // Dashed lines from points to axes
+  ctx.save();ctx.strokeStyle=terraC;ctx.lineWidth=1;ctx.globalAlpha=0.25;ctx.setLineDash([4,3]);
+  [10,100].forEach(function(x){
+    var yv=Math.log10(x);
+    ctx.beginPath();ctx.moveTo(mx(x),my(yv));ctx.lineTo(mx(x),my(0));ctx.stroke();
+    ctx.beginPath();ctx.moveTo(mx(x),my(yv));ctx.lineTo(mx(0),my(yv));ctx.stroke();
+  });
+  ctx.setLineDash([]);ctx.restore();
+  // Function label
+  ctx.fillStyle=terraC;ctx.font='700 15px Outfit,sans-serif';
+  ctx.textAlign='right';ctx.textBaseline='top';ctx.fillText('y = lg(x)',w-pad.r-8,pad.t+6);
+}
+
+// ─── Modelltyper: 4 kurvor i samma graf ───
+function initModellGraph(){
+  var c=document.getElementById('modellCanvas');
+  if(!c)return;
+  var dpr=window.devicePixelRatio||1;
+  var w=c.offsetWidth||400;
+  var h=Math.round(w*0.65);
+  c.width=w*dpr;c.height=h*dpr;
+  c.style.height=h+'px';
+  var ctx=c.getContext('2d');
+  ctx.scale(dpr,dpr);
+  var xMin=-0.5,xMax=8,yMin=-2,yMax=30;
+  var pad={l:40,r:80,t:16,b:28};
+  var gw=w-pad.l-pad.r,gh=h-pad.t-pad.b;
+  function mx(x){return pad.l+(x-xMin)/(xMax-xMin)*gw}
+  function my(y){return pad.t+(yMax-y)/(yMax-yMin)*gh}
+  var gridC='#e5dfd5',axisC='#302b26',inkC='#302b26';
+  var colors=['#5a82b4','#6a8a6f','#bf6e4a','#8c64a0'];
+  // Grid
+  ctx.strokeStyle=gridC;ctx.lineWidth=0.5;
+  for(var x=0;x<=8;x++){ctx.beginPath();ctx.moveTo(mx(x),pad.t);ctx.lineTo(mx(x),h-pad.b);ctx.stroke()}
+  for(var y=0;y<=28;y+=5){ctx.beginPath();ctx.moveTo(pad.l,my(y));ctx.lineTo(w-pad.r,my(y));ctx.stroke()}
+  // Axes
+  ctx.strokeStyle=axisC;ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.moveTo(pad.l,my(0));ctx.lineTo(w-pad.r,my(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0),h-pad.b);ctx.stroke();
+  ctx.fillStyle=axisC;
+  ctx.beginPath();ctx.moveTo(w-pad.r,my(0));ctx.lineTo(w-pad.r-7,my(0)-4);ctx.lineTo(w-pad.r-7,my(0)+4);ctx.fill();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0)-4,pad.t+7);ctx.lineTo(mx(0)+4,pad.t+7);ctx.fill();
+  ctx.fillStyle=axisC;ctx.font='700 13px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+  for(var x=1;x<=7;x++){ctx.fillText(x,mx(x),my(0)+6)}
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(var y=5;y<=25;y+=5){ctx.fillText(y,mx(0)-8,my(y))}
+  // 4 curves: all start near origin
+  var fns=[
+    {fn:function(x){return 1.8*x},label:'Linj\u00e4r',step:0.1},
+    {fn:function(x){return 0.7*Math.pow(x,1.6)},label:'Potens',step:0.05},
+    {fn:function(x){return 0.35*x*x},label:'Andragrad',step:0.05},
+    {fn:function(x){return 0.5*Math.pow(1.65,x)-0.5},label:'Exponentiell',step:0.05}
+  ];
+  fns.forEach(function(f,i){
+    ctx.strokeStyle=colors[i];ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+    ctx.beginPath();var first=true;var lastVis={x:0,y:0};
+    for(var t=0;t<=8;t+=f.step){
+      var yv=f.fn(t);var px=mx(t),py=my(yv);
+      if(py<pad.t-5||py>h-pad.b+5){first=true;continue}
+      if(first){ctx.moveTo(px,py);first=false}else ctx.lineTo(px,py);
+      lastVis={px:px,py:py};
+    }
+    ctx.stroke();
+    // Label at last visible point of curve
+    if(lastVis.px){
+      ctx.fillStyle=colors[i];ctx.font='700 13px Outfit,sans-serif';
+      ctx.textAlign='left';ctx.textBaseline='middle';
+      ctx.fillText(f.label,lastVis.px+6,lastVis.py);
+    }
+  });
+}
+
+// ─── Faktorform: y=(x-2)(x-3) med nollställen ───
+function initFaktorGraph(){
+  drawNollParabola('faktorCanvas',
+    function(x){return (x-2)*(x-3)},
+    -0.5,5.5,-1.5,5,
+    [{x:2,y:0,lbl:'x\u2081 = 2',dy:14,align:'right',ox:-8},
+     {x:3,y:0,lbl:'x\u2082 = 3',dy:14,align:'left',ox:8}],
+    'y = (x \u2212 2)(x \u2212 3)');
+}
+
+// ─── PQ-formeln: tre fall (2, 1, 0 lösningar) ───
+function initPqGraph(){
+  var c=document.getElementById('pqCanvas');
+  if(!c)return;
+  var dpr=window.devicePixelRatio||1;
+  var w=c.offsetWidth||400;
+  var h=Math.round(w*0.6);
+  c.width=w*dpr;c.height=h*dpr;
+  c.style.height=h+'px';
+  var ctx=c.getContext('2d');
+  ctx.scale(dpr,dpr);
+  var xMin=-1.5,xMax=6,yMin=-3,yMax=6;
+  var pad={l:32,r:80,t:16,b:28};
+  var gw=w-pad.l-pad.r,gh=h-pad.t-pad.b;
+  function mx(x){return pad.l+(x-xMin)/(xMax-xMin)*gw}
+  function my(y){return pad.t+(yMax-y)/(yMax-yMin)*gh}
+  var gridC='#e5dfd5',axisC='#302b26',inkC='#302b26';
+  var colors=['#bf6e4a','#6a8a6f','#5a82b4'];
+  // Grid
+  ctx.strokeStyle=gridC;ctx.lineWidth=0.5;
+  for(var x=-1;x<=5;x++){ctx.beginPath();ctx.moveTo(mx(x),pad.t);ctx.lineTo(mx(x),h-pad.b);ctx.stroke()}
+  for(var y=-2;y<=5;y++){ctx.beginPath();ctx.moveTo(pad.l,my(y));ctx.lineTo(w-pad.r,my(y));ctx.stroke()}
+  // Axes
+  ctx.strokeStyle=axisC;ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.moveTo(pad.l,my(0));ctx.lineTo(w-pad.r,my(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0),h-pad.b);ctx.stroke();
+  ctx.fillStyle=axisC;
+  ctx.beginPath();ctx.moveTo(w-pad.r,my(0));ctx.lineTo(w-pad.r-7,my(0)-4);ctx.lineTo(w-pad.r-7,my(0)+4);ctx.fill();
+  ctx.beginPath();ctx.moveTo(mx(0),pad.t);ctx.lineTo(mx(0)-4,pad.t+7);ctx.lineTo(mx(0)+4,pad.t+7);ctx.fill();
+  ctx.fillStyle=axisC;ctx.font='600 12px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='top';
+  for(var x=-1;x<=5;x++){if(x!==0)ctx.fillText(x,mx(x),my(0)+5)}
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(var y=-2;y<=5;y++){if(y!==0)ctx.fillText(y,mx(0)-7,my(y))}
+  // Axis names
+  ctx.fillStyle=inkC;ctx.font='700 16px Outfit,sans-serif';
+  ctx.textAlign='right';ctx.textBaseline='top';ctx.fillText('x',w-pad.r-4,my(0)+5);
+  ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('y',mx(0)+8,pad.t);
+  // Three parabolas: 2 solutions, 1 solution, 0 solutions
+  // f1: x^2-4x+3 = (x-1)(x-3), nollst: 1,3
+  // f2: x^2-4x+4 = (x-2)^2, nollst: 2 (nuddar)
+  // f3: x^2-4x+5, inga nollst
+  var fns=[
+    {fn:function(x){return x*x-4*x+3},label:'2 l\u00f6sningar',lx:4.8,ly:0.5},
+    {fn:function(x){return x*x-4*x+4},label:'1 l\u00f6sning',lx:4.8,ly:2.2},
+    {fn:function(x){return x*x-4*x+5},label:'0 l\u00f6sningar',lx:4.8,ly:4.2}
+  ];
+  fns.forEach(function(f,i){
+    ctx.strokeStyle=colors[i];ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+    ctx.beginPath();var first=true;
+    for(var t=-1;t<=5.5;t+=0.02){
+      var yv=f.fn(t);var px=mx(t),py=my(yv);
+      if(py<pad.t-5||py>h-pad.b+5){first=true;continue}
+      if(first){ctx.moveTo(px,py);first=false}else ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+    // Label
+    ctx.fillStyle=colors[i];ctx.font='700 13px Outfit,sans-serif';
+    ctx.textAlign='left';ctx.textBaseline='middle';
+    ctx.fillText(f.label,mx(f.lx),my(f.ly));
+  });
+  // Mark nollställen for f1
+  [{x:1},{x:3}].forEach(function(p){
+    var px=mx(p.x),py=my(0);
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=colors[0];ctx.beginPath();ctx.arc(px,py,3.5,0,Math.PI*2);ctx.fill();
+  });
+  // Mark nuddar-punkt for f2
+  var nx=mx(2),ny=my(0);
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(nx,ny,5,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=colors[1];ctx.beginPath();ctx.arc(nx,ny,3.5,0,Math.PI*2);ctx.fill();
+}
+
+// ═══════════════════
+//  CONCEPT LINK TOOLTIPS
+// ═══════════════════
+const tip=document.createElement('div');
+tip.className='clink-tip';document.body.appendChild(tip);
+let tipTimer=null;
+
+function posTip(cl){
+  const to=cl.dataset.to;const n=N[to];if(!n)return;
+  clearTimeout(tipTimer);
+  tip.innerHTML=`<span class="tip-icon">\u2197</span><span class="tip-title">${n.title}</span><span class="tip-hint">Klicka f\u00f6r att utforska</span>`;
+  tip.classList.add('show');
+  requestAnimationFrame(()=>{
+    const r=cl.getBoundingClientRect();
+    const tw=tip.offsetWidth,th=tip.offsetHeight;
+    let left=r.left+(r.width-tw)/2;
+    left=Math.max(8,Math.min(left,window.innerWidth-tw-8));
+    let top=r.top-th-10;
+    if(top<8)top=r.bottom+10;
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  });
+}
+document.addEventListener('mouseover',e=>{
+  const cl=e.target.closest('.clink');if(!cl)return;
+  clearTimeout(tipTimer);posTip(cl);
+});
+document.addEventListener('mouseout',e=>{
+  if(!e.target.closest('.clink'))return;
+  tipTimer=setTimeout(()=>tip.classList.remove('show'),120);
+});
+document.addEventListener('click',e=>{
+  const cl=e.target.closest('.clink');if(!cl)return;
+  e.preventDefault();e.stopPropagation();
+  tip.classList.remove('show');go(cl.dataset.to);
+});
+
+// ═══════════════════
+//  INIT
+// ═══════════════════
+render();
+// Re-render math once KaTeX auto-render loads (defer scripts load after inline)
+document.addEventListener('DOMContentLoaded',()=>{if(typeof renderMathInElement==='function')renderMath()});
+window.addEventListener('load',()=>renderMath());
+</script>
+</body>
+</html>

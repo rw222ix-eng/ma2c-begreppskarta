@@ -1,0 +1,215 @@
+1
+00:00:00,000 --> 00:00:03,560
+Vi ska bara plotta punkterna bara för att visa er hur det här ser ut.
+
+2
+00:00:03,560 --> 00:00:08,529
+Jag har redan plottat dem här för oss, men ni kan se att vi försöker hitta
+
+3
+00:00:08,529 --> 00:00:11,689
+linjen som kommer närmast dessa punkter som möjligt.
+
+4
+00:00:11,689 --> 00:00:13,769
+Vi vill hitta ekvationen av den linjen.
+
+5
+00:00:13,769 --> 00:00:18,570
+Okej, så det första vi ska göra är att vi ska gå över hit till vår TI84-kalkylator
+
+6
+00:00:18,570 --> 00:00:22,050
+och låt oss gå vidare och infoga dessa datapunkter.
+
+7
+00:00:22,050 --> 00:00:23,809
+Vi ska slå på vår kalkylator.
+
+8
+00:00:23,809 --> 00:00:29,250
+Vi ska gå över till stat och vi ska gå till redigera, gå in.
+
+9
+00:00:29,250 --> 00:00:30,850
+Och du kan se i list 1
+
+10
+00:00:30,850 --> 00:00:35,549
+Vi ska sätta alla våra x-koordinater och i list 2 ska vi sätta alla våra y-koordinater.
+
+11
+00:00:35,549 --> 00:00:43,439
+Okej, så vad vi ska göra är att sätta 1, 3, 2, 4, 5 och 3.
+
+12
+00:00:43,439 --> 00:00:45,679
+Och om vi flyttar över till nästa kolumn,
+
+13
+00:00:45,679 --> 00:00:46,799
+ska vi sätta våra y-koordinater.
+
+14
+00:00:46,799 --> 00:00:52,950
+Så det här kommer att vara 2, 1, 2, 3, 5 och 4.
+
+15
+00:00:52,950 --> 00:00:55,070
+Och det vi vill göra är att gå tillbaka till stat.
+
+16
+00:00:55,070 --> 00:00:59,479
+Här står det stat, stat, och du vill flytta över till kalkylator,
+
+17
+00:00:59,479 --> 00:01:02,579
+och du vill skrolla ner till linjär regress.
+
+18
+00:01:02,579 --> 00:01:03,700
+Okej, nummer 4.
+
+19
+00:01:03,700 --> 00:01:05,780
+Se var det står ax plus b.
+
+20
+00:01:05,780 --> 00:01:06,480
+In.
+
+21
+00:01:06,480 --> 00:01:09,340
+Och list 1 och list 2 är listorna som vi använder.
+
+22
+00:01:09,340 --> 00:01:11,540
+Och lagra regressionsekvation.
+
+23
+00:01:11,540 --> 00:01:14,400
+Vad du kan göra är att du kan gå över hit till var det står VARS.
+
+24
+00:01:14,400 --> 00:01:16,319
+Här där det står VARS.
+
+25
+00:01:16,319 --> 00:01:19,799
+Okej, tryck på det och gå över till Y VARS.
+
+26
+00:01:19,799 --> 00:01:20,840
+Ett till höger.
+
+27
+00:01:20,840 --> 00:01:22,439
+Fun, Enter.
+
+28
+00:01:22,439 --> 00:01:24,439
+Och vi ska lagra den under Y1.
+
+29
+00:01:24,439 --> 00:01:27,980
+Så Enter, och sedan kalkylera, Enter igen.
+
+30
+00:01:27,980 --> 00:01:29,420
+Okej, så nu är det gjort.
+
+31
+00:01:29,420 --> 00:01:33,000
+Du kan se, det har gett oss linjen av bäst pass, vilket är y=
+
+32
+00:01:33,000 --> 00:01:34,079
+ax plus b.
+
+33
+00:01:34,079 --> 00:01:36,219
+A är 0,7, så det är vår sluttning.
+
+34
+00:01:36,219 --> 00:01:40,719
+Så y= 0,7x plus b, som är 0,73.
+
+35
+00:01:40,719 --> 00:01:43,260
+Och sedan R här är vår korrelationskoefficient.
+
+36
+00:01:43,260 --> 00:01:46,920
+Så det är hur nära dessa punkter ligger på linjen.
+
+37
+00:01:46,920 --> 00:01:51,239
+Ju närmare denna siffra kommer till 1 eller negativ 1,
+
+38
+00:01:51,239 --> 00:01:53,379
+du kan bara ta det absoluta värdet av detta nummer,
+
+39
+00:01:53,379 --> 00:01:57,299
+men ju närmare den kommer till 1, desto bättre att punkterna är exakt på linjen
+
+40
+00:01:57,299 --> 00:01:58,000
+och bäst passar.
+
+41
+00:01:58,000 --> 00:02:03,859
+Så nu, nästa sak vi ska göra är att vi ska gå över till
+
+42
+00:02:03,859 --> 00:02:06,680
+grafen, okej, och du kan se, där är vår linje,
+
+43
+00:02:06,680 --> 00:02:08,860
+och låt oss gå tillbaka och ta en titt på var våra punkter är.
+
+44
+00:02:08,860 --> 00:02:12,710
+Låt oss gå till, över här, 2, stat, plot,
+
+45
+00:02:12,710 --> 00:02:14,810
+och du ser hur det står, plot off.
+
+46
+00:02:14,810 --> 00:02:16,129
+Låt oss stänga av den.
+
+47
+00:02:16,129 --> 00:02:20,840
+Så vi ska stänga av, okej, och sedan 2, quit.
+
+48
+00:02:20,840 --> 00:02:24,680
+Och nu, låt oss gå tillbaka till grafen här borta i det övre högra hörnet, graf.
+
+49
+00:02:24,680 --> 00:02:26,639
+Okej, nu kan du se våra datapunkter där,
+
+50
+00:02:26,639 --> 00:02:28,539
+och du kan se, där är vår linje av bäst passning.
+
+51
+00:02:28,539 --> 00:02:30,840
+Och du kan se, några av datapunkterna är ovanför linjen,
+
+52
+00:02:30,840 --> 00:02:34,099
+några är under linjen, några är på linjen,
+
+53
+00:02:34,099 --> 00:02:35,699
+Det här är vår linje av bäst passning.
+
+54
+00:02:35,699 --> 00:02:39,580
+Det här är linjen som kommer närmast de punkterna.
