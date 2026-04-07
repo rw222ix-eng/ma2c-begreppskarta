@@ -469,7 +469,7 @@ Vad betyder bokst\u00e4verna?<br>
 <strong>Hur l\u00f6ser man?</strong><br><br>
 <strong>1.</strong> Skriv om till <span class="clink" data-to="pqform">PQ-form</span> (dividera med a s\u00e5 att det st\u00e5r \\(1 \\cdot x^2\\))<br>
 <strong>2.</strong> Anv\u00e4nd <span class="clink" data-to="pqformeln">PQ-formeln</span> eller <span class="clink" data-to="kvadratkomplettering">kvadratkomplettering</span></div>
-<p class="note">En andragradsekvation kan ha <span class="clink" data-to="nollstallen">0, 1 eller 2 l\u00f6sningar</span>.</p>`,
+<p class="note">En andragradsekvation kan ha 0, 1 eller 2 <span class="clink" data-to="nollstallen">nollst\u00e4llen</span> (l\u00f6sningar).</p>`,
 connections:[{to:"pqform",label:"skrivs om till"},{to:"kvadratkomplettering",label:"l\u00f6ses med"},{to:"pqformeln",label:"l\u00f6ses med"}]},
 
 pqform:{title:"PQ-form",cat:"ekvationer",
@@ -534,9 +534,9 @@ Redan PQ-form (1 framf\u00f6r \\(x^2\\)). Allts\u00e5:<br>
 <strong>Svar: x = 3 eller x = \u22121</strong></div>
 <div class="formula-block">
 <strong>Hur m\u00e5nga l\u00f6sningar?</strong> Titta p\u00e5 talet under rottecknet:<br><br>
-<span class="clink" data-to="noll_tva">Positivt</span> \u2192 <strong>2 l\u00f6sningar</strong> (roten ger ett tal \u2192 plus och minus)<br>
-<span class="clink" data-to="noll_ett">Noll</span> \u2192 <strong>1 l\u00f6sning</strong> (\\(\\pm 0\\) \u2192 bara ett svar)<br>
-<span class="clink" data-to="noll_noll">Negativt</span> \u2192 <strong>inga l\u00f6sningar</strong> (kan inte dra roten ur negativt tal)</div>
+Positivt \u2192 <span class="clink" data-to="noll_tva"><strong>2 l\u00f6sningar</strong></span> (roten ger ett tal \u2192 plus och minus)<br>
+Noll \u2192 <span class="clink" data-to="noll_ett"><strong>1 l\u00f6sning</strong></span> (\\(\\pm 0\\) \u2192 bara ett svar)<br>
+Negativt \u2192 <span class="clink" data-to="noll_noll"><strong>inga l\u00f6sningar</strong></span> (kan inte dra roten ur negativt tal)</div>
 <div class="graph-widget" id="pqGraph">
 <canvas id="pqCanvas" style="width:100%;display:block"></canvas>
 </div>`,
@@ -577,8 +577,8 @@ x=4: \\(\\sqrt{9} = 3 = 3\\) \u2192 OK!<br>
 connections:[{to:"kontroll",label:"sista steget"}]},
 
 falskrot:{title:"Falsk rot",cat:"ekvationer",image:"images/desmos-graph 6.png",
-body:`<p>Ett svar som <strong>INTE st\u00e4mmer</strong> n\u00e4r man stoppar in det i <span class="clink" data-to="kontroll">originalekvationen</span>.</p>
-<p><strong>Varf\u00f6r?</strong> <span class="clink" data-to="rotmetod">Kvadrering</span> d\u00f6ljer minustecken: b\u00e5de \\(3^2 = 9\\) och \\((-3)^2 = 9\\). S\u00e5 kvadrering kan \u201dskapa\u201d l\u00f6sningar som inte fanns.</p>
+body:`<p>Ett svar som <strong>INTE st\u00e4mmer</strong> n\u00e4r man <span class="clink" data-to="kontroll">kontrollerar</span> i originalekvationen.</p>
+<p><strong>Varf\u00f6r?</strong> Kvadrering d\u00f6ljer minustecken: b\u00e5de \\(3^2 = 9\\) och \\((-3)^2 = 9\\). S\u00e5 kvadrering kan \u201dskapa\u201d l\u00f6sningar som inte fanns (se <span class="clink" data-to="rotmetod">rotmetoden</span>).</p>
 <div class="example"><div class="example-label">Exempel</div>
 L\u00f6s: \\(\\sqrt{x} = x - 6\\)<br>
 Kvadrera: \\(x = x^2 - 12x + 36\\)<br>
@@ -723,7 +723,7 @@ connections:[{to:"koefficienten_a",label:"styrs av"},{to:"symmetrilinje",label:"
 
 koefficienten_a:{title:"Koefficienten a",subtitle:"i y = ax\u00b2 + bx + c",cat:"funktioner",
 body:`<p><strong>a</strong> = talet framf\u00f6r \\(x^2\\). Best\u00e4mmer <strong>tv\u00e5 saker</strong>:</p>
-<ol><li><strong>Riktning</strong> (<span class="clink" data-to="a_positiv">upp</span> eller <span class="clink" data-to="a_negativ">ner</span>)</li><li><strong><span class="clink" data-to="bredd">Bredd</span></strong> (smal eller bred)</li></ol>`,
+<ol><li><strong>Riktning</strong> (<span class="clink" data-to="a_positiv">a &gt; 0 \u2192 upp</span> eller <span class="clink" data-to="a_negativ">a &lt; 0 \u2192 ner</span>)</li><li><strong><span class="clink" data-to="bredd">Bredd</span></strong> (smal eller bred)</li></ol>`,
 connections:[{to:"a_positiv",label:"om positivt"},{to:"a_negativ",label:"om negativt"},{to:"bredd",label:"best\u00e4mmer"}]},
 
 a_positiv:{title:"a > 0: Glad mun",cat:"funktioner",
@@ -824,8 +824,8 @@ body:`<p>Punkten d\u00e4r parabeln <strong>v\u00e4nder</strong> \u2013 dess l\u0
 <em>Svaret p\u00e5 \u201dhur h\u00f6gt?\u201d eller \u201dhur l\u00e5gt?\u201d</em></div>
 <div class="formula-block">
 <strong>Vilken typ?</strong><br><br>
-<span class="clink" data-to="koefficienten_a">\\(a\\)</span> > 0 (glad mun \ud83d\ude42) \u2192 <span class="clink" data-to="a_positiv">minimipunkt</span> \u2013 parabeln har en botten<br>
-<span class="clink" data-to="koefficienten_a">\\(a\\)</span> < 0 (ledsen mun \ud83d\ude41) \u2192 <span class="clink" data-to="a_negativ">maximipunkt</span> \u2013 parabeln har en topp</div>
+<span class="clink" data-to="a_positiv">\\(a\\) > 0 (glad mun \ud83d\ude42)</span> \u2192 minimipunkt \u2013 parabeln har en botten<br>
+<span class="clink" data-to="a_negativ">\\(a\\) < 0 (ledsen mun \ud83d\ude41)</span> \u2192 maximipunkt \u2013 parabeln har en topp</div>
 <div class="formula-block">
 <strong>S\u00e5 h\u00e4r r\u00e4knar du:</strong><br><br>
 <strong>Steg 1:</strong> Skriv om till <span class="clink" data-to="pqform">PQ-form</span> (dividera med <span class="clink" data-to="koefficienten_a">a</span> s\u00e5 att det st\u00e5r \\(1 \\cdot x^2\\))<br>
@@ -1193,7 +1193,7 @@ produktregeln:{title:"Lag 1: Produktregeln",cat:"logaritmer",
 body:`<p>Om du har <strong>tv\u00e5 tal som multipliceras inuti en logaritm</strong>, kan du dela upp dem i tv\u00e5 separata logaritmer med <strong>plus</strong> emellan.</p>
 <div class="formula-block">$$\\lg(A \\cdot B) = \\lg A + \\lg B$$
 <strong>Minnestips:</strong> G\u00e5nger inuti \\(\\lg\\) \u2192 plus utanf\u00f6r</div>
-<p>Varf\u00f6r fungerar det? Logaritmer \u00e4r t\u00e4tt kopplade till <span class="clink" data-to="definition_lg">potenser</span>. N\u00e4r man multiplicerar potenser med samma bas <em>adderar</em> man exponenterna \u2013 och lg \u00e4r just exponenten!</p>
+<p>Varf\u00f6r fungerar det? Logaritmer \u00e4r t\u00e4tt kopplade till potenser (se <span class="clink" data-to="definition_lg">definitionen av lg</span>). N\u00e4r man multiplicerar potenser med samma bas <em>adderar</em> man exponenterna \u2013 och lg \u00e4r just exponenten!</p>
 <div class="example"><div class="example-label">Exempel 1 \u2013 dela upp</div>
 \\(\\lg(20 \\cdot 50) = \\lg(20) + \\lg(50) = 1{,}301 + 1{,}699 = 3\\)<br><br>
 Kontroll: \\(20 \\cdot 50 = 1000\\) och \\(\\lg(1000) = 3\\) \u2713</div>
