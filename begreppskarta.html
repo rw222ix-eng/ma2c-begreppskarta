@@ -38,7 +38,7 @@ body{
 }
 /* Noise overlay */
 body::after{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.3;
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
 }
 ::selection{background:var(--terra-med);color:var(--ink)}
@@ -335,10 +335,10 @@ html,body{overflow-y:auto!important;margin:0;padding:0}
   white-space:nowrap;max-width:300px;
 }
 .clink-tip.show{opacity:1;transform:translateY(0) scale(1)}
-.clink-tip .tip-icon{opacity:0.5;margin-right:0.3rem;font-size:0.75rem}
+.clink-tip .tip-icon{opacity:1;margin-right:0.3rem;font-size:0.75rem}
 .clink-tip .tip-title{font-weight:600}
 .clink-tip .tip-hint{
-  display:block;font-size:0.72rem;color:rgba(255,255,255,0.45);margin-top:0.15rem;
+  display:block;font-size:0.72rem;color:rgba(255,255,255,1);margin-top:0.15rem;
 }
 
 /* ── Interactive graph widget ── */
@@ -1234,7 +1234,7 @@ connections:[{to:"exponentialekvation",label:"l\u00f6ser"},{to:"kvotregeln",labe
 
 const catLabels={root:"Start",ekvationer:"Ekvationer",regression:"Regression",funktioner:"Funktioner",logaritmer:"Logaritmer"};
 
-const tree={root:{ekvationer:{andragradsekvationer:{pqform:{},kvadratkomplettering:{},pqformeln:{}},rotekvationer:{rotmetod:{},falskrot:{},kontroll:{}},exponentialekvation:{},potensekvation:{}},funktioner:{andragradsfunktioner:{koefficienten_a:{a_positiv:{},a_negativ:{},bredd:{}},symmetrilinje:{},extrempunkt:{},nollstallen:{},faktorform:{},tillampningar:{}},exponentialfunktioner:{forandringsfaktor:{},startvarde:{}},potensfunktion:{}},regression:{regressionsanalys:{},modellval:{},modelltyper:{}},logaritmer:{definition_lg:{},tiologaritm:{},logaritmlagar:{produktregeln:{},kvotregeln:{},potensregeln:{}}}}};
+const tree={root:{ekvationer:{andragradsekvationer:{pqform:{},kvadratkomplettering:{},pqformeln:{}},rotekvationer:{rotmetod:{},falskrot:{},kontroll:{}},exponentialekvation:{},potensekvation:{}},funktioner:{andragradsfunktioner:{koefficienten_a:{a_positiv:{},a_negativ:{},bredd:{}},symmetrilinje:{},extrempunkt:{},nollstallen:{noll_tva:{},noll_ett:{},noll_noll:{}},faktorform:{},tillampningar:{}},exponentialfunktioner:{forandringsfaktor:{},startvarde:{}},potensfunktion:{}},regression:{regressionsanalys:{},modellval:{},modelltyper:{}},logaritmer:{definition_lg:{},tiologaritm:{},logaritmlagar:{produktregeln:{},kvotregeln:{},potensregeln:{}}}}};
 
 // ═══════════════════
 //  STATE
