@@ -453,7 +453,7 @@ body:`<p>Att l\u00f6sa ekvationer = <strong>hitta v\u00e4rdet p\u00e5 x</strong>
 connections:[{to:"andragradsekvationer",label:"h\u00f6gsta potens x\u00b2"},{to:"rotekvationer",label:"x under rottecken"},{to:"exponentialekvation",label:"x i exponenten"},{to:"potensekvation",label:"x i basen"}]},
 
 andragradsekvationer:{title:"Andragradsekvationer",cat:"ekvationer",
-body:`<p>En ekvation d\u00e4r <strong>h\u00f6gsta potensen av x \u00e4r 2</strong>. Det betyder att n\u00e5gonstans i ekvationen finns ett \\(x^2\\)-term.</p>
+body:`<p>En ekvation d\u00e4r <strong>h\u00f6gsta potensen av x \u00e4r 2</strong>. Det betyder att ekvationen inneh\u00e5ller en \\(x^2\\)-term.</p>
 <div class="formula-block">
 <strong>Allm\u00e4n form:</strong> \\(ax^2 + bx + c = 0\\)<br><br>
 Vad betyder bokst\u00e4verna?<br>
@@ -544,7 +544,7 @@ connections:[{to:"nollstallen",label:"hittar nollst\u00e4llen"}]},
 
 rotekvationer:{title:"Rotekvationer",cat:"ekvationer",
 body:`<p>En ekvation d\u00e4r <strong>x sitter under ett rottecken</strong>, t.ex. \\(\\sqrt{x+3} = 5\\).</p>
-<p>Problemet: vi kan inte l\u00f6sa ut x direkt n\u00e4r det \u00e4r \u201dinst\u00e4ngt\u201d under roten. L\u00f6sningen: <strong>kvadrera b\u00e5da sidor</strong> f\u00f6r att bli av med rottecknet!</p>
+<p>Problemet: Vi kan inte l\u00f6sa ut x direkt n\u00e4r det \u00e4r \u201dinst\u00e4ngt\u201d under roten. L\u00f6sningen: <strong>kvadrera b\u00e5da sidor</strong> f\u00f6r att bli av med rottecknet!</p>
 <div class="formula-block">
 <strong>Metod \u2013 <span class="clink" data-to="rotmetod">rotmetoden</span>:</strong><br><br>
 <strong>1.</strong> Isolera roten (f\u00e5 den ensam p\u00e5 en sida)<br>
@@ -767,7 +767,7 @@ Toppen ligger vid <strong>x = 2</strong><br><br>
 connections:[]},
 
 bredd:{title:"Bredd",cat:"funktioner",
-body:`<p>T\u00e4nk p\u00e5 <span class="clink" data-to="koefficienten_a">koefficienten a</span> som en \u201d\u00f6ppningskontroll\u201d f\u00f6r parabeln. Ju st\u00f6rre talet \u00e4r (utan att r\u00e4kna minus), desto <strong>smalare</strong> blir kurvan \u2013 som att klamma ihop den. Ju mindre talet \u00e4r, desto <strong>bredare</strong> och plattare blir den.</p>
+body:`<p>T\u00e4nk p\u00e5 <span class="clink" data-to="koefficienten_a">koefficienten a</span> som en \u201d\u00f6ppningskontroll\u201d f\u00f6r parabeln. Ju st\u00f6rre talet \u00e4r (utan att r\u00e4kna minus), desto <strong>smalare</strong> blir parabeln \u2013 som att klamma ihop den. Ju mindre talet \u00e4r, desto <strong>bredare</strong> och plattare blir parabeln.</p>
 <div class="formula-block"><strong>Regel:</strong><br><br>
 \u2022 <strong>|a| > 1</strong> \u2192 parabeln \u00e4r <em>smalare</em> \u00e4n \\(y = x^2\\)<br>
 \u2022 <strong>|a| = 1</strong> \u2192 \u201dnormal\u201d bredd (\\(y = x^2\\))<br>
@@ -778,7 +778,7 @@ S\u00e4tt in \\(x = 1\\) i tre funktioner:<br><br>
 \u2022 \\(y = 5x^2 \\Rightarrow y = 5\\) \u2014 h\u00f6gt y-v\u00e4rde redan vid \\(x = 1\\) \u2192 <strong>smal</strong><br>
 \u2022 \\(y = x^2 \\Rightarrow y = 1\\) \u2014 normal<br>
 \u2022 \\(y = 0{,}2x^2 \\Rightarrow y = 0{,}2\\) \u2014 l\u00e5gt y-v\u00e4rde \u2192 <strong>bred och platt</strong><br><br>
-St\u00f6rre a \u201ddrar upp\u201d parabeln snabbare, d\u00e4rf\u00f6r blir den smalare.</div>
+St\u00f6rre a \u201ddrar upp\u201d parabeln snabbare, d\u00e4rf\u00f6r blir parabeln smalare.</div>
 <p>Testa sj\u00e4lv i grafen nedan:</p>
 <div class="graph-widget" id="breddGraph">
 <div class="graph-btns">
@@ -1062,9 +1062,9 @@ connections:[]},
 startvarde:{title:"Startv\u00e4rde (C)",cat:"funktioner",
 body:`<p><strong>C</strong> i formeln \\(y = C \\cdot a^x\\) \u00e4r v\u00e4rdet <strong>innan n\u00e5got har h\u00e4nt</strong> \u2013 allts\u00e5 vid start (x = 0).</p>
 <div class="formula-block">
-<strong>Varf\u00f6r?</strong> Alla tal upph\u00f6jt till 0 \u00e4r 1. S\u00e5 n\u00e4r x = 0:<br><br>
+<strong>Varf\u00f6r?</strong> Alla tal upph\u00f6jda till 0 blir 1. S\u00e5 n\u00e4r x = 0:<br><br>
 \\(y = C \\cdot a^0 = C \\cdot 1 = C\\)<br><br>
-<em>\\(a^0\\) f\u00f6rsvinner, och kvar blir bara C!</em></div>
+<em>\\(a^0\\) blir 1, och kvar blir bara C!</em></div>
 <div class="example"><div class="example-label">Exempel</div>
 En bil kostar <strong>200 000 kr</strong> och tappar 15% per \u00e5r:<br>
 \\(y = 200000 \\cdot 0{,}85^x\\)<br><br>
